@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Task Manager</title>
+</head>
+<body>
+
+<script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+
+<script type="text/javascript">
+
+	function login() {
+		var username = $("#username")[0].value;
+		var password = $("#password")[0].value;
+		
+		if (username == "" || password == "") {
+			alert("Username and password should not be empty.");
+		}
+		
+		var data = { user : {username : username,
+							password : password
+							}
+		}
+		
+		$.ajax({
+			url : 'rest/user/login',
+			type : "POST",
+			data : JSON.stringify(data),
+			dataType : "json",
+			contentType: "application/json",
+			statusCode : {
+				401: function() {
+					alert("Authentication failed");
+				},
+				200: function() {
+					window.location.replace("tasks.html");
+				}
+			}
+		});
+	}
+
+</script>
+
+<form id="login_form" method="post">
+	<label for="username">Username:</label>
+	<input type="text" id="username" name="username" value="" />
+
+	<label for="password">Password:</label>
+	<input type="password" id="password" name="password" value="" />
+	
+	<button type="button" onClick="login()"> Log in </button>
+</form>
+
+</body>
+</html>
