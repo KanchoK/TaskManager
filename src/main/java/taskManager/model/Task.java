@@ -3,6 +3,8 @@ package taskManager.model;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +16,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "Tasks")
 public class Task {
 
+	public enum Status {
+		NEW,
+		OPENED,
+		DONE
+	}
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int taskID;
@@ -26,7 +34,8 @@ public class Task {
 	
 	private int executor;
 	
-	private String status;
+	@Enumerated(EnumType.STRING) 
+	private Status status;
 	
 	public Task() {
 		
@@ -78,12 +87,12 @@ public class Task {
 		this.executor = executor;
 	}
 
-	public String getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Status status) {
 		this.status = status;
-	}
+	}	
 	
 }
