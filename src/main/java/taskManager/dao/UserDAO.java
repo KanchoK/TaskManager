@@ -29,9 +29,11 @@ public class UserDAO {
         return queryUser(query) != null;
     }
 
-//    public Collection<User> getAllUsers() {
-//        return em.createNamedQuery("getAllUsers", User.class).getResultList();
-//    }
+    public Collection<User> getAllUsers() {
+    	  String txtQuery = "SELECT u FROM User u";
+          TypedQuery<User> query = em.createQuery(txtQuery, User.class);
+          return query.getResultList();
+    }
 
     private String getHashedPassword(String password) {
         try {

@@ -46,10 +46,10 @@ public class UserManager {
     	return Response.status(HttpsURLConnection.HTTP_UNAUTHORIZED).build();
     }
 	
-//	@GET
-//    @Produces("application/json")
-//    public Collection<User> getAllUsers() {
-//        return userDAO.getAllUsers();
-//    }
+	@GET
+    @Produces("application/json")
+    public Collection<User> getAllUsers() {
+        return userDAO.getAllUsers();
+    }
 	
 }
