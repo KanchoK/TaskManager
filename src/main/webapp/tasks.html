@@ -5,10 +5,7 @@
 	<meta charset="UTF-8">
 	<title>Task Manager</title>
 	<script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
-	
-</head>
-<body>
-	
+		
 	<script type="text/javascript">
 		
 	$(document).ready(function (){
@@ -23,7 +20,8 @@
                     tbody.append("<tr>" + "<td>" + data.task[i].taskID + "</td>" +
                             "<td>" + data.task[i].taskName + "</td>" +
                             "<td>" + data.task[i].description + "</td>" +
-                            "<td>" + data.task[i].endDate + "</td>" + "</tr>");
+                            "<td>" + data.task[i].endDate + "</td>" + 
+                            "<td>" + data.task[i].status + "</td>" + "</tr>");
                 }
                 
 			},
@@ -34,18 +32,35 @@
 	});
 	
 	</script>
+	
+</head>
+<body>
 
+<div id="container">
+	
+	<span id="header">
+	
+		<a href="createTask.html"> Create New Task </a>
+		<!-- <button type="button" class="menuButton" onClick="createTask()">Create New Task</button> -->
+	
+	</span>
+	
 	<table id="taskTable">
     	<thead>
+    	<tr>
     	<th>Task ID</th>
     	<th>Task name</th>
    		<th>Description</th>
     	<th>End date</th>
+    	<th>Status</th>
+    	</tr>
     	</thead>
     	<tbody>
     	
     	</tbody>
 	</table>
+	
+</div>
 
 </body>
 </html>

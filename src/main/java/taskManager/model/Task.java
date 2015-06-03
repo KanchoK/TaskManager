@@ -45,6 +45,7 @@ public class Task {
 		this.taskName = taskName;
 		this.description = description;
 		this.endDate = endDate;
+		this.status = Status.NEW;
 	}
 	
 	public int getTaskID() {
