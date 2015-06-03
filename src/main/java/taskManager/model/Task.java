@@ -28,7 +28,7 @@ public class Task {
 	
 	private String taskName;
 	
-	private String discription;
+	private String description;
 	
 	private Date endDate;
 	
@@ -41,9 +41,9 @@ public class Task {
 		
 	}
 	
-	public Task(String taskName, String discription, Date endDate) {
+	public Task(String taskName, String description, Date endDate) {
 		this.taskName = taskName;
-		this.discription = discription;
+		this.description = description;
 		this.endDate = endDate;
 	}
 	
@@ -63,12 +63,12 @@ public class Task {
 		this.taskName = taskName;
 	}
 
-	public String getDiscription() {
-		return discription;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDiscription(String discription) {
-		this.discription = discription;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Date getEndDate() {
