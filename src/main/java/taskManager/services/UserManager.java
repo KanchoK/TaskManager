@@ -27,10 +27,11 @@ public class UserManager {
 	private UserContext context;
 	
 	@POST
+	@Path("register")
     @Consumes(MediaType.APPLICATION_JSON)
     public void registerUser(User newUser) {
+		newUser.setPassword("test");
         userDAO.addUser(newUser);
-        context.setCurrentUser(newUser);
     }
 	
 	@POST
