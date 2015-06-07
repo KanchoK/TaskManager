@@ -1,5 +1,6 @@
 package taskManager.services;
 
+import java.net.HttpURLConnection;
 import java.util.Collection;
 
 import javax.ejb.Stateless;
@@ -30,8 +31,8 @@ public class UserManager {
 	@Path("register")
     @Consumes(MediaType.APPLICATION_JSON)
     public void registerUser(User newUser) {
-		newUser.setPassword("test");
         userDAO.addUser(newUser);
+        context.setCurrentUser(newUser);
     }
 	
 	@POST
@@ -47,8 +48,36 @@ public class UserManager {
     	return Response.status(HttpsURLConnection.HTTP_UNAUTHORIZED).build();
     }
 	
+    @Path("authenticated")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response isAuthenticated() {
+        if (context.getCurrentUser() != null) {
+        	return Response.status(HttpsURLConnection.HTTP_OK).build();
+        }
+        return Response.status(HttpURLConnection.HTTP_NOT_FOUND).build();        
+    }
+	
+    @Path("current")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    public String getUser() {
+        if (context.getCurrentUser() != null) {
+        	return context.getCurrentUser().getUsername();
+        }
+        return null;
+    }
+
+	@Path("logout")
 	@GET
-    @Produces("application/json")
+	@Consumes(MediaType.TEXT_PLAIN)
+	public void logoutUser() {
+		context.setCurrentUser(null);
+	}
+    
+	@Path("all")
+	@GET
+    @Produces(MediaType.APPLICATION_JSON)
     public Collection<User> getAllUsers() {
         return userDAO.getAllUsers();
     }

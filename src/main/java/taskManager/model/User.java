@@ -22,6 +22,7 @@ public class User implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int userID;
 	
+	// TODO username should be unique
 	private String username;
 	
 	private String password;
