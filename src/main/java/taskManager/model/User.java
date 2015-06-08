@@ -25,10 +25,12 @@ public class User implements Serializable{
 	// TODO username should be unique
 	private String username;
 	
+	// TODO password validation
 	private String password;
 	
 	private String fullName;
 	
+	// TODO email validation
 	private String email;
 	
 	private boolean isAdmin;
@@ -93,6 +95,14 @@ public class User implements Serializable{
 
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
+	}
+
+	public int getUserID() {
+		return userID;
+	}
+
+	public void setUserID(int userID) {
+		this.userID = userID;
 	}
 	
 }
