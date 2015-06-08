@@ -31,6 +31,8 @@ public class User implements Serializable{
 	
 	private String email;
 	
+	private boolean isAdmin;
+	
 	@OneToMany
     private Collection<Task> userTasks;
 	
@@ -83,6 +85,14 @@ public class User implements Serializable{
 
 	public void setUserTasks(Collection<Task> userTasks) {
 		this.userTasks = userTasks;
+	}
+
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 	
 }
