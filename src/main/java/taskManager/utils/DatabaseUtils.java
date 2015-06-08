@@ -16,7 +16,7 @@ import taskManager.model.User;
 public class DatabaseUtils {
     
     private static User[] USERS = {
-    	new User("kancho", "123456", "Kancho Kanev", "kk.user@mymail.com"),
+    	new User("kancho", "123456", "Kancho Kanev", "kk.user@mymail.com", true),
     	new User("a", "a", "Petar Ivanov", "pe6o.user@mymail.com"),
     };
     

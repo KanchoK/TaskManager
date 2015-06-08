@@ -48,6 +48,11 @@ public class User implements Serializable{
 		this.fullName = fullName;
 		this.email = email;
 	}
+	
+	public User(String username, String password, String fullName, String email, boolean isAdmin) {
+		this(username, password, fullName, email);
+		this.isAdmin = isAdmin;
+	}
 
 	public String getUsername() {
 		return username;
