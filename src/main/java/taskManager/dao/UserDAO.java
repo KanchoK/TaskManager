@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import taskManager.model.User;
+import taskManager.utils.SecurityUtils;
 
 @Singleton
 public class UserDAO {
@@ -17,7 +18,12 @@ public class UserDAO {
     private EntityManager em;
 
     public void addUser(User user) {
-        user.setPassword(getHashedPassword(user.getPassword()));
+        user.setPassword(SecurityUtils.getHashedPassword(user.getPassword()));
+        em.persist(user);
+    }
+    
+    public void registerUser(User user) {
+        user.setPassword(SecurityUtils.generatePassword());
         em.persist(user);
     }
     
@@ -25,7 +31,7 @@ public class UserDAO {
         String txtQuery = "SELECT u FROM User u WHERE u.username=:username AND u.password=:password";
         TypedQuery<User> query = em.createQuery(txtQuery, User.class);
         query.setParameter("username", username);
-        query.setParameter("password", getHashedPassword(password));
+        query.setParameter("password", SecurityUtils.getHashedPassword(password));
         return queryUser(query) != null;
     }
 
@@ -33,16 +39,6 @@ public class UserDAO {
     	  String txtQuery = "SELECT u FROM User u";
           TypedQuery<User> query = em.createQuery(txtQuery, User.class);
           return query.getResultList();
-    }
-
-    private String getHashedPassword(String password) {
-        try {
-            MessageDigest mda = MessageDigest.getInstance("SHA-512");
-            password = new String(mda.digest(password.getBytes()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return password;
     }
     
     private User queryUser(TypedQuery<User> query) {
