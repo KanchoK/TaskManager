@@ -1,4 +1,4 @@
-package taskManager.endpoint;
+package taskManager.services;
 
 import java.util.Collection;
 

@@ -1,4 +1,4 @@
-package taskManager.endpoint;
+package taskManager.services;
 
 import java.net.HttpURLConnection;
 import java.util.Collection;
@@ -16,7 +16,6 @@ import javax.ws.rs.core.Response;
 
 import taskManager.dao.UserDAO;
 import taskManager.model.User;
-import taskManager.services.UserContext;
 
 @Stateless
 @Path("user")
