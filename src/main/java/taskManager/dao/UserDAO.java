@@ -1,19 +1,25 @@
 package taskManager.dao;
 
-import java.security.MessageDigest;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.ejb.Singleton;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import taskManager.model.User;
+import taskManager.services.EmailSender;
 import taskManager.utils.SecurityUtils;
 
 @Singleton
 public class UserDAO {
 
+	@Inject
+	private EmailSender emailSender;
+	
     @PersistenceContext
     private EntityManager em;
 
@@ -22,10 +28,17 @@ public class UserDAO {
         em.persist(user);
     }
     
-    public void registerUser(User user) {
-        user.setPassword(SecurityUtils.generatePassword());
-        em.persist(user);
-    }
+	public void registerUser(User user) {
+		user.setPassword(SecurityUtils.generatePassword());
+		Map<String, Object> mailParams = putMailParams(user);
+		em.persist(user);
+
+		// send an email to the user with username and password
+
+		emailSender.sendEmail("taskmanager.ttest@gmail.com", user.getEmail(),
+				"Успешна регистрация в TaskManager.", mailParams);
+
+	}
     
     public boolean validateUserCredentials(String username, String password) {
         String txtQuery = "SELECT u FROM User u WHERE u.username=:username AND u.password=:password";
@@ -47,5 +60,13 @@ public class UserDAO {
         } catch (Exception e) {
             return null;
         }
+    }
+    
+    private Map<String, Object> putMailParams(User user) {
+        Map<String, Object> mailParams = new HashMap<>();
+        // put data in it
+        mailParams.put("username", user.getUsername() == null ? "" : user.getUsername());
+        mailParams.put("password", user.getPassword() == null ? "" : user.getPassword());
+        return mailParams;
     }
 }

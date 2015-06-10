@@ -1,0 +1,6 @@
+<html>
+   <body>
+  	  Потребителско име: $username<br/>
+      Парола: $password<br/>
+   </body>
+</html>
