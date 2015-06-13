@@ -49,16 +49,6 @@ public class UserManager {
     	return Response.status(HttpsURLConnection.HTTP_UNAUTHORIZED).build();
     }
 	
-    @Path("authenticated")
-    @GET
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response isAuthenticated() {
-        if (context.getCurrentUser() != null) {
-        	return Response.status(HttpsURLConnection.HTTP_OK).build();
-        }
-        return Response.status(HttpURLConnection.HTTP_NOT_FOUND).build();        
-    }
-	
     @Path("current")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
