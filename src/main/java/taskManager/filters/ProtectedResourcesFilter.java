@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import taskManager.model.User;
 import taskManager.services.UserContext;
 
-@WebFilter
+@WebFilter("/*")
 public class ProtectedResourcesFilter implements Filter {
 
 	@Inject
@@ -33,9 +33,9 @@ public class ProtectedResourcesFilter implements Filter {
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		User currentUser = userContext.getCurrentUser();
-		if (currentUser == null) {
-			String loginUrl = httpServletRequest.getContextPath()
-					+ "/login.html";
+		String loginUrl = httpServletRequest.getContextPath() + "/";
+		String uri = httpServletRequest.getRequestURI();
+		if (currentUser == null && !(uri.endsWith(loginUrl) || uri.endsWith(".js") || uri.endsWith(".css") || uri.endsWith("rest/user/login") || uri.endsWith("index.html"))) {
 			httpServletResponse.sendRedirect(loginUrl);
 			return;
 		}

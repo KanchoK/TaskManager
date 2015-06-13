@@ -1,6 +1,5 @@
 package taskManager.endpoint;
 
-import java.net.HttpURLConnection;
 import java.util.Collection;
 
 import javax.ejb.Stateless;
