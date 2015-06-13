@@ -67,6 +67,7 @@ public class UserDAO {
         // put data in it
         mailParams.put("username", user.getUsername() == null ? "" : user.getUsername());
         mailParams.put("password", user.getPassword() == null ? "" : user.getPassword());
+        mailParams.put("email", user.getEmail() == null ? "" : user.getPassword());
         return mailParams;
     }
 }

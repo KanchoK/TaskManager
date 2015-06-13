@@ -11,7 +11,7 @@
 		
 		var username = $("#username")[0].value;
 		var fullName = $("#fullName")[0].value;
-		var endDate = $("#email")[0].value;
+		var email = $("#email")[0].value;
 		
 		if (username == "" || fullName == "" || email == "") {
 			alert("Username, Full name and Email fields should not be empty.");
@@ -47,7 +47,7 @@
 <form id="createUserForm" method="post">
 	<input type="text" id="username" placeholder="Username" />
 	<input type="text" id="fullName" placeholder="Full name" />
-	<input type="text" id="email" placeholder="Eamil" />
+	<input type="text" id="email" placeholder="Email" />
 	<button type="button" onClick="createUser()"> Create User </button>
 </form>
 
