@@ -3,9 +3,11 @@ package taskManager.model;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -24,16 +26,19 @@ public class Comment {
 	@Temporal(TemporalType.DATE)
 	private Date date;
 	
-	private String author;
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="userID")
+	private User author;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="taskID")
 	private Task task;
 	
 	public Comment() {
 		
 	}
 	
-	public Comment(String content, String author, Task task) {
+	public Comment(String content, User author, Task task) {
 		this.content = content;
 		this.date = new Date();
 		this.author = author;
@@ -64,11 +69,11 @@ public class Comment {
 		this.date = date;
 	}
 
-	public String getAuthor() {
+	public User getAuthor() {
 		return author;
 	}
 
-	public void setAuthor(String author) {
+	public void setAuthor(User author) {
 		this.author = author;
 	}
 	

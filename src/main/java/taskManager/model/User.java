@@ -4,10 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -36,8 +38,13 @@ public class User implements Serializable{
 	
 	private boolean isAdmin;
 	
-	@OneToMany(mappedBy="executor")
+	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	@JoinColumn(name = "executor")
 	private Collection<Task> userTasks = new ArrayList<Task>();
+	
+	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	@JoinColumn(name = "author")
+	private Collection<Comment> comments = new ArrayList<>();
 	
 	public User() {
 		
@@ -114,5 +121,16 @@ public class User implements Serializable{
 	public void addUserTask(Task task){
 		this.userTasks.add(task);
 	}
+
+	public Collection<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Collection<Comment> comments) {
+		this.comments = comments;
+	}
 	
+	public void addComment(Comment comment) {
+		this.comments.add(comment);
+	}	
 }

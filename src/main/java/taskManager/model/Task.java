@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -36,13 +39,15 @@ public class Task {
 	
 	private Date endDate;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "userID")
 	private User executor;
 	
 	@Enumerated(EnumType.STRING) 
 	private Status status;
 	
-	@OneToMany(mappedBy= "task")
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="task")
 	private Collection<Comment> comments = new ArrayList<Comment>();
 	
 	public Task() {
