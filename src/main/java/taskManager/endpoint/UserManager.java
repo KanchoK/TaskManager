@@ -1,5 +1,6 @@
 package taskManager.endpoint;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.ejb.Stateless;
@@ -49,9 +50,9 @@ public class UserManager {
     	return Response.status(HttpsURLConnection.HTTP_UNAUTHORIZED).build();
     }
 	
+	@GET
     @Path("current")
-    @GET
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
     public String getUser() {
         if (context.getCurrentUser() != null) {
         	return context.getCurrentUser().getUsername();
@@ -59,18 +60,19 @@ public class UserManager {
         return null;
     }
 
-	@Path("logout")
 	@GET
+	@Path("logout")
 	@Consumes(MediaType.TEXT_PLAIN)
 	public void logoutUser() {
 		context.setCurrentUser(null);
 	}
     
-	@Path("all")
 	@GET
+	@Path("all")
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<User> getAllUsers() {
-        return userDAO.getAllUsers();
+		ArrayList<User> users = new ArrayList<User>(userDAO.getAllUsers());
+        return users;
     }
 
 	@POST

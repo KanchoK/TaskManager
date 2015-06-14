@@ -28,7 +28,7 @@ public class TaskManager {
 	UserContext context; 
 	
 	@GET
-    @Produces("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
     public Collection<Task> getAllTasks() {
         return taskDAO.getAllTasks();
     }

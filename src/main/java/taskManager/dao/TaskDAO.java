@@ -25,9 +25,10 @@ public class TaskDAO {
         return query.getResultList();
 	}
 	
-	public Task getTaskByID(int TaskID){
-		String txtQuery = "SELECT t FROM Task t WHERE t.taskID=" + TaskID;
+	public Task getTaskByID(int taskID){
+		String txtQuery = "SELECT t FROM Task t WHERE t.taskID = :taskId";
 		TypedQuery<Task> query = em.createQuery(txtQuery, Task.class);
+		query.setParameter("taskId", taskID);
 		return query.getSingleResult();
 	}
 	

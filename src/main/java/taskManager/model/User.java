@@ -37,7 +37,7 @@ public class User implements Serializable{
 	private String email;
 	
 	private boolean isAdmin;
-	
+
 	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	@JoinColumn(name = "executor")
 	private Collection<Task> userTasks = new ArrayList<Task>();
