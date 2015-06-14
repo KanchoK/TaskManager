@@ -24,7 +24,8 @@ public class Comment {
 	@Temporal(TemporalType.DATE)
 	private Date date;
 	
-	private String author;
+	@ManyToOne
+	private User author;
 	
 	@ManyToOne
 	private Task task;
@@ -33,7 +34,7 @@ public class Comment {
 		
 	}
 	
-	public Comment(String content, String author, Task task) {
+	public Comment(String content, User author, Task task) {
 		this.content = content;
 		this.date = new Date();
 		this.author = author;
@@ -64,11 +65,11 @@ public class Comment {
 		this.date = date;
 	}
 
-	public String getAuthor() {
+	public User getAuthor() {
 		return author;
 	}
 
-	public void setAuthor(String author) {
+	public void setAuthor(User author) {
 		this.author = author;
 	}
 	

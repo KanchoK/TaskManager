@@ -36,6 +36,9 @@ public class User implements Serializable{
 	
 	private boolean isAdmin;
 	
+	@OneToMany(mappedBy="author")
+	private Collection<Comment> userComments = new ArrayList<Comment>();
+	
 	@OneToMany(mappedBy="executor")
 	private Collection<Task> userTasks = new ArrayList<Task>();
 	
