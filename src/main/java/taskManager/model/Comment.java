@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,14 +26,18 @@ public class Comment {
 	
 	private String author;
 	
+	@ManyToOne
+	private Task task;
+	
 	public Comment() {
 		
 	}
 	
-	public Comment(String content, String author) {
+	public Comment(String content, String author, Task task) {
 		this.content = content;
 		this.date = new Date();
 		this.author = author;
+		this.task = task;
 	}
 	
 	public int getCommentID() {

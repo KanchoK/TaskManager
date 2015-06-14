@@ -1,6 +1,7 @@
 package taskManager.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Entity;
@@ -35,8 +36,8 @@ public class User implements Serializable{
 	
 	private boolean isAdmin;
 	
-	@OneToMany
-    private Collection<Task> userTasks;
+	@OneToMany(mappedBy="executor")
+	private Collection<Task> userTasks = new ArrayList<Task>();
 	
 	public User() {
 		
@@ -108,6 +109,10 @@ public class User implements Serializable{
 
 	public void setUserID(int userID) {
 		this.userID = userID;
+	}
+
+	public void addUserTask(Task task){
+		this.userTasks.add(task);
 	}
 	
 }

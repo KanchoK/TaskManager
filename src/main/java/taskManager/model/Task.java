@@ -1,5 +1,7 @@
 package taskManager.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -8,6 +10,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -32,10 +36,14 @@ public class Task {
 	
 	private Date endDate;
 	
-	private int executor;
+	@ManyToOne
+	private User executor;
 	
 	@Enumerated(EnumType.STRING) 
 	private Status status;
+	
+	@OneToMany(mappedBy= "task")
+	private Collection<Comment> comments = new ArrayList<Comment>();
 	
 	public Task() {
 		
@@ -80,11 +88,11 @@ public class Task {
 		this.endDate = endDate;
 	}
 
-	public int getExecutor() {
+	public User getExecutor() {
 		return executor;
 	}
 
-	public void setExecutor(int executor) {
+	public void setExecutor(User executor) {
 		this.executor = executor;
 	}
 

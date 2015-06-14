@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import taskManager.dao.UserDAO;
+import taskManager.model.Task;
 import taskManager.model.User;
 import taskManager.services.UserContext;
 
@@ -71,5 +72,12 @@ public class UserManager {
     public Collection<User> getAllUsers() {
         return userDAO.getAllUsers();
     }
+
+	@POST
+	@Path("addtask")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void addTask(Task task,User user){
+		user.addUserTask(task);
+	}
 	
 }
