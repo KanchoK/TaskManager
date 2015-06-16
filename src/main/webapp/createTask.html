@@ -4,8 +4,12 @@
 
 	<meta charset="UTF-8">
 	<title>Task Manager</title>
+	
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+
 	<script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
 	<script type="text/javascript" src="js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
 
 	<script type="text/javascript">
 	
@@ -53,12 +57,32 @@
 </head>
 <body>
 
-<form id="createTaskForm" method="post">
+	<div id="header">
+	
+		<span class="menuSpan" id="createTaskButton">
+            <input value="Log out" type="button" class="menuButton" onClick="logout()" />
+        </span>
+	
+	 	<span class="menuSpan" id="tasks">
+            <a href="tasks.html" class="menuButton"> View tasks </a>
+        </span>
+
+        <span class="menuSpan" id="createUserButton">
+            <a href="createUser.html" class="menuButton"> Create New User </a>
+        </span>
+		
+	</div>
+
+<div id="createTask">
+<h1>Create new task</h1>
+
+<form id="createTaskForm" class="form" method="post">
 	<input type="text" id="taskName" placeholder="Task name" />
 	<input type="text" id="description" placeholder="Description" />
 	<input type="text" id="endDate" placeholder="End date" />
 	<button type="button" onClick="createTask()"> Create Task </button>
 </form>
 
+</div>
 </body>
 </html>

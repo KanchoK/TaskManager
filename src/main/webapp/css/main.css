@@ -1,0 +1,121 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
+
+*{margin:0;padding:0;}
+
+body{
+    background:#BDF;
+    font-family:'Open Sans',sans-serif;
+}
+
+#login, #signUp, #changePass, #createTask, #createUser {
+    width:400px;
+    margin:0 auto;
+    margin-top:0;
+    margin-bottom:2%;
+    transition:opacity 1s;
+    -webkit-transition:opacity 1s;
+}
+
+#triangle{
+    width:0;
+    border-top:8px solid transparent;
+    border-right:12px solid transparent;
+    border-bottom:12px solid #0082ba;
+    border-left:12px solid transparent;
+    margin:0 auto;
+}
+
+#login h1, #signUp h1, #changePass h1, #createTask h1, #createUser h1 {
+    background:#0082ba;
+    padding:20px 0;
+    font-size:140%;
+    font-weight:300;
+    text-align:center;
+    color:#fff;
+}
+
+.form{
+    background:#f0f0f0;
+    padding-top:6%;
+    padding-left: 4%;
+    padding-right: 4%;
+    padding-bottom: 4%;
+}
+
+#signUpForm{
+    padding-top: 0;
+}
+
+input[type="text"],input[type="password"]{
+    width:100%;
+    background:#fff;
+    margin-bottom:5%;
+    border:1px solid #ccc;
+    padding:4%;
+    font-family:'Open Sans',sans-serif;
+    font-size:95%;
+    color:#555;
+    box-sizing: border-box;
+}
+
+button{
+    width:100%;
+    background:#0082ba;
+    border:0;
+    padding:4%;
+    font-family:'Open Sans',sans-serif;
+    font-size:100%;
+    color:#fff;
+    cursor:pointer;
+    transition:background .3s;
+    -webkit-transition:background .3s;
+}
+
+button:hover{
+    background:#3399cc;
+}
+
+#forgottenPassword{
+    width: 400px;
+    background:#f0f0f0;
+    padding-bottom: 4%;
+    text-align: center;
+    color: #0082ba;
+    cursor:pointer;
+    box-sizing: border-box;
+}
+
+#header{
+    height: 60px;
+    margin-bottom: 10px;
+    margin-top:0.5%;
+}
+
+.menuSpan{
+    width:130px;
+    height: 50px;
+    margin-right: 5px;
+    margin-top: 5px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 47px;
+    background:#0082ba;
+    float: right;
+}
+
+.menuButton {
+	display:block;
+    width:130px;
+    height: 50px;
+    text-decoration:none;
+    font-size: 15px;
+    background:#0082ba;
+    font-family:'Open Sans',sans-serif;
+    color:#fff;
+    cursor:pointer;
+    border:0;
+}
+
+.menuButton:hover {
+    background:#3399cc;
+}
