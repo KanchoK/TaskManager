@@ -23,6 +23,7 @@
                     tbody.append("<tr>" + "<td>" + data.task[i].taskID + "</td>" +
                             "<td>" + data.task[i].taskName + "</td>" +
                             "<td>" + data.task[i].description + "</td>" +
+                            "<td>" + data.task[i].executor + "</td>" +
                             "<td>" + data.task[i].endDate + "</td>" + 
                             "<td>" + data.task[i].status + "</td>" + "</tr>");
                 }
@@ -57,7 +58,7 @@
 		
 	</div>
 	
-	<div>
+	<div class="tableContainer">
 	
 	<table id="taskTable">
     	<thead>
@@ -65,6 +66,7 @@
     	<th>Task ID</th>
     	<th>Task name</th>
    		<th>Description</th>
+   		<th>Executor</th>
     	<th>End date</th>
     	<th>Status</th>
     	</tr>
