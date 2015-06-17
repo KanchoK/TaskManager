@@ -31,7 +31,7 @@ public class Task {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int taskID;
+	private Integer taskID;
 	
 	private String taskName;
 	
@@ -61,11 +61,11 @@ public class Task {
 		this.status = Status.NEW;
 	}
 	
-	public int getTaskID() {
+	public Integer getTaskID() {
 		return taskID;
 	}
 
-	public void setTaskID(int taskID) {
+	public void setTaskID(Integer taskID) {
 		this.taskID = taskID;
 	}
 
@@ -108,5 +108,30 @@ public class Task {
 	public void setStatus(Status status) {
 		this.status = status;
 	}	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((this.getTaskID() == null) ? 0 : this.getTaskID().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Task))
+			return false;
+		Task other = (Task) obj;
+		if (this.getTaskID() == null) {
+			if (other.getTaskID() != null)
+				return false;
+		} else if (!this.getTaskID().equals(other.getTaskID()))
+			return false;
+		return true;
+	}
 	
 }

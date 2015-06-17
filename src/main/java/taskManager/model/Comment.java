@@ -19,7 +19,7 @@ public class Comment {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int commentID;
+	private Integer commentID;
 	
 	private String content;
 	
@@ -45,11 +45,11 @@ public class Comment {
 		this.task = task;
 	}
 	
-	public int getCommentID() {
+	public Integer getCommentID() {
 		return commentID;
 	}
 
-	public void setCommentID(int commentID) {
+	public void setCommentID(Integer commentID) {
 		this.commentID = commentID;
 	}
 
@@ -75,6 +75,31 @@ public class Comment {
 
 	public void setAuthor(User author) {
 		this.author = author;
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((this.getCommentID() == null) ? 0 : this.getCommentID().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Comment))
+			return false;
+		Comment other = (Comment) obj;
+		if (this.getCommentID() == null) {
+			if (other.getCommentID() != null)
+				return false;
+		} else if (!this.getCommentID().equals(other.getCommentID()))
+			return false;
+		return true;
 	}
 	
 }

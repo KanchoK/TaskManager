@@ -23,7 +23,7 @@ public class User implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int userID;
+	private Integer userID;
 	
 	// TODO username should be unique
 	private String username;
@@ -110,11 +110,11 @@ public class User implements Serializable{
 		this.isAdmin = isAdmin;
 	}
 
-	public int getUserID() {
+	public Integer getUserID() {
 		return userID;
 	}
 
-	public void setUserID(int userID) {
+	public void setUserID(Integer userID) {
 		this.userID = userID;
 	}
 
@@ -133,4 +133,29 @@ public class User implements Serializable{
 	public void addComment(Comment comment) {
 		this.comments.add(comment);
 	}	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((this.getUserID() == null) ? 0 : this.getUserID().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof User))
+			return false;
+		User other = (User) obj;
+		if (this.getUserID() == null) {
+			if (other.getUserID() != null)
+				return false;
+		} else if (!this.getUserID().equals(other.getUserID()))
+			return false;
+		return true;
+	}
 }
