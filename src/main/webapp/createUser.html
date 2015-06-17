@@ -9,7 +9,7 @@
 	<script type="text/javascript" src="js/main.js"></script>
 	
 	<script type="text/javascript">
-	
+		
 	function createUser() {
 		
 		var username = $("#username")[0].value;
@@ -68,7 +68,7 @@
 		<h1>Create new user</h1>
 
 		<form id="createUserForm" class="form" method="post">
-			<input type="text" id="username" placeholder="Username" />
+			<input type="text" id="username" placeholder="Username" required autofocus/>
 			<input type="text" id="fullName" placeholder="Full name" />
 			<input type="text" id="email" placeholder="Email" />
 			<input type="submit" onClick="createUser()" value="Create User"> 
