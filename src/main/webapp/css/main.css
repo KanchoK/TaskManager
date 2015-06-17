@@ -119,3 +119,26 @@ button:hover, input[type="submit"]:hover{
 .menuButton:hover {
     background:#3399cc;
 }
+
+table, th, td {
+	border-collapse: collapse;
+   	border: 1px solid black;
+}
+
+th {
+	background: #0082ba;
+	padding: 15px;
+	color: white;
+}
+
+td {
+	background: #C0C0C0;
+	padding: 15px;
+}
+
+.tableContainer {
+	text-align: center;
+	width: 95%;
+	margin-left: auto;
+  	margin-right: auto;
+}
