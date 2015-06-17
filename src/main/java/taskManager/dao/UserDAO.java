@@ -45,7 +45,6 @@ public class UserDAO {
 		// send an email to the user with username and password
 		emailSender.sendEmail("taskmanager.ttest@gmail.com", user.getEmail(),
 				"Успешна регистрация в TaskManager.", registrationDetails);
-
 	}
     
     public boolean validateUserCredentials(String username, String password) {
@@ -60,6 +59,12 @@ public class UserDAO {
     	  String txtQuery = "SELECT u FROM User u";
           TypedQuery<User> query = em.createQuery(txtQuery, User.class);
           return query.getResultList();
+    }
+    
+    public boolean isExistingUser(User user) {
+    	String txtQuery = "SELECT u FROM User u WHERE u.username=:username";
+        TypedQuery<User> query = em.createQuery(txtQuery, User.class);
+        return queryUser(query) != null;
     }
     
     private User queryUser(TypedQuery<User> query) {

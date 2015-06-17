@@ -1,5 +1,6 @@
 package taskManager.endpoint;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -32,9 +33,12 @@ public class UserManager {
 	@POST
 	@Path("register")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void registerUser(User newUser) {
+    public Response registerUser(User newUser) {
+		if (userDAO.isExistingUser(newUser)) {
+			return Response.status(HttpURLConnection.HTTP_CONFLICT).build();
+		}
         userDAO.registerUser(newUser);
-        context.setCurrentUser(newUser);
+        return Response.status(HttpsURLConnection.HTTP_OK).build();
     }
 	
 	@POST
