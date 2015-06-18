@@ -142,3 +142,8 @@ td {
 	margin-left: auto;
   	margin-right: auto;
 }
+
+tbody tr:hover {
+	opacity: 0.4;
+    filter: alpha(opacity=40); /* for IE8 */
+}

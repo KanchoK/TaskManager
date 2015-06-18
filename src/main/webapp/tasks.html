@@ -17,23 +17,32 @@
 			url: 'rest/task',
 			type: 'GET',
 			success: function(data) {
-               
-                var tbody = $('#taskTable tbody');
-                for (i = 0; i < data.task.length; i++) {
-                    tbody.append("<tr>" + "<td>" + data.task[i].taskID + "</td>" +
-                            "<td>" + data.task[i].taskName + "</td>" +
-                            "<td>" + data.task[i].description + "</td>" +
-                            "<td>" + data.task[i].executor + "</td>" +
-                            "<td>" + data.task[i].endDate + "</td>" + 
-                            "<td>" + data.task[i].status + "</td>" + "</tr>");
-                }
-                
+    			renderTable(data);            
 			},
 			error: function(e) {
 				alert(e);
 			}
 		});
+		
+		$(document).on('click', '.clickableRow', function() {
+			alert("This will send the user to clicked task.");
+		});
 	});
+	
+	function renderTable(data) {
+		var tbody = $('#taskTable tbody');
+		var tasks = data.task;
+        for (i = 0; i < tasks.length; i++) {
+            tbody.append("<tr class='clickableRow'>" + 
+            		"<td>" + tasks[i].taskID + "</td>" +
+                    "<td>" + tasks[i].taskName + "</td>" +
+                    "<td>" + tasks[i].description + "</td>" +
+                    "<td>" + tasks[i].executor + "</td>" +
+                    "<td>" + tasks[i].endDate + "</td>" + 
+                    "<td>" + tasks[i].status + "</td>" + 
+                    "</tr>");
+        }
+	}
 	
 	</script>
 	
