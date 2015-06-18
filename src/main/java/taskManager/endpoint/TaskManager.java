@@ -1,5 +1,7 @@
 package taskManager.endpoint;
 
+import java.net.HttpURLConnection;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 
 import javax.ejb.Stateless;
@@ -10,11 +12,12 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import taskManager.model.User;
 import taskManager.dao.TaskDAO;
 import taskManager.model.Task;
 import taskManager.model.Task.Status;
+import taskManager.model.User;
 import taskManager.services.UserContext;
 
 @Stateless
@@ -36,9 +39,19 @@ public class TaskManager {
 	@POST
 	@Path("create")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void createTask(Task newTask) {
+    public Response createTask(Task newTask) {
+		java.util.Date now = new java.util.Date();
+		
+		// format dates because we do not want to compare
+		// hours, minutes, etc. 
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd");
+		if (fmt.format(now).compareTo(fmt.format(newTask.getEndDate())) > 0) {
+			// the date is in the past
+			return Response.status(HttpURLConnection.HTTP_CONFLICT).entity("Tasks with past date can not be created.").build();
+		}
 		newTask.setStatus(Status.NEW);
 		taskDAO.addTask(newTask);
+		return Response.status(HttpURLConnection.HTTP_OK).entity("Task created.").build();
     }
 
 	@GET
