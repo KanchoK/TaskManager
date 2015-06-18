@@ -33,11 +33,15 @@
 			data : JSON.stringify(data),
 			dataType : "json",
 			contentType: "application/json",
-			success : function() {
-				window.location.replace("tasks.html");
-			},
-			error: function(e) {
-				alert("User with this username already exist.");
+			statusCode : {
+				// TODO: Alerts should be replaced with dialog windows
+				200: function(jqXHR) {
+					alert(jqXHR.responseText);
+					window.location.replace("tasks.html");
+				},
+				409: function(jqXHR) {
+					alert(jqXHR.responseText);
+				}
 			}
 		});
 		

@@ -6,6 +6,8 @@ import java.util.Collection;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.net.ssl.HttpsURLConnection;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -35,10 +37,17 @@ public class UserManager {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registerUser(User newUser) {
 		if (userDAO.isExistingUser(newUser)) {
-			return Response.status(HttpURLConnection.HTTP_CONFLICT).build();
+			return Response.status(HttpURLConnection.HTTP_CONFLICT).entity("This username already exist.").build();
 		}
-        userDAO.registerUser(newUser);
-        return Response.status(HttpsURLConnection.HTTP_OK).build();
+		try {
+			InternetAddress address = new InternetAddress(newUser.getEmail());
+			address.validate();
+		} catch (AddressException e) {
+			return Response.status(HttpURLConnection.HTTP_CONFLICT).entity("Not a valid email.").build();
+		}
+
+		userDAO.registerUser(newUser);
+        return Response.status(HttpsURLConnection.HTTP_OK).entity("User created successfuly.").build();
     }
 	
 	@POST

@@ -64,6 +64,7 @@ public class UserDAO {
     public boolean isExistingUser(User user) {
     	String txtQuery = "SELECT u FROM User u WHERE u.username=:username";
         TypedQuery<User> query = em.createQuery(txtQuery, User.class);
+        query.setParameter("username", user.getUsername());
         return queryUser(query) != null;
     }
     
