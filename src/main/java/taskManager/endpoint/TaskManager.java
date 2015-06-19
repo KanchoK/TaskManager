@@ -11,6 +11,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -57,8 +58,8 @@ public class TaskManager {
 	@GET
 	@Path("gettaskbyID")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Task getTaskByID(int TaskID){
-		return taskDAO.getTaskByID(TaskID);
+	public Task getTaskByID(@QueryParam("taskId") int taskId){
+		return taskDAO.getTaskByID(taskId);
 	}
 	
 	@POST

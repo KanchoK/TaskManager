@@ -25,7 +25,9 @@
 		});
 		
 		$(document).on('click', '.clickableRow', function() {
-			alert("This will send the user to clicked task.");
+			var taskID = $(this).find("#hiddenId").text();
+			localStorage.setItem("currentTask", taskID);
+			window.location.href = "task.html";
 		});
 	});
 	
@@ -34,7 +36,7 @@
 		var tasks = data.task;
         for (i = 0; i < tasks.length; i++) {
             tbody.append("<tr class='clickableRow'>" + 
-            		"<td>" + tasks[i].taskID + "</td>" +
+            		"<td id='hiddenId' style='display: none'>" + tasks[i].taskID + "</td>" +
                     "<td>" + tasks[i].taskName + "</td>" +
                     "<td>" + tasks[i].description + "</td>" +
                     "<td>" + tasks[i].executor + "</td>" +
@@ -72,7 +74,6 @@
 	<table id="taskTable">
     	<thead>
     	<tr>
-    	<th>Task ID</th>
     	<th>Task name</th>
    		<th>Description</th>
    		<th>Executor</th>

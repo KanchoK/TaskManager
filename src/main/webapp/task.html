@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>Task</title>
+
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+
+<script type="text/javascript">
+
+	$(document).ready(function() {
+
+		var data = {
+			taskId : parseInt(localStorage['currentTask'])
+		}
+		$.ajax({
+			url : 'rest/task/gettaskbyID',
+			type : 'GET',
+			data : data,
+			dataType : "json",
+			contentType : "application/json",
+			success : function(data) {
+				renderTask(data);
+			},
+			error : function(textStatus) {
+				alert("Task does not exist.");
+			}
+		})
+	});
+
+	function renderTask(data) {
+		var task = data.task;
+		var taskContainer = $('#taskContainer');
+		taskContainer.find('h1').text(task.taskName);
+		taskContainer.find('h2').text(task.description);
+	}
+</script>
+
+</head>
+
+
+<body>
+	<div id="container">
+
+		<div id="header">
+
+			<span class="menuSpan" id="createTaskButton"> <input
+				value="Log out" type="button" class="menuButton" onClick="logout()" />
+			</span> <span class="menuSpan" id="createTaskButton"> <a
+				href="createTask.html" class="menuButton"> Create New Task </a>
+			</span> <span class="menuSpan" id="createUserButton"> <a
+				href="createUser.html" class="menuButton"> Create New User </a>
+			</span>
+
+		</div>
+	</div>
+	<div id="taskContainer">
+		<h1></h1>
+		<h2></h2>
+	</div>
+</body>
+</html>
