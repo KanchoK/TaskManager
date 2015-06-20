@@ -2,10 +2,14 @@ package taskManager.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -18,14 +22,18 @@ public class Changes {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int changeID;
 	
+	@ManyToOne
 	private Task changedTask;
 	
+	@ManyToOne
 	private User author;
 	
 	private String newDescription;
 	
 	private String oldDescription;
 	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="change")
 	private Comment newComment;
 	
 	private Date newEndDate;
@@ -35,6 +43,23 @@ public class Changes {
 	private User newExecutor;
 	
 	private User oldExecutor;
+	
+	private boolean isSent;
+	
+	public Changes(){
+		
+	}
+	
+	public Changes (User author,Task chngtask,String ndscr,String odscr,Comment cmnt,Date ndt,Date odt,User nextr,User oextr){
+	this.author=author;
+	this.newDescription=ndscr;
+	this.oldDescription=odscr;
+	this.newComment=cmnt;
+	this.newEndDate=ndt;
+	this.oldEndDate=odt;
+	this.newExecutor=nextr;
+	this.oldExecutor=oextr;
+	}
 
 	public Task getChangedTask() {
 		return changedTask;
@@ -106,6 +131,14 @@ public class Changes {
 
 	public void setOldExecutor(User oldExecutor) {
 		this.oldExecutor = oldExecutor;
+	}
+
+	public boolean isSent() {
+		return isSent;
+	}
+
+	public void setSent(boolean isSent) {
+		this.isSent = isSent;
 	}
 
 }

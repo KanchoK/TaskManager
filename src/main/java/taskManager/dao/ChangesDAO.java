@@ -16,8 +16,10 @@ public class ChangesDAO {
 	private EntityManager em;
 	
 	public Collection<Changes> getImportantChanges(User user){
-		//TODO this method should return changes having flag 'important'
 		return null;
+	}
+	public void addChangeToDB(Changes change){
+		em.persist(change);
 	}
 
 }

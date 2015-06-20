@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -48,6 +49,14 @@ public class Task {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="task")
 	private Collection<Comment> comments = new ArrayList<Comment>();
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="importantTasks")
+	private Collection<User> importantTo = new ArrayList<User>();
+	
+	@OneToMany
+	@JoinColumn(name="changedTask")
+	private Collection<Changes> changes = new ArrayList<Changes>();
 	
 	public Task() {
 		
