@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @XmlRootElement
@@ -25,7 +28,7 @@ public class User implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer userID;
 	
-	// TODO username should be unique
+	@Column(unique=true)
 	private String username;
 	
 	// TODO password validation
@@ -38,9 +41,9 @@ public class User implements Serializable{
 	
 	private boolean isAdmin;
 
-	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	@JoinColumn(name = "executor")
-	private Collection<Task> userTasks = new ArrayList<Task>();
+	private Collection<Task> userTasks;
 	
 	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	@JoinColumn(name = "author")
@@ -94,6 +97,7 @@ public class User implements Serializable{
 		this.email = email;
 	}
 
+	@XmlTransient
 	public Collection<Task> getUserTasks() {
 		return userTasks;
 	}
@@ -123,6 +127,9 @@ public class User implements Serializable{
 
 	public void addUserTask(Task task){
 		task.setExecutor(this);
+		if (userTasks == null) {
+			userTasks = new ArrayList<>();
+		}
 		this.userTasks.add(task);
 	}
 

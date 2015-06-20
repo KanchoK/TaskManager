@@ -60,11 +60,4 @@ public class DatabaseUtils {
             userDAO.addUser(user);
         }
     }
-    
-    private void addTestTasks() {
-    	for (Task task : TASKS) {
-            taskDAO.addTask(task);
-        }
-    }
-
 }

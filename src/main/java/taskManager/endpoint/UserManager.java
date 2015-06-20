@@ -75,7 +75,7 @@ public class UserManager {
 
 	@GET
 	@Path("logout")
-	@Consumes(MediaType.TEXT_PLAIN)
+	@Consumes(MediaType.APPLICATION_JSON)
 	public void logoutUser() {
 		context.setCurrentUser(null);
 	}

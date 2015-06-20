@@ -64,6 +64,14 @@ public class UserDAO {
         return queryUser(query) != null;
     }
     
+
+    public User findUserByUsername(String username) {
+        String txtQuery = "SELECT u FROM User u WHERE u.username = :username";
+        TypedQuery<User> query = em.createQuery(txtQuery, User.class);
+        query.setParameter("username", username);
+        return queryUser(query);
+    }
+    
     private User queryUser(TypedQuery<User> query) {
         try {
             return query.getSingleResult();
