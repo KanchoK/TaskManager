@@ -37,14 +37,6 @@ public class DatabaseUtils {
 	
 	private static ArrayList<User> userList = new ArrayList<>();
     
-    static {
-
-    	userList.add(USERS[0]);
-    	userList.add(USERS[1]);
-    	userList.get(0).addUserTask(TASKS[0]);
-    	userList.get(1).addUserTask(TASKS[1]);
-    }
- 
 
     
     public void addTestDataToDB() {
@@ -59,7 +51,12 @@ public class DatabaseUtils {
     }
 
     private void addTestUsers() {
-        for (User user : USERS) {
+
+    	userList.add(USERS[0]);
+    	userList.add(USERS[1]);
+    	userList.get(0).addUserTask(TASKS[0]);
+    	userList.get(1).addUserTask(TASKS[1]);
+        for (User user : userList) {
             userDAO.addUser(user);
         }
     }

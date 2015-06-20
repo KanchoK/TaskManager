@@ -33,11 +33,12 @@
 		var tbody = $('#taskTable tbody');
 		var tasks = data.task;
         for (i = 0; i < tasks.length; i++) {
+        	debugger;
             tbody.append("<tr class='clickableRow'>" + 
             		"<td>" + tasks[i].taskID + "</td>" +
                     "<td>" + tasks[i].taskName + "</td>" +
                     "<td>" + tasks[i].description + "</td>" +
-                    "<td>" + tasks[i].executor + "</td>" +
+                    "<td>" + tasks[i].executor.username + "</td>" +
                     "<td>" + tasks[i].endDate + "</td>" + 
                     "<td>" + tasks[i].status + "</td>" + 
                     "</tr>");

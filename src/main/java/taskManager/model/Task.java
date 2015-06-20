@@ -39,7 +39,7 @@ public class Task {
 	
 	private Date endDate;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "userID")
 	private User executor;
 	

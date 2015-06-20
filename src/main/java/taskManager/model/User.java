@@ -99,6 +99,9 @@ public class User implements Serializable{
 	}
 
 	public void setUserTasks(Collection<Task> userTasks) {
+	for (Task task : userTasks) {
+		addUserTask(task);
+	}
 		this.userTasks = userTasks;
 	}
 
@@ -119,6 +122,7 @@ public class User implements Serializable{
 	}
 
 	public void addUserTask(Task task){
+		task.setExecutor(this);
 		this.userTasks.add(task);
 	}
 
