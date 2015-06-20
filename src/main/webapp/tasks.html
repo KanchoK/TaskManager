@@ -15,30 +15,36 @@
 		
 		authorization();
 		
-		$.ajax({
-			url: 'rest/task',
-			type: 'GET',
-			success: function(data) {
-    			renderTable(data);            
-			},
-			error: function(e) {
-				alert(e);
-			}
-		});
+		document.getElementById('taskTableDiv').style.display = 'block';
+		getAllTasks();
 		
 		$(document).on('click', '.clickableRow', function() {
-			var taskID = $(this).find("#hiddenId").text();
+			var taskID = $(this).find("#hiddenTaskId").text();
 			localStorage.setItem("currentTask", taskID);
 			window.location.href = "task.html";
 		});
 	});
 	
-	function renderTable(data) {
+	function getAllTasks() {
+		$.ajax({
+			url: 'rest/task',
+			type: 'GET',
+			success: function(data) {
+    			renderTaskTable(data);            
+			},
+			error: function(e) {
+				alert(e);
+			}
+		});
+	}
+	
+	function renderTaskTable(data) {
 		var tbody = $('#taskTable tbody');
+		tbody.empty();
 		var tasks = data.task;
         for (i = 0; i < tasks.length; i++) {
             tbody.append("<tr class='clickableRow'>" + 
-            		"<td id='hiddenId' style='display: none'>" + tasks[i].taskID + "</td>" +
+            		"<td id='hiddenTaskId' style='display: none'>" + tasks[i].taskID + "</td>" +
                     "<td>" + tasks[i].taskName + "</td>" +
                     "<td>" + tasks[i].description + "</td>" +
                     "<td>" + tasks[i].executor.username + "</td>" +
@@ -46,6 +52,51 @@
                     "<td>" + tasks[i].status + "</td>" + 
                     "</tr>");
         }
+	}
+	
+	function getAllUsers() {
+		$.ajax({
+			url: 'rest/user/all',
+			type: 'GET',
+			success: function(data) {
+    			renderUserTable(data);            
+			},
+			error: function(e) {
+				alert(e);
+			}
+		});
+	}
+	
+	function renderUserTable(data) {
+		var tbody = $('#userTable tbody');
+		tbody.empty();
+		var users = data.user;
+        for (i = 0; i < users.length; i++) {
+        	var isAdmin = 'No';
+        	if(users[i].admin) {
+        		isAdmin = 'Yes';
+        	}
+            tbody.append("<tr>" + 
+            		"<td id='hiddenUserId' style='display: none'>" + users[i].userID + "</td>" +
+                    "<td>" + users[i].username + "</td>" +
+                    "<td>" + users[i].fullName + "</td>" +
+                    "<td>" + users[i].email + "</td>" +
+                    "<td> can't parse the tasks to JSON </td>" +
+                    "<td>" + isAdmin + "</td>" + 
+                    "</tr>");
+        }
+	}
+	
+	function changeToTaskTable() {
+		document.getElementById('userTableDiv').style.display = 'none';
+		document.getElementById('taskTableDiv').style.display = 'block';
+		getAllTasks();
+	}
+	
+	function changeToUserTable() {
+		document.getElementById('taskTableDiv').style.display = 'none';
+		document.getElementById('userTableDiv').style.display = 'block';
+		getAllUsers();
 	}
 	
 	</script>
@@ -81,6 +132,14 @@
 	
 	<div class="tableContainer">
 	
+	<span class="tableButtonSpan">
+		<button class="tableButton" onClick="changeToTaskTable()"> View Tasks </button>
+	</span>
+	<span class="tableButtonSpan">
+		<button class="tableButton" onClick="changeToUserTable()"> View Users </button>
+	</span>
+	
+	<div id="taskTableDiv" hidden>
 	<table id="taskTable" class="dbInfoTable">
     	<thead>
     	<tr>
@@ -95,6 +154,24 @@
     	
     	</tbody>
 	</table>
+	</div>
+	
+	<div id="userTableDiv" hidden>
+	<table id="userTable" class="dbInfoTable">
+    	<thead>
+    	<tr>
+    	<th>Username</th>
+   		<th>Full name</th>
+   		<th>Email</th>
+   		<th>Current tasks</th>
+    	<th>Is Admin?</th>
+    	</tr>
+    	</thead>
+    	<tbody>
+    	
+    	</tbody>
+	</table>
+	</div>
 	
 	</div>	
 	

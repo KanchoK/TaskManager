@@ -139,7 +139,7 @@ button:hover, input[type="submit"]:hover{
     float: right;
 }
 
-.menuButton {
+.menuButton, .tableButton {
 	display:block;
     width:130px;
     height: 50px;
@@ -154,6 +154,10 @@ button:hover, input[type="submit"]:hover{
 
 .menuButton:hover {
     background:#3399cc;
+}
+
+table {
+	width: 100%;
 }
 
 table, th, td {
@@ -177,6 +181,24 @@ td {
 	width: 95%;
 	margin-left: auto;
   	margin-right: auto;
+}
+
+.tableButtonSpan {
+	width:130px;
+    height: 50px;
+    margin-left: 5px;
+    margin-top: 5px;
+    margin-bottom: -1px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 47px;
+    background: #0082ba;
+    float: left;
+    border: 1px solid black;
+}
+
+#userTableDiv, #taskTableDiv {
+	display:none;
 }
 
 .dbInfoTable tbody tr:hover {
