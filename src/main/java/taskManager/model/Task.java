@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -51,6 +52,9 @@ public class Task {
 	private Collection<Comment> comments = new ArrayList<Comment>();
 	
 	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name="ImportanceTable", 
+    joinColumns={@JoinColumn(name="impTasks")}, 
+    inverseJoinColumns={@JoinColumn(name="impTo")})
 	private Collection<User> importantTo = new ArrayList<User>();
 	
 	@OneToMany(cascade = CascadeType.ALL)
@@ -141,4 +145,7 @@ public class Task {
 		return true;
 	}
 	
+	public Collection<User> getimportantTo(){
+		return this.importantTo;
+	}
 }

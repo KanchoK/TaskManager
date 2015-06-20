@@ -42,7 +42,6 @@ public class DatabaseUtils {
     public void addTestDataToDB() {
         deleteData();
         addTestUsers();
-//        addTestTasks();
     }
 
     private void deleteData() {
@@ -55,6 +54,8 @@ public class DatabaseUtils {
     	userList.add(USERS[0]);
     	userList.add(USERS[1]);
     	userList.get(0).addUserTask(TASKS[0]);
+    	USERS[0].addImportantTask(TASKS[0]);
+    	System.out.println(TASKS[0].getimportantTo());
     	userList.get(1).addUserTask(TASKS[1]);
         for (User user : userList) {
             userDAO.addUser(user);
