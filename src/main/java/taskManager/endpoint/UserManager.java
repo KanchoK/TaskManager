@@ -73,7 +73,7 @@ public class UserManager {
         return null;
     }
 
-	@GET
+	@POST
 	@Path("logout")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void logoutUser() {
