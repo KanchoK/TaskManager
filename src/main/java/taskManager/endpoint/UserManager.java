@@ -62,16 +62,6 @@ public class UserManager {
     	
     	return Response.status(HttpsURLConnection.HTTP_UNAUTHORIZED).build();
     }
-	
-	@GET
-    @Path("current")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String getUser() {
-        if (context.getCurrentUser() != null) {
-        	return context.getCurrentUser().getUsername();
-        }
-        return null;
-    }
 
 	@POST
 	@Path("logout")
