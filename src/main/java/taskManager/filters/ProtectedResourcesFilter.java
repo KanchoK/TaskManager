@@ -35,8 +35,15 @@ public class ProtectedResourcesFilter implements Filter {
 		User currentUser = userContext.getCurrentUser();
 		String loginUrl = httpServletRequest.getContextPath() + "/";
 		String uri = httpServletRequest.getRequestURI();
-		if (currentUser == null && !(uri.endsWith(loginUrl) || uri.endsWith(".js") || uri.endsWith(".css") || uri.endsWith("rest/user/login") || uri.endsWith("index.html"))) {
+		if (currentUser == null && 
+				!(uri.endsWith(loginUrl) || uri.endsWith(".js") || uri.endsWith(".css") || 
+						uri.endsWith("rest/user/login") || uri.endsWith("index.html"))) {
 			httpServletResponse.sendRedirect(loginUrl);
+			return;
+		} else if(currentUser != null && !(currentUser.isAdmin()) && 
+				(uri.endsWith("createTask.html") || uri.endsWith("createUser.html") 
+						|| uri.endsWith("rest/task/create") || uri.endsWith("rest/user/register"))) {
+			httpServletResponse.sendRedirect(loginUrl + "tasks.html");
 			return;
 		}
 		chain.doFilter(request, response);
