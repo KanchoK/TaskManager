@@ -99,17 +99,17 @@ button:hover, input[type="submit"]:hover{
 }
 
 #popupContent {
-	width:40%;
+	width:30%;
 	height:50%;
 	display:block;
 	margin-top: 10%;
 	margin-left: auto;
   	margin-right: auto;
-  	background:#f0f0f0;
-    padding-top:4%;
+  	background: #f0f0f0;
+    padding-top: 4%;
     padding-left: 2%;
     padding-right: 2%;
-    padding-bottom: 2%;
+    padding-bottom: 1%;
   	overflow:auto
 }
 
@@ -118,7 +118,7 @@ button:hover, input[type="submit"]:hover{
 }
 
 #popupContent button {
-	margin-top: 1%;
+	margin-top: 4%;
 }
 
 #header{
