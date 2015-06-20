@@ -39,7 +39,7 @@ public class Task {
 	
 	private Date endDate;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "userID")
 	private User executor;
 	
@@ -51,10 +51,9 @@ public class Task {
 	private Collection<Comment> comments = new ArrayList<Comment>();
 	
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name="importantTasks")
 	private Collection<User> importantTo = new ArrayList<User>();
 	
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="changedTask")
 	private Collection<Changes> changes = new ArrayList<Changes>();
 	

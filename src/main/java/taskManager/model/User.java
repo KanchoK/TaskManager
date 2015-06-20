@@ -50,8 +50,7 @@ public class User implements Serializable{
 	@JoinColumn(name = "author")
 	private Collection<Comment> comments = new ArrayList<>();
 	
-	@ManyToMany
-	@JoinColumn(name="importantTo")
+	@ManyToMany(cascade = CascadeType.ALL,mappedBy="importantTo")
 	private Collection<Task> importantTasks = new ArrayList<>();
 	
 	public User() {
