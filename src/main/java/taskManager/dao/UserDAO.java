@@ -1,6 +1,5 @@
 package taskManager.dao;
 
-import java.io.StringWriter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,10 +9,6 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
 
 import taskManager.model.User;
 import taskManager.services.EmailSender;
@@ -38,13 +33,14 @@ public class UserDAO {
 	public void registerUser(User user) {
 		user.setPassword(SecurityUtils.generatePassword());
 		Map<String, Object> mailParams = putMailParams(user);
-		em.persist(user);
 
 		String registrationDetails = TemplateFIller.fillTemplate(MAIL_BODY_TEMPLATE_PATH, mailParams);
 		
 		// send an email to the user with username and password
 		emailSender.sendEmail("taskmanager.ttest@gmail.com", user.getEmail(),
 				"Успешна регистрация в TaskManager.", registrationDetails);
+		
+		addUser(user);
 	}
     
     public boolean validateUserCredentials(String username, String password) {
