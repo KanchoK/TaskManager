@@ -3,7 +3,7 @@ function logout() {
 		url: 'rest/user/logout',
 		type: 'POST',
 		success: function() {
-			window.location.replace("index.html");
+			window.location.replace("/TaskManager/");
 		}
 				
 	});
