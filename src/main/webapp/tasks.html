@@ -13,6 +13,8 @@
 		
 	$(document).ready(function (){
 		
+		authorization();
+		
 		$.ajax({
 			url: 'rest/task',
 			type: 'GET',
@@ -35,7 +37,6 @@
 		var tbody = $('#taskTable tbody');
 		var tasks = data.task;
         for (i = 0; i < tasks.length; i++) {
-        	debugger;
             tbody.append("<tr class='clickableRow'>" + 
             		"<td id='hiddenId' style='display: none'>" + tasks[i].taskID + "</td>" +
                     "<td>" + tasks[i].taskName + "</td>" +
