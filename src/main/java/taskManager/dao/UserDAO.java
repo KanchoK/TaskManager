@@ -137,9 +137,22 @@ public class UserDAO {
 		return queryUser(query);
 	}
 
-	public void changeUserPassword(User user, String newPassword) throws ApplicationServerInternalException {
+	public void resetUserPassword(User user, String newPassword) throws ApplicationServerInternalException {
 		if (user == null) {
 			throw new ApplicationServerInternalException("User not found!");
+		}
+		
+		user.setPassword(newPassword);
+		updateUser(user);
+	}
+	
+	public void changeUserPassword(User user, String oldPassword, String newPassword) throws ApplicationServerInternalException {
+		if (user == null) {
+			throw new ApplicationServerInternalException("User not found!");
+		}
+		
+		if (!user.getPassword().equals(oldPassword)) {
+			throw new ApplicationServerInternalException("Old password is invalid!");
 		}
 		
 		user.setPassword(newPassword);

@@ -126,7 +126,7 @@ public class UserManager {
 	@POST
 	@Path("resetPassword")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response changeUserPassword(String inputData) {
+	public Response resetUserPassword(String inputData) {
 		JSONObject jsonObject;
 		String newPassword = "";
 		Integer userId = -1;
@@ -141,8 +141,33 @@ public class UserManager {
 		}
 		User user = userDAO.findUserById(userId);
 		try {
-			userDAO.changeUserPassword(user, newPassword);
+			userDAO.resetUserPassword(user, newPassword);
 			context.setCurrentUser(user);
+			return Response.status(HttpsURLConnection.HTTP_OK).entity("Password changed successfuly.").build();
+		} catch (ApplicationServerInternalException exc) {
+			// TODO log the exc
+			return Response.status(Response.Status.NOT_FOUND).entity(exc.getMessage()).build();
+		}
+	}
+	
+	@POST
+	@Path("changePassword")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response changeUserPassword(String inputData) {
+		JSONObject jsonObject;
+		String newPassword = "";
+		String oldPassowrd = "";
+		try {
+			jsonObject = new JSONObject(inputData);
+			
+			newPassword = jsonObject.getString("newPassword");
+			oldPassowrd = jsonObject.getString("oldPassowrd");
+		} catch (JSONException e) {
+			// TODO log the exc
+			e.printStackTrace();
+		}
+		try {
+			userDAO.changeUserPassword(context.getCurrentUser(), oldPassowrd, newPassword);
 			return Response.status(HttpsURLConnection.HTTP_OK).entity("Password changed successfuly.").build();
 		} catch (ApplicationServerInternalException exc) {
 			// TODO log the exc
