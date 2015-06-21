@@ -108,4 +108,6 @@ public class Changes {
 		this.oldExecutor = oldExecutor;
 	}
 
+	//TODO override equals and hashcode!!!
+	
 }

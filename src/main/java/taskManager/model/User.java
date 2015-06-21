@@ -36,7 +36,7 @@ public class User implements Serializable{
 	
 	private String fullName;
 	
-	// TODO email validation
+	@Column(unique=true)
 	private String email;
 	
 	private boolean isAdmin;

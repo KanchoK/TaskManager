@@ -9,13 +9,18 @@ import javax.inject.Inject;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.net.ssl.HttpsURLConnection;
+import javax.resource.spi.ApplicationServerInternalException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import taskManager.dao.UserDAO;
 import taskManager.model.Task;
@@ -84,5 +89,35 @@ public class UserManager {
 	public void addTask(Task task,User user){
 		user.addUserTask(task);
 	}
+	
+	@POST
+	@Path("passwordforgotten")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response sendUserChangePasswordLink(String inputData) {
+		JSONObject jsonObject;
+		String email = "";
+		try {
+			jsonObject = new JSONObject(inputData);
+			email = jsonObject.getString("email");
+		} catch (JSONException e) {
+			// TODO log the exc
+			e.printStackTrace();
+		}
+
+		try {
+			userDAO.sendUserChangePasswordLink(email);
+			return Response.ok().build();
+		} catch (ApplicationServerInternalException exc) {
+			// TODO log the exc
+			return Response.status(Response.Status.NOT_FOUND).entity(exc.getMessage()).build();
+		}
+	}
+	
+//	@POST
+//	@Path("resetPassword")
+////	@Consumes(MediaType.APPLICATION_JSON)
+//	public void sendUserChangePasswordLink(@QueryParam("email") String email, @QueryParam("code") String code) {
+//		System.out.println(email+code);
+//	}
 	
 }

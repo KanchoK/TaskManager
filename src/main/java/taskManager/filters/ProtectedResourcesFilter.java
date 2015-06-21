@@ -35,7 +35,14 @@ public class ProtectedResourcesFilter implements Filter {
 		User currentUser = userContext.getCurrentUser();
 		String loginUrl = httpServletRequest.getContextPath() + "/";
 		String uri = httpServletRequest.getRequestURI();
-		if (currentUser == null && !(uri.endsWith(loginUrl) || uri.endsWith(".js") || uri.endsWith(".css") || uri.endsWith("rest/user/login") || uri.endsWith("index.html"))) {
+		
+		if (uri.endsWith("rest/user/resetPassword")) {
+			String resetPasswordUrl = "";
+			httpServletResponse.sendRedirect(resetPasswordUrl);
+			return;
+		}
+		
+		if (currentUser == null && !(uri.endsWith(loginUrl) || uri.endsWith(".js") || uri.endsWith(".css") || uri.endsWith("rest/user/login") || uri.endsWith("index.html") || uri.endsWith("rest/user/passwordforgotten"))) {
 			httpServletResponse.sendRedirect(loginUrl);
 			return;
 		}
