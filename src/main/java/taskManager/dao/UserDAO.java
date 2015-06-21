@@ -159,6 +159,15 @@ public class UserDAO {
 		updateUser(user);
 	}
 	
+	public void changeUserEmail(User user, String email) throws ApplicationServerInternalException {
+		if (user == null) {
+			throw new ApplicationServerInternalException("User not found!");
+		}		
+		
+		user.setEmail(email);
+		updateUser(user);
+	}
+	
 	private User queryUser(TypedQuery<User> query) {
 		try {
 			return query.getSingleResult();

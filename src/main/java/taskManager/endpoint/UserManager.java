@@ -42,13 +42,13 @@ public class UserManager {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registerUser(User newUser) {
 		if (userDAO.isExistingUser(newUser)) {
-			return Response.status(HttpURLConnection.HTTP_CONFLICT).entity("This username already exist.").build();
+			return Response.status(Response.Status.CONFLICT).entity("This username already exist.").build();
 		}
 		try {
 			InternetAddress address = new InternetAddress(newUser.getEmail());
 			address.validate();
 		} catch (AddressException e) {
-			return Response.status(HttpURLConnection.HTTP_CONFLICT).entity("Not a valid email.").build();
+			return Response.status(Response.Status.CONFLICT).entity("Not a valid email.").build();
 		}
 
 		userDAO.registerUser(newUser);
@@ -116,7 +116,7 @@ public class UserManager {
 
 		try {
 			userDAO.sendUserChangePasswordLink(email);
-			return Response.status(HttpsURLConnection.HTTP_OK).entity("Email sent successfuly.").build();
+			return Response.status(Response.Status.OK).entity("Email sent successfuly.").build();
 		} catch (ApplicationServerInternalException exc) {
 			// TODO log the exc
 			return Response.status(Response.Status.NOT_FOUND).entity(exc.getMessage()).build();
@@ -143,7 +143,7 @@ public class UserManager {
 		try {
 			userDAO.resetUserPassword(user, newPassword);
 			context.setCurrentUser(user);
-			return Response.status(HttpsURLConnection.HTTP_OK).entity("Password changed successfuly.").build();
+			return Response.status(Response.Status.OK).entity("Password changed successfuly.").build();
 		} catch (ApplicationServerInternalException exc) {
 			// TODO log the exc
 			return Response.status(Response.Status.NOT_FOUND).entity(exc.getMessage()).build();
@@ -168,6 +168,39 @@ public class UserManager {
 		}
 		try {
 			userDAO.changeUserPassword(context.getCurrentUser(), oldPassowrd, newPassword);
+			return Response.status(Response.Status.OK).entity("Password changed successfuly.").build();
+		} catch (ApplicationServerInternalException exc) {
+			// TODO log the exc
+			return Response.status(Response.Status.NOT_FOUND).entity(exc.getMessage()).build();
+		}
+	}
+	
+	@POST
+	@Path("changeEmail")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response changeEmail(String inputData) {
+		JSONObject jsonObject;
+		String newPassword = "";
+		String email = "";
+		try {
+			jsonObject = new JSONObject(inputData);
+			
+			newPassword = jsonObject.getString("password");
+			email = jsonObject.getString("email");
+		} catch (JSONException e) {
+			// TODO log the exc
+			e.printStackTrace();
+		}
+		
+		try {
+			InternetAddress address = new InternetAddress(email);
+			address.validate();
+		} catch (AddressException e) {
+			return Response.status(Response.Status.CONFLICT).entity("Inalid email.").build();
+		}		
+		
+		try {
+			userDAO.changeUserEmail(context.getCurrentUser(), email);
 			return Response.status(HttpsURLConnection.HTTP_OK).entity("Password changed successfuly.").build();
 		} catch (ApplicationServerInternalException exc) {
 			// TODO log the exc
