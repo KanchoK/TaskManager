@@ -43,15 +43,27 @@
 		tbody.empty();
 		var tasks = data.task;
         for (i = 0; i < tasks.length; i++) {
+        	var executor = "No executor";
+        	if(!jQuery.isEmptyObject(tasks[i].executor)) {
+        		executor = tasks[i].executor.username;
+        	}
             tbody.append("<tr class='clickableRow'>" + 
             		"<td id='hiddenTaskId' style='display: none'>" + tasks[i].taskID + "</td>" +
                     "<td>" + tasks[i].taskName + "</td>" +
                     "<td>" + tasks[i].description + "</td>" +
-                    "<td>" + tasks[i].executor.username + "</td>" +
-                    "<td>" + tasks[i].endDate + "</td>" + 
+                    "<td>" + executor + "</td>" +
+                    "<td>" + dateParser(tasks[i].endDate) + "</td>" + 
                     "<td>" + tasks[i].status + "</td>" + 
                     "</tr>");
         }
+	}
+	
+	function dateParser(date) {
+		var tempDate = new Date(date);
+		var month = ["January", "February", "March", "April", "May", "June",
+		                "July", "August", "September", "October", "November", "December"];
+		var parsedDate = tempDate.getDate() + " " + month[tempDate.getMonth()] + " " + tempDate.getFullYear();
+		return parsedDate
 	}
 	
 	function getAllUsers() {
@@ -113,11 +125,7 @@
         </span>
 	
 	 	<span class="menuSpan" id="createTaskButton">
-            <a href="createTask.html" class="menuButton"> Create New Task </a>
-        </span>
-
-        <span class="menuSpan" id="createUserButton">
-            <a href="createUser.html" class="menuButton"> Create New User </a>
+            <a href="adminPanel.html" class="menuButton"> Admin Panel </a>
         </span>
         
         <span class="menuSpan" id="editProfileButton">

@@ -41,8 +41,8 @@ public class ProtectedResourcesFilter implements Filter {
 			httpServletResponse.sendRedirect(loginUrl);
 			return;
 		} else if(currentUser != null && !(currentUser.isAdmin()) && 
-				(uri.endsWith("createTask.html") || uri.endsWith("createUser.html") 
-						|| uri.endsWith("rest/task/create") || uri.endsWith("rest/user/register"))) {
+				(uri.endsWith("adminPanel.html") || uri.endsWith("rest/task/create") 
+						|| uri.endsWith("rest/user/register"))) {
 			httpServletResponse.sendRedirect(loginUrl + "home.html");
 			return;
 		}

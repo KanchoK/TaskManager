@@ -7,7 +7,7 @@ body{
     font-family:'Open Sans',sans-serif;
 }
 
-#login, #signUp, #changePass, #createTask, #createUser {
+.formContainer {
     width:400px;
     margin:0 auto;
     margin-top:0;
@@ -25,7 +25,7 @@ body{
     margin:0 auto;
 }
 
-#login h1, #signUp h1, #changePass h1, #createTask h1, #createUser h1 {
+.formContainer h1 {
     background:#0082ba;
     padding:20px 0;
     font-size:140%;
@@ -46,7 +46,7 @@ body{
     padding-top: 0;
 }
 
-input[type="text"],input[type="password"]{
+input[type="text"],input[type="password"], #description {
     width:100%;
     background:#fff;
     margin-bottom:5%;
@@ -56,6 +56,18 @@ input[type="text"],input[type="password"]{
     font-size:95%;
     color:#555;
     box-sizing: border-box;
+}
+
+.form p {
+	font-family:'Open Sans',sans-serif;
+	font-size:95%;
+	margin-bottom: 1%;
+	padding-left: 3%;
+}
+
+#description {
+	height: 175px;
+	resize: none;
 }
 
 button, input[type="submit"] {
