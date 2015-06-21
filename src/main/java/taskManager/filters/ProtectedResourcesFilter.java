@@ -42,8 +42,21 @@ public class ProtectedResourcesFilter implements Filter {
 			return;
 		}
 		
-		if (currentUser == null && !(uri.endsWith(loginUrl) || uri.endsWith(".js") || uri.endsWith(".css") || uri.endsWith("rest/user/login") || uri.endsWith("index.html") || uri.endsWith("rest/user/passwordforgotten"))) {
+		if (currentUser == null
+				&& !(uri.endsWith(loginUrl) 
+						|| uri.endsWith(".js")
+						|| uri.endsWith(".css")
+						|| uri.endsWith("rest/user/login")
+						|| uri.endsWith("index.html") 
+						|| uri.endsWith("rest/user/passwordforgotten"))) {
 			httpServletResponse.sendRedirect(loginUrl);
+			return;
+		} else if (currentUser != null
+				&& !(currentUser.isAdmin())
+				&& (uri.endsWith("adminPanel.html")
+						|| uri.endsWith("rest/task/create") 
+						|| uri.endsWith("rest/user/register"))) {
+			httpServletResponse.sendRedirect(loginUrl + "home.html");
 			return;
 		}
 		chain.doFilter(request, response);

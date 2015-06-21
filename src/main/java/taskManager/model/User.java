@@ -12,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -48,6 +50,12 @@ public class User implements Serializable{
 	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	@JoinColumn(name = "author")
 	private Collection<Comment> comments = new ArrayList<>();
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name="ImportanceTable", 
+    joinColumns={@JoinColumn(name="impTo")}, 
+    inverseJoinColumns={@JoinColumn(name="impTasks")})
+	private Collection<Task> importantTasks = new ArrayList<>();
 	
 	public User() {
 		
@@ -168,5 +176,16 @@ public class User implements Serializable{
 		} else if (!this.getUserID().equals(other.getUserID()))
 			return false;
 		return true;
+	}
+
+	public Collection<Task> getImportantTasks() {
+		return importantTasks;
+	}
+
+	public void setImportantTasks(Collection<Task> importantTasks) {
+		this.importantTasks = importantTasks;
+	}
+	public void addImportantTask(Task task){
+		this.importantTasks.add(task);
 	}
 }

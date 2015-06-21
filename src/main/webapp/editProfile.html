@@ -9,6 +9,14 @@
 	<script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>
 	
+	<script type="text/javascript">
+	
+	$(document).ready(function (){
+		authorization();
+	});
+	
+	</script>
+	
 </head>
 <body>
 	
@@ -19,11 +27,7 @@
         </span>
 	
 	 	<span class="menuSpan" id="createTaskButton">
-            <a href="createTask.html" class="menuButton"> Create New Task </a>
-        </span>
-
-        <span class="menuSpan" id="createUserButton">
-            <a href="createUser.html" class="menuButton"> Create New User </a>
+            <a href="adminPanel.html" class="menuButton"> Admin Panel </a>
         </span>
         
         <span class="menuSpan" id="editProfileButton">
@@ -31,9 +35,33 @@
         </span>
         
         <span class="menuSpan" id="homeButton">
-            <a href="tasks.html" class="menuButton"> Home </a>
+            <a href="home.html" class="menuButton"> Home </a>
         </span>
 		
+	</div>
+	
+	<div class="formContainer">
+	
+		<h1>Change your password</h1>
+
+		<form id="changePasswordForm" class="form" method="post">
+			<input type="password" id="oldPassword" placeholder="Old password" />
+			<input type="password" id="newPassword" placeholder="New password" />
+			<input type="password" id="confirmPassword" placeholder="Confirm new password" />
+			<button type="button" onClick="changePassword()"> Submit </button> 
+		</form>
+
+	</div>
+	
+	<div class="formContainer">
+	
+		<h1>Change your email</h1>
+
+		<form id="changeEmailForm" class="form" method="post">
+			<input type="text" id="email" placeholder="New email" />
+			<button type="button" onClick="changeEmail()"> Submit </button> 
+		</form>
+
 	</div>
 	
 </body>

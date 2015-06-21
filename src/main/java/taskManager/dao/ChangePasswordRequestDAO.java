@@ -6,7 +6,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import taskManager.model.ChangePasswordRequest;
-import taskManager.model.User;
 
 @Singleton
 public class ChangePasswordRequestDAO {

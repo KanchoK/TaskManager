@@ -9,6 +9,12 @@
 
 	<script type="text/javascript">
 	
+	$(document).ready(function(){
+		$('#forgottenPassword').click(function(){
+			document.getElementById('popup').style.display = 'block';
+	    });
+	});
+	
 	function login() {
 		var username = $("#username")[0].value;
 		var password = $("#password")[0].value;
@@ -33,10 +39,43 @@
 					alert("Authentication failed");
 				},
 				200: function() {
-					window.location.replace("tasks.html");
+					window.location.replace("home.html");
 				}
 			}
 		});
+	}
+	
+	function sendEmail() {
+		
+		var email = $("#email")[0].value;
+		
+		if (email == "") {
+			alert("The Email field should not be empty.");
+		}
+		
+		var data = { email : email }
+		
+		$.ajax({
+			url : 'rest/user/...',
+			type : "POST",
+			data : JSON.stringify(data),
+			dataType : "json",
+			contentType: "application/json",
+			statusCode : {
+				401: function() {
+					alert("An error has occurred!");
+				},
+				200: function() {
+					alert("Email was sent successfully!");
+					document.getElementById('email').value = "";
+					document.getElementById('popup').style.display = 'none';
+				}
+			}
+		});
+	}
+	
+	function cancel() {
+		document.getElementById('popup').style.display = 'none';
 	}
 
 	</script>
@@ -44,7 +83,7 @@
 </head>
 <body>
 
-<div id="login">
+<div class="formContainer">
     <div id="triangle"></div>
     <h1>Log in</h1>
     <form class="form" method="post">
@@ -56,7 +95,17 @@
     <div id="forgottenPassword">Forgot your password?</div>
 </div>
 
-
+<div id="popup" hidden>
+	<div id="popupContent">
+	<p> You can enter your email to receive a link from which you can change your password. 
+		The link will be active only for 24 hour or until it's used. </p>
+	<form>
+		<input type="text" id="email" placeholder="Email" />
+		<button type="button" onClick="sendEmail()"> Send email </button>
+		<button type="button" onClick="cancel()"> Cancel </button>
+	</form>
+	</div>
+</div>
 
 </body>
 </html>

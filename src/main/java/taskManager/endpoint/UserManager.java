@@ -67,6 +67,16 @@ public class UserManager {
     	
     	return Response.status(HttpsURLConnection.HTTP_UNAUTHORIZED).build();
     }
+	
+	@GET
+	@Path("authorization")
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean authorization() {
+		if (context.getCurrentUser() != null) {
+			return context.getCurrentUser().isAdmin();
+        }
+		return false;
+	}
 
 	@POST
 	@Path("logout")

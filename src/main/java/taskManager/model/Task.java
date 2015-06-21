@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -12,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -34,11 +37,12 @@ public class Task {
 	
 	private String taskName;
 	
+	@Column(length = 255)
 	private String description;
 	
 	private Date endDate;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "userID")
 	private User executor;
 	
@@ -48,6 +52,16 @@ public class Task {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="task")
 	private Collection<Comment> comments = new ArrayList<Comment>();
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name="ImportanceTable", 
+    joinColumns={@JoinColumn(name="impTasks")}, 
+    inverseJoinColumns={@JoinColumn(name="impTo")})
+	private Collection<User> importantTo = new ArrayList<User>();
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="changedTask")
+	private Collection<Changes> changes = new ArrayList<Changes>();
 	
 	public Task() {
 		
@@ -133,4 +147,7 @@ public class Task {
 		return true;
 	}
 	
+	public Collection<User> getimportantTo(){
+		return this.importantTo;
+	}
 }
