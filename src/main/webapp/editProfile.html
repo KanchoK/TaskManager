@@ -22,7 +22,7 @@
 		var confirmPassword = $("#confirmPassword")[0].value;
 		
 		if (oldPassword == "" || newPassword == "" || confirmPassword == "") {
-			alert("Old password, new password and Confirm password fields should not be empty.");
+			alert("Old password, New password and Confirm password fields should not be empty.");
 		} else if (newPassword != confirmPassword) {
 			alert("New password and Confirm password should be the same.");
 		} else {
@@ -43,6 +43,41 @@
 						window.location.replace("home.html");
 					},
 					404: function(jqXHR) {
+						alert(jqXHR.responseText);
+					}
+				}
+			});
+		}
+	}
+	
+	function changeEmail() {
+		
+		var password = $("#password")[0].value;
+		var email = $("#email")[0].value;
+		
+		if (password == "" || email == "") {
+			alert("Password and Email fields should not be empty.");
+		} else {
+			
+			var data = { password : password,
+						 email : email
+				}
+
+			$.ajax({
+				url: 'rest/user/changeEmail',
+				type: 'POST',
+				data : JSON.stringify(data),
+				dataType : "json",
+				contentType: "application/json",
+				statusCode : {
+					200: function(jqXHR) {
+						alert(jqXHR.responseText);
+						window.location.replace("home.html");
+					},
+					404: function(jqXHR) {
+						alert(jqXHR.responseText);
+					},
+					409: function(jqXHR) {
 						alert(jqXHR.responseText);
 					}
 				}
@@ -93,6 +128,7 @@
 		<h1>Change your email</h1>
 
 		<form id="changeEmailForm" class="form" method="post">
+			<input type="password" id="password" placeholder="Password" />
 			<input type="text" id="email" placeholder="New email" />
 			<button type="button" onClick="changeEmail()"> Submit </button> 
 		</form>

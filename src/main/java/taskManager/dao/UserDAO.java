@@ -159,10 +159,14 @@ public class UserDAO {
 		updateUser(user);
 	}
 	
-	public void changeUserEmail(User user, String email) throws ApplicationServerInternalException {
+	public void changeUserEmail(User user, String password, String email) throws ApplicationServerInternalException {
 		if (user == null) {
 			throw new ApplicationServerInternalException("User not found!");
 		}		
+		
+		if (!user.getPassword().equals(SecurityUtils.getHashedPassword(password))) {
+			throw new ApplicationServerInternalException("Password is invalid!");
+		}
 		
 		user.setEmail(email);
 		updateUser(user);

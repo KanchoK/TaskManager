@@ -180,12 +180,12 @@ public class UserManager {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response changeEmail(String inputData) {
 		JSONObject jsonObject;
-		String newPassword = "";
+		String password = "";
 		String email = "";
 		try {
 			jsonObject = new JSONObject(inputData);
 			
-			newPassword = jsonObject.getString("password");
+			password = jsonObject.getString("password");
 			email = jsonObject.getString("email");
 		} catch (JSONException e) {
 			// TODO log the exc
@@ -196,12 +196,12 @@ public class UserManager {
 			InternetAddress address = new InternetAddress(email);
 			address.validate();
 		} catch (AddressException e) {
-			return Response.status(Response.Status.CONFLICT).entity("Inalid email.").build();
+			return Response.status(Response.Status.CONFLICT).entity("Invalid email.").build();
 		}		
 		
 		try {
-			userDAO.changeUserEmail(context.getCurrentUser(), email);
-			return Response.status(HttpsURLConnection.HTTP_OK).entity("Password changed successfuly.").build();
+			userDAO.changeUserEmail(context.getCurrentUser(), password, email);
+			return Response.status(HttpsURLConnection.HTTP_OK).entity("Email changed successfuly.").build();
 		} catch (ApplicationServerInternalException exc) {
 			// TODO log the exc
 			return Response.status(Response.Status.NOT_FOUND).entity(exc.getMessage()).build();
