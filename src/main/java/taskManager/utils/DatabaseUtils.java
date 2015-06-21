@@ -27,7 +27,7 @@ public class DatabaseUtils {
 	   
     private static User[] USERS = {
     	new User("kancho", "123456", "Kancho Kanev", "kk.user@mymail.com", true),
-    	new User("a", "a", "Petar Ivanov", "pe6o.user@mymail.com"),
+    	new User("a", "a", "Petar Ivanov", "plamen1994@abv.bg"),
     };
     
     private static Task[] TASKS = {

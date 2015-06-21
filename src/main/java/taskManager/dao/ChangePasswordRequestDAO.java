@@ -20,10 +20,10 @@ public class ChangePasswordRequestDAO {
 			return queryRequest(query);
     }
     
-    public ChangePasswordRequest getRequestByEmailAndCode(String email, String code) {
-		   String txtQuery = "SELECT r FROM ChangePasswordRequest r WHERE r.email = :email AND r.code = :code";
+    public ChangePasswordRequest getRequestByUserIdAndCode(Integer userId, String code) {
+		   String txtQuery = "SELECT r FROM ChangePasswordRequest r WHERE r.userId = :userId AND r.code = :code";
 			TypedQuery<ChangePasswordRequest> query = em.createQuery(txtQuery, ChangePasswordRequest.class);
-			query.setParameter("email", email);
+			query.setParameter("userId", userId);
 			query.setParameter("code", code);
 			return queryRequest(query);
  }

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Response;
 
 import taskManager.dao.ChangePasswordRequestDAO;
+import taskManager.dao.UserDAO;
 import taskManager.model.ChangePasswordRequest;
 import taskManager.model.User;
 import taskManager.services.UserContext;
@@ -28,6 +29,9 @@ public class ProtectedResourcesFilter implements Filter {
 	
 	@Inject 
 	ChangePasswordRequestDAO changePasswordRequestDAO;
+	
+	@Inject 
+	UserDAO userDAO;
 
 	public void init(FilterConfig fConfig) throws ServletException {
 	}
@@ -43,27 +47,35 @@ public class ProtectedResourcesFilter implements Filter {
 		String loginUrl = httpServletRequest.getContextPath() + "/";
 		String uri = httpServletRequest.getRequestURI();
 		
-		if (uri.endsWith("resetPassword.html")) {
+		if (uri.contains("resetPassword.html") 
+				&& httpServletRequest.getParameter("email") != null 
+				&& httpServletRequest.getParameter("code") != null) {
+			
 			String email = httpServletRequest.getParameter("email");
+			User user = userDAO.findUserByEmail(email);			
+			if (user == null) {
+				redirect(httpServletResponse, loginUrl);
+				return;
+			}
+			
+			Integer userId = user.getUserID();
 			String code = httpServletRequest.getParameter("code");
-			ChangePasswordRequest changePasswordRequest = changePasswordRequestDAO.getRequestByEmailAndCode(email, code);
+			ChangePasswordRequest changePasswordRequest = changePasswordRequestDAO.getRequestByUserIdAndCode(userId, code);
 			
 			if(changePasswordRequest != null) {
 				Date expiryDate = changePasswordRequest.getExpiryDate();				
 				Date now = new Date();
 				
 				if(!now.after(expiryDate)) {
-					String resetPasswordUrl = loginUrl + "resetPassword.html";
+					String resetPasswordUrl = loginUrl + "resetPassword.html?userId=" + userId;
 					httpServletResponse.sendRedirect(resetPasswordUrl);
 					return;
 				} else {
-					httpServletResponse.sendError(Response.Status.CONFLICT.getStatusCode(), "Reset password link has expired!");
-					httpServletResponse.sendRedirect(loginUrl);
+					redirect(httpServletResponse, loginUrl);
 					return;
 				}
 			} else {
-				httpServletResponse.sendError(Response.Status.CONFLICT.getStatusCode(), "Invalid link!");
-				httpServletResponse.sendRedirect(loginUrl);
+				redirect(httpServletResponse, loginUrl);
 				return;
 			}
 		}
@@ -74,7 +86,9 @@ public class ProtectedResourcesFilter implements Filter {
 						|| uri.endsWith(".css")
 						|| uri.endsWith("rest/user/login")
 						|| uri.endsWith("index.html") 
-						|| uri.endsWith("rest/user/passwordforgotten"))) {
+						|| uri.endsWith("rest/user/passwordforgotten")
+						|| uri.endsWith("resetPassword.html")
+						|| uri.endsWith("rest/user/resetPassword"))) {
 			httpServletResponse.sendRedirect(loginUrl);
 			return;
 		} else if (currentUser != null
@@ -96,4 +110,13 @@ public class ProtectedResourcesFilter implements Filter {
 	public void destroy() {
 	}
 
+	private void redirect(HttpServletResponse httpServletResponse, String redirectLink) {
+		try {
+			httpServletResponse.sendRedirect(redirectLink);
+		} catch (IOException e) {
+			// TODO log!!
+			e.printStackTrace();
+		}
+	}
+	
 }

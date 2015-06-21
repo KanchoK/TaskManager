@@ -87,6 +87,13 @@ public class UserDAO {
 		return queryUser(query);
 	}
 
+	public User findUserById(Integer userID) {
+		String txtQuery = "SELECT u FROM User u WHERE u.userID = :userID";
+		TypedQuery<User> query = em.createQuery(txtQuery, User.class);
+		query.setParameter("userID", userID);
+		return queryUser(query);
+	}
+	
 	public void sendUserChangePasswordLink(String email) throws ApplicationServerInternalException {
 		String code = RandomStringUtils.randomAlphanumeric(10);
 		Calendar calendar = Calendar.getInstance();
@@ -130,6 +137,15 @@ public class UserDAO {
 		return queryUser(query);
 	}
 
+	public void changeUserPassword(User user, String newPassword) throws ApplicationServerInternalException {
+		if (user == null) {
+			throw new ApplicationServerInternalException("User not found!");
+		}
+		
+		user.setPassword(newPassword);
+		updateUser(user);
+	}
+	
 	private User queryUser(TypedQuery<User> query) {
 		try {
 			return query.getSingleResult();
