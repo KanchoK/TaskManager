@@ -1,6 +1,7 @@
 package taskManager.filters;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.inject.Inject;
 import javax.servlet.Filter;
@@ -12,7 +13,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.Response;
 
+import taskManager.dao.ChangePasswordRequestDAO;
+import taskManager.model.ChangePasswordRequest;
 import taskManager.model.User;
 import taskManager.services.UserContext;
 
@@ -21,6 +25,9 @@ public class ProtectedResourcesFilter implements Filter {
 
 	@Inject
 	UserContext userContext;
+	
+	@Inject 
+	ChangePasswordRequestDAO changePasswordRequestDAO;
 
 	public void init(FilterConfig fConfig) throws ServletException {
 	}
@@ -36,10 +43,29 @@ public class ProtectedResourcesFilter implements Filter {
 		String loginUrl = httpServletRequest.getContextPath() + "/";
 		String uri = httpServletRequest.getRequestURI();
 		
-		if (uri.endsWith("rest/user/resetPassword")) {
-			String resetPasswordUrl = "";
-			httpServletResponse.sendRedirect(resetPasswordUrl);
-			return;
+		if (uri.endsWith("resetPassword.html")) {
+			String email = httpServletRequest.getParameter("email");
+			String code = httpServletRequest.getParameter("code");
+			ChangePasswordRequest changePasswordRequest = changePasswordRequestDAO.getRequestByEmailAndCode(email, code);
+			
+			if(changePasswordRequest != null) {
+				Date expiryDate = changePasswordRequest.getExpiryDate();				
+				Date now = new Date();
+				
+				if(!now.after(expiryDate)) {
+					String resetPasswordUrl = loginUrl + "resetPassword.html";
+					httpServletResponse.sendRedirect(resetPasswordUrl);
+					return;
+				} else {
+					httpServletResponse.sendError(Response.Status.CONFLICT.getStatusCode(), "Reset password link has expired!");
+					httpServletResponse.sendRedirect(loginUrl);
+					return;
+				}
+			} else {
+				httpServletResponse.sendError(Response.Status.CONFLICT.getStatusCode(), "Invalid link!");
+				httpServletResponse.sendRedirect(loginUrl);
+				return;
+			}
 		}
 		
 		if (currentUser == null

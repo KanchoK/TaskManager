@@ -113,9 +113,9 @@ public class UserDAO {
 		}
 
 		String subject = "Forgotten Password in TaskManager";
+		String link = "http://localhost:8080/TaskManager/resetPassword.html?email=" + email + "&code=" + code;
 		String messageBody = "<h2>To change your password click the link below:</h2><br>"
-				+ "http://localhost:8080/TaskManager/rest/user/newPassword?email="
-				+ email + "&code=" + code + "<br><br> This link will expire in 24 hours from the moment that the email was sent or if you use it to reset your password.";
+				+ "<a href="+ link + ">Reset your password</a> <br><br> This link will expire in 24 hours from the moment that the email was sent or if you use it to reset your password.";
 
 		// send an email to the user with link for changing their password
 		emailSender.sendEmail("taskmanager.ttest@gmail.com", email, subject,

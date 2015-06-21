@@ -56,14 +56,14 @@
 		var data = { email : email }
 		
 		$.ajax({
-			url : 'rest/user/...',
+			url : 'rest/user/passwordforgotten',
 			type : "POST",
 			data : JSON.stringify(data),
 			dataType : "json",
 			contentType: "application/json",
 			statusCode : {
-				401: function() {
-					alert("An error has occurred!");
+				404: function(jqXHR) {
+					alert(jqXHR.responseText);
 				},
 				200: function() {
 					alert("Email was sent successfully!");

@@ -14,11 +14,19 @@ public class ChangePasswordRequestDAO {
     private EntityManager em;
     
     public ChangePasswordRequest getRequestByUserId(Integer userId) {
-		   String txtQuery = "SELECT r FROM ChangePasswordRequest r WHERE r.userId=:userId";
+		   String txtQuery = "SELECT r FROM ChangePasswordRequest r WHERE r.userId = :userId";
 			TypedQuery<ChangePasswordRequest> query = em.createQuery(txtQuery, ChangePasswordRequest.class);
 			query.setParameter("userId", userId);
 			return queryRequest(query);
     }
+    
+    public ChangePasswordRequest getRequestByEmailAndCode(String email, String code) {
+		   String txtQuery = "SELECT r FROM ChangePasswordRequest r WHERE r.email = :email AND r.code = :code";
+			TypedQuery<ChangePasswordRequest> query = em.createQuery(txtQuery, ChangePasswordRequest.class);
+			query.setParameter("email", email);
+			query.setParameter("code", code);
+			return queryRequest(query);
+ }
     
     public void add(ChangePasswordRequest request) {
     	em.persist(request);
