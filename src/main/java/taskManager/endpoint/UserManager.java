@@ -161,7 +161,7 @@ public class UserManager {
 			jsonObject = new JSONObject(inputData);
 			
 			newPassword = jsonObject.getString("newPassword");
-			oldPassowrd = jsonObject.getString("oldPassowrd");
+			oldPassowrd = jsonObject.getString("oldPassword");
 		} catch (JSONException e) {
 			// TODO log the exc
 			e.printStackTrace();

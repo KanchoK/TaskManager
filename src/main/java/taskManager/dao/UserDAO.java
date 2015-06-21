@@ -41,7 +41,7 @@ public class UserDAO {
 
 	public void updateUser(User user) {
 		user.setPassword(SecurityUtils.getHashedPassword(user.getPassword()));
-		em.persist(user);
+		em.merge(user);
 	}
 
 	public void registerUser(User user) {
@@ -151,7 +151,7 @@ public class UserDAO {
 			throw new ApplicationServerInternalException("User not found!");
 		}
 		
-		if (!user.getPassword().equals(oldPassword)) {
+		if (!user.getPassword().equals(SecurityUtils.getHashedPassword(oldPassword))) {
 			throw new ApplicationServerInternalException("Old password is invalid!");
 		}
 		
