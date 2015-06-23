@@ -1,6 +1,5 @@
 package taskManager.endpoint;
 
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -11,7 +10,6 @@ import javax.mail.internet.InternetAddress;
 import javax.net.ssl.HttpsURLConnection;
 import javax.resource.spi.ApplicationServerInternalException;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;

@@ -55,13 +55,20 @@
 			success: function(data) {
 				var users = data.user;
 				var select = $('#executors');
-			 	for (i = 0; i < users.length; i++) {
-			 		if(users[i].userID != task.executor.userID) {
-			 			select.append("<option value='" + users[i].userID + "'>" + users[i].fullName + "</option>");
-			 		} else {
-			 			select.append("<option value='" + task.executor.userID + "' selected='selected'>" + task.executor.fullName + "</option>");
+				if(task.executor) {
+			 		for (i = 0; i < users.length; i++) {
+			 			if(users[i].userID != task.executor.userID) {
+			 				select.append("<option value='" + users[i].userID + "'>" + users[i].fullName + "</option>");
+		 				} else {
+			 				select.append("<option value='" + task.executor.userID + "' selected='selected'>" + task.executor.fullName + "</option>");
+			 			}
 			 		}
-			 	}
+				} else {
+					select.append("<option selected='selected'>No executor</option>");
+					for (i = 0; i < users.length; i++) {
+		 				select.append("<option value='" + users[i].userID + "'>" + users[i].fullName + "</option>");
+		 			}
+				}
 			 	executorSelectmenuSetUp();
 			},
 			error: function(e) {
@@ -73,8 +80,25 @@
 	function executorSelectmenuSetUp() {
 		$( "#executors" ).selectmenu({
 	 		change: function( event, data ) {
+	 			
+	 			var newExecutorID = data.item.value;
+	 			var data = {taskID : currentTask.task.taskID,
+							userID : newExecutorID}
+	 			
 	 	        $.ajax({
-	 	        	
+	 	        	url: 'rest/task/setExecutor',
+	 				type: 'POST',
+	 				data : JSON.stringify(data),
+	 				dataType : "json",
+	 				contentType : "application/json",
+	 				statusCode : {
+	 					200: function(jqXHR) {
+							alert(jqXHR.responseText);
+						},
+						404: function(jqXHR) {
+							alert(jqXHR.responseText);
+						}
+	 				}
 	 	        });
 	 	      }
 	 	});

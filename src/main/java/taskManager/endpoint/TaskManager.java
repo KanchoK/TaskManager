@@ -67,10 +67,22 @@ public class TaskManager {
 	}
 	
 	@POST
-	@Path("setexecutor")
+	@Path("setExecutor")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void setExecutor(User executor, Task task){
-		task.setExecutor(executor);
+	public void setExecutor(String inputData){
+		JSONObject jsonObject;
+		Integer taskId = -1;
+		Integer userId = -1;
+		try {
+			jsonObject = new JSONObject(inputData);
+			taskId = jsonObject.getInt("taskID");
+			userId = jsonObject.getInt("userID");
+		} catch (JSONException e) {
+			// TODO log the exc
+			e.printStackTrace();
+		}
+		Task task = taskDAO.getTaskByID(taskId);
+//		Not finished!!!
 	}
 	
 	@POST
@@ -105,7 +117,10 @@ public class TaskManager {
 		Task task = taskDAO.getTaskByID(taskId);
 		User user = context.getCurrentUser();
 		User executor = task.getExecutor();
-		if(executor.equals(user)) {
+		if(executor == null) {
+			return Response.status(Response.Status.NOT_FOUND).entity("You can't change the status of "
+					+ "tasks with no executor").build();
+		} else if(executor.equals(user)) {
 			try {
 				taskDAO.changeStatus(task, newStatus);
 				return Response.status(Response.Status.OK).entity("Task status changed successfuly.").build();
