@@ -184,7 +184,7 @@ th {
 }
 
 td {
-	background: #C0C0C0;
+	background: #f0f0f0;
 	padding: 15px;
 }
 
@@ -217,4 +217,35 @@ td {
 	cursor: pointer;
 	opacity: 0.4;
     filter: alpha(opacity=40); /* for IE8 */
+}
+
+#taskContainer {
+	width: 95%;
+	margin-left: auto;
+  	margin-right: auto;
+}
+
+#taskContainer h1 {
+    background:#0082ba;
+    padding:10px 0 10px 10px;
+    font-size:200%;
+    font-weight:500;
+    color:#fff;
+}
+
+#taskInfo {
+	background: #f0f0f0;
+	padding: 20px;
+}
+
+#taskEndDate{
+	float: right;
+}
+
+#executors {
+	width: 25%;
+}
+
+#status {
+	width: 15%;
 }

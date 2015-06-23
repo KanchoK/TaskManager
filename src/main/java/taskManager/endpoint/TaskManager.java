@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.resource.spi.ApplicationServerInternalException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -14,6 +15,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import taskManager.dao.TaskDAO;
 import taskManager.model.Task;
@@ -81,6 +85,38 @@ public class TaskManager {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Task getCurrentTask(){
 		return context.getCurrentTask();
+	}
+	
+	@POST
+	@Path("changeStatus")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response changeTaskStatus(String inputData) {
+		JSONObject jsonObject;
+		Integer taskId = -1;
+		String newStatus = "";
+		try {
+			jsonObject = new JSONObject(inputData);
+			taskId = jsonObject.getInt("taskID");
+			newStatus = jsonObject.getString("status");
+		} catch (JSONException e) {
+			// TODO log the exc
+			e.printStackTrace();
+		}
+		Task task = taskDAO.getTaskByID(taskId);
+		User user = context.getCurrentUser();
+		User executor = task.getExecutor();
+		if(executor.equals(user)) {
+			try {
+				taskDAO.changeStatus(task, newStatus);
+				return Response.status(Response.Status.OK).entity("Task status changed successfuly.").build();
+			} catch (ApplicationServerInternalException exc) {
+				// TODO log the exc
+				return Response.status(Response.Status.NOT_FOUND).entity(exc.getMessage()).build();
+			}
+		} else {
+			return Response.status(Response.Status.NOT_FOUND).entity("You can't change the status of "
+																	+ "tasks on which you are not executor").build();
+		}
 	}
 	
 	

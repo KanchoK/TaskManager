@@ -35,3 +35,11 @@ function hideButtons(isAdmin) {
         $('#homeButton').show();
 	}
 }
+
+function dateParser(date) {
+	var tempDate = new Date(date);
+	var month = ["January", "February", "March", "April", "May", "June",
+	                "July", "August", "September", "October", "November", "December"];
+	var parsedDate = tempDate.getDate() + " " + month[tempDate.getMonth()] + " " + tempDate.getFullYear();
+	return parsedDate
+}

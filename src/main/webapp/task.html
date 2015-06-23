@@ -8,8 +8,12 @@
 <link rel="stylesheet" type="text/css" href="css/main.css">
 <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
+<link rel="stylesheet" href="jquery-ui-theme/jquery-ui.min.css" />
+<script type="text/javascript" src="jquery-ui-theme/jquery-ui.min.js"></script>
 
 <script type="text/javascript">
+
+	var currentTask = null;
 
 	$(document).ready(function() {
 
@@ -25,6 +29,7 @@
 			dataType : "json",
 			contentType : "application/json",
 			success : function(data) {
+				currentTask = data;
 				renderTask(data);
 			},
 			error : function(textStatus) {
@@ -32,13 +37,81 @@
 			}
 		})
 	});
-
+	
 	function renderTask(data) {
 		var task = data.task;
 		var taskContainer = $('#taskContainer');
-		taskContainer.find('h1').text(task.taskName);
-		taskContainer.find('h2').text(task.description);
+		taskContainer.find('#taskName').text(task.taskName);
+		renderExecutorsSelectmenu(task);
+		taskContainer.find('#taskEndDate').append("<h3>End date: " + dateParser(task.endDate) + "</h3>");
+		renderStatusSelectmenu(task);
+		taskContainer.find('#taskDescription p').text(task.description);
 	}
+	
+	function renderExecutorsSelectmenu(task) {
+		$.ajax({
+			url: 'rest/user/all',
+			type: 'GET',
+			success: function(data) {
+				var users = data.user;
+				var select = $('#executors');
+			 	for (i = 0; i < users.length; i++) {
+			 		if(users[i].userID != task.executor.userID) {
+			 			select.append("<option value='" + users[i].userID + "'>" + users[i].fullName + "</option>");
+			 		} else {
+			 			select.append("<option value='" + task.executor.userID + "' selected='selected'>" + task.executor.fullName + "</option>");
+			 		}
+			 	}
+			 	executorSelectmenuSetUp();
+			},
+			error: function(e) {
+				alert(e);
+			}
+		});
+	}
+	
+	function executorSelectmenuSetUp() {
+		$( "#executors" ).selectmenu({
+	 		change: function( event, data ) {
+	 	        $.ajax({
+	 	        	
+	 	        });
+	 	      }
+	 	});
+	}
+	
+	function renderStatusSelectmenu(task) {
+		var selectedOption = $('#'+ task.status);
+		selectedOption.attr('selected', 'selected');
+		statusSelectmenuSetUp();
+	}
+	
+	function statusSelectmenuSetUp() {
+		$( "#status" ).selectmenu({
+	 		change: function( event, data ) {
+	 			
+	 			var data = {taskID : currentTask.task.taskID,
+	 						status : data.item.value}
+	 			
+	 	        $.ajax({
+	 	        	url: 'rest/task/changeStatus',
+	 				type: 'POST',
+	 				data : JSON.stringify(data),
+	 				dataType : "json",
+	 				contentType : "application/json",
+	 				statusCode : {
+	 					200: function(jqXHR) {
+							alert(jqXHR.responseText);
+						},
+						404: function(jqXHR) {
+							alert(jqXHR.responseText);
+						}
+	 				}
+	 	        });
+	 	      }
+	 	});
+	}
+
 </script>
 
 </head>
@@ -66,10 +139,42 @@
         	</span>
 
 		</div>
+		
+		<div id="taskContainer">
+		
+			<h1 id="taskName"></h1>
+			
+			<div id="taskInfo">
+				
+				<span id="taskExecutor">
+					<p>Change the executor:</p>
+					<select id="executors">
+					</select>
+				</span>
+				<span id="taskEndDate">
+				</span>
+				<br>
+				<span id="taskStatus">
+					<p>Change task status:</p>
+					<select id="status">
+						<option id="NEW">NEW</option>
+						<option id="OPENED">OPENED</option>
+						<option id="DONE">DONE</option>
+					</select>
+				</span>
+				<div id="taskDescription">
+					<h3>Description:</h3>
+					<p></p>
+				</div>
+			</div>
+			
+			<div id="commentsContainer">
+				
+			</div>
+			
+		</div>
+		
 	</div>
-	<div id="taskContainer">
-		<h1></h1>
-		<h2></h2>
-	</div>
+	
 </body>
 </html>

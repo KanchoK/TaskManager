@@ -6,8 +6,10 @@ import javax.ejb.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.resource.spi.ApplicationServerInternalException;
 
 import taskManager.model.Task;
+import taskManager.model.Task.Status;
 
 @Singleton
 public class TaskDAO {
@@ -30,6 +32,15 @@ public class TaskDAO {
 		TypedQuery<Task> query = em.createQuery(txtQuery, Task.class);
 		query.setParameter("taskId", taskID);
 		return query.getSingleResult();
+	}
+	
+	public void changeStatus(Task task, String newStatus) throws ApplicationServerInternalException {
+		if (task == null) {
+			throw new ApplicationServerInternalException("Task not found!");
+		}
+		
+		task.setStatus(Status.valueOf(newStatus));
+		em.merge(task);
 	}
 	
 }
