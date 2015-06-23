@@ -16,6 +16,7 @@ import javax.resource.spi.ApplicationServerInternalException;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import taskManager.model.ChangePasswordRequest;
+import taskManager.model.Task;
 import taskManager.model.User;
 import taskManager.services.EmailSender;
 import taskManager.utils.SecurityUtils;
@@ -40,10 +41,14 @@ public class UserDAO {
 	}
 
 	public void updateUser(User user) {
-		user.setPassword(SecurityUtils.getHashedPassword(user.getPassword()));
 		em.merge(user);
 	}
-
+	
+	public void updateUserAndHashPassword(User user) {
+		user.setPassword(SecurityUtils.getHashedPassword(user.getPassword()));
+		updateUser(user);
+	}
+	
 	public void registerUser(User user) {
 		user.setPassword(SecurityUtils.generatePassword());
 		Map<String, Object> mailParams = putRegistrationMailParams(user);
@@ -143,7 +148,7 @@ public class UserDAO {
 		}
 		
 		user.setPassword(newPassword);
-		updateUser(user);
+		updateUserAndHashPassword(user);
 	}
 	
 	public void changeUserPassword(User user, String oldPassword, String newPassword) throws ApplicationServerInternalException {
@@ -156,7 +161,7 @@ public class UserDAO {
 		}
 		
 		user.setPassword(newPassword);
-		updateUser(user);
+		updateUserAndHashPassword(user);
 	}
 	
 	public void changeUserEmail(User user, String password, String email) throws ApplicationServerInternalException {
@@ -169,7 +174,17 @@ public class UserDAO {
 		}
 		
 		user.setEmail(email);
-		updateUser(user);
+		updateUserAndHashPassword(user);
+	}
+	
+	public int getActiveTasksCount(Integer userID) {
+		String txtQuery = "SELECT COUNT(t) FROM User u JOIN u.userTasks t WHERE u.userID = :userID "
+							+ "AND (t.status = :statusNew OR t.status = :statusOpened)";
+		TypedQuery<Long> query = em.createQuery(txtQuery, Long.class);
+		query.setParameter("userID", userID);
+		query.setParameter("statusNew", Task.Status.NEW);
+		query.setParameter("statusOpened", Task.Status.OPENED);
+		return query.getSingleResult().intValue();
 	}
 	
 	private User queryUser(TypedQuery<User> query) {

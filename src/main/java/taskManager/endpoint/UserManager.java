@@ -14,6 +14,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -29,6 +30,8 @@ import taskManager.services.UserContext;
 @Path("user")
 public class UserManager {
 	
+	private static final int TASK_COUNT_WARNING_LIMIT = 2;
+
 	@Inject
 	private UserDAO userDAO;
 	
@@ -96,6 +99,17 @@ public class UserManager {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void addTask(Task task,User user){
 		user.addUserTask(task);
+	}
+	
+	@GET
+	@Path("activeTasksCount")
+	public Response getActiveTasksCount(@QueryParam("userID") int userId) {
+		int taskCount = userDAO.getActiveTasksCount(userId);
+		if (taskCount >= TASK_COUNT_WARNING_LIMIT) {
+			return Response.status(Response.Status.CONFLICT).entity("This user has " + taskCount + " active thasks. "
+											+ "Are you sure you want to asign this task to him?").build();
+		}
+		return Response.status(Response.Status.OK).build();
 	}
 	
 	@POST

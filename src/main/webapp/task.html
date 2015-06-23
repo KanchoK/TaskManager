@@ -82,18 +82,31 @@
 	 		change: function( event, data ) {
 	 			
 	 			var newExecutorID = data.item.value;
-	 			var data = {taskID : currentTask.task.taskID,
-							userID : newExecutorID}
+	 			var data = {userID : newExecutorID};
+	 			var taskAndUserIDs = {taskID : currentTask.task.taskID,
+	 							userID : newExecutorID};
 	 			
 	 	        $.ajax({
-	 	        	url: 'rest/task/setExecutor',
-	 				type: 'POST',
-	 				data : JSON.stringify(data),
+	 	        	url: 'rest/user/activeTasksCount',
+	 				type: 'GET',
+	 				data : data,
 	 				dataType : "json",
 	 				contentType : "application/json",
 	 				statusCode : {
 	 					200: function(jqXHR) {
-							alert(jqXHR.responseText);
+	 						$.ajax({
+	 			 	        	url: 'rest/task/setExecutor',
+	 			 				type: 'POST',
+	 			 				data : JSON.stringify(taskAndUserIDs),
+	 			 				dataType : "json",
+	 			 				contentType : "application/json",
+	 			 				success : function(jqXHR){
+ 									alert(jqXHR.responseText);
+ 								},
+	 							error : function(jqXHR) {
+ 									alert(jqXHR.responseText);
+ 								}
+	 			 	        });
 						},
 						404: function(jqXHR) {
 							alert(jqXHR.responseText);

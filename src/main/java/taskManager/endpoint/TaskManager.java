@@ -20,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import taskManager.dao.TaskDAO;
+import taskManager.dao.UserDAO;
 import taskManager.model.Task;
 import taskManager.model.Task.Status;
 import taskManager.model.User;
@@ -31,6 +32,9 @@ public class TaskManager {
 
 	@Inject
 	private TaskDAO taskDAO;
+	
+	@Inject
+	private UserDAO userDAO;
 	
 	@Inject
 	UserContext context; 
@@ -61,7 +65,6 @@ public class TaskManager {
 
 	@GET
 	@Path("gettaskbyID")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Task getTaskByID(@QueryParam("taskId") int taskId){
 		return taskDAO.getTaskByID(taskId);
 	}
@@ -69,7 +72,7 @@ public class TaskManager {
 	@POST
 	@Path("setExecutor")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void setExecutor(String inputData){
+	public Response setExecutor(String inputData) {
 		JSONObject jsonObject;
 		Integer taskId = -1;
 		Integer userId = -1;
@@ -80,15 +83,24 @@ public class TaskManager {
 		} catch (JSONException e) {
 			// TODO log the exc
 			e.printStackTrace();
+			return Response.status(Response.Status.NOT_FOUND).entity("Error with the input data.").build();
 		}
 		Task task = taskDAO.getTaskByID(taskId);
-//		Not finished!!!
+		User oldExecutor = task.getExecutor();
+		if (oldExecutor != null) {
+			oldExecutor.getUserTasks().remove(task);
+			userDAO.updateUser(oldExecutor);
+		}
+		User newExecutor = userDAO.findUserById(userId);
+		newExecutor.addUserTask(task);
+		userDAO.updateUser(newExecutor);
+		return Response.status(Response.Status.OK).entity("Task executor changed successfuly.").build();
 	}
 	
 	@POST
 	@Path("setcurrenttask")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void setCurrentTask(int taskID){
+	public void setCurrentTask(int taskID) {
 	context.setCurrentTask(taskDAO.getTaskByID(taskID));	
 	}
 	
@@ -113,6 +125,7 @@ public class TaskManager {
 		} catch (JSONException e) {
 			// TODO log the exc
 			e.printStackTrace();
+			return Response.status(Response.Status.NOT_FOUND).entity("Error with the input data.").build();
 		}
 		Task task = taskDAO.getTaskByID(taskId);
 		User user = context.getCurrentUser();
