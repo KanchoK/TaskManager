@@ -139,12 +139,16 @@ public class TaskManager {
 			return Response.status(Response.Status.NOT_FOUND).entity("You can't change the status of "
 					+ "tasks with no executor").build();
 		} else if(executor.equals(user)) {
-			try {
-				taskDAO.changeStatus(task, newStatus);
-				return Response.status(Response.Status.OK).entity("Task status changed successfuly.").build();
-			} catch (ApplicationServerInternalException exc) {
-				// TODO log the exc
-				return Response.status(Response.Status.NOT_FOUND).entity(exc.getMessage()).build();
+			if(!task.getStatus().equals(newStatus)) {
+				try {
+					taskDAO.changeStatus(task, newStatus);
+					return Response.status(Response.Status.OK).entity("Task status changed successfuly.").build();
+				} catch (ApplicationServerInternalException exc) {
+					// TODO log the exc
+					return Response.status(Response.Status.NOT_FOUND).entity(exc.getMessage()).build();
+				}
+			} else {
+				return Response.status(Response.Status.BAD_REQUEST).entity("The task status is already " + newStatus + ".").build();
 			}
 		} else {
 			return Response.status(Response.Status.NOT_FOUND).entity("You can't change the status of "

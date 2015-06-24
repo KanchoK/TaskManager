@@ -94,27 +94,13 @@
 	 				contentType : "application/json",
 	 				statusCode : {
 	 					200: function(jqXHR) {
-	 						$.ajax({
-	 			 	        	url: 'rest/task/setExecutor',
-	 			 				type: 'POST',
-	 			 				data : JSON.stringify(taskAndUserIDs),
-	 			 				dataType : "json",
-	 			 				contentType : "application/json",
-	 			 				statusCode : {
-	 			 					200: function(jqXHR){
- 										alert(jqXHR.responseText);
- 									},
-	 								404: function(jqXHR) {
- 										alert(jqXHR.responseText);
- 									},
- 									400: function(jqXHR){
- 										alert(jqXHR.responseText);
- 									}
-	 			 				}
-	 			 	        });
+	 						setExecutorRequest(taskAndUserIDs)
 						},
 						409: function(jqXHR) {
-							confirm(jqXHR.responseText);
+							var confirmWindow = confirm(jqXHR.responseText);
+							if (confirmWindow == true) {
+								setExecutorRequest(taskAndUserIDs)
+							}
 						},
 						404: function(jqXHR) {
 							alert(jqXHR.responseText);
@@ -123,6 +109,27 @@
 	 	        });
 	 	      }
 	 	});
+	}
+	
+	function setExecutorRequest(taskAndUserIDs) {
+		$.ajax({
+	        	url: 'rest/task/setExecutor',
+				type: 'POST',
+				data : JSON.stringify(taskAndUserIDs),
+				dataType : "json",
+				contentType : "application/json",
+				statusCode : {
+					200: function(jqXHR){
+						alert(jqXHR.responseText);
+					},
+					404: function(jqXHR) {
+						alert(jqXHR.responseText);
+					},
+					400: function(jqXHR){
+						alert(jqXHR.responseText);
+					}
+				}
+	        });
 	}
 	
 	function renderStatusSelectmenu(task) {
@@ -149,6 +156,9 @@
 							alert(jqXHR.responseText);
 						},
 						404: function(jqXHR) {
+							alert(jqXHR.responseText);
+						},
+						400: function(jqXHR) {
 							alert(jqXHR.responseText);
 						}
 	 				}
