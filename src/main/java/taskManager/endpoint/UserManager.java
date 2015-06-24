@@ -224,5 +224,4 @@ public class UserManager {
 			return Response.status(Response.Status.NOT_FOUND).entity(exc.getMessage()).build();
 		}
 	}
-	
 }
