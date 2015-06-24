@@ -64,7 +64,7 @@
 			 			}
 			 		}
 				} else {
-					select.append("<option selected='selected'>No executor</option>");
+					select.append("<option value='-1' selected='selected'>No executor</option>");
 					for (i = 0; i < users.length; i++) {
 		 				select.append("<option value='" + users[i].userID + "'>" + users[i].fullName + "</option>");
 		 			}
@@ -100,13 +100,21 @@
 	 			 				data : JSON.stringify(taskAndUserIDs),
 	 			 				dataType : "json",
 	 			 				contentType : "application/json",
-	 			 				success : function(jqXHR){
- 									alert(jqXHR.responseText);
- 								},
-	 							error : function(jqXHR) {
- 									alert(jqXHR.responseText);
- 								}
+	 			 				statusCode : {
+	 			 					200: function(jqXHR){
+ 										alert(jqXHR.responseText);
+ 									},
+	 								404: function(jqXHR) {
+ 										alert(jqXHR.responseText);
+ 									},
+ 									400: function(jqXHR){
+ 										alert(jqXHR.responseText);
+ 									}
+	 			 				}
 	 			 	        });
+						},
+						409: function(jqXHR) {
+							confirm(jqXHR.responseText);
 						},
 						404: function(jqXHR) {
 							alert(jqXHR.responseText);

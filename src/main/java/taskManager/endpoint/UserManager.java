@@ -104,9 +104,14 @@ public class UserManager {
 	@GET
 	@Path("activeTasksCount")
 	public Response getActiveTasksCount(@QueryParam("userID") int userId) {
+//		userId is -1 when the user select No executor for a task
+		if(userId == -1) {
+			return Response.status(Response.Status.NOT_FOUND).entity("You can't set the executor to no one."
+					+ "You must choose one of the existing users.").build();
+		}
 		int taskCount = userDAO.getActiveTasksCount(userId);
 		if (taskCount >= TASK_COUNT_WARNING_LIMIT) {
-			return Response.status(Response.Status.CONFLICT).entity("This user has " + taskCount + " active thasks. "
+			return Response.status(Response.Status.CONFLICT).entity("This user has " + taskCount + " active tasks. "
 											+ "Are you sure you want to asign this task to him?").build();
 		}
 		return Response.status(Response.Status.OK).build();

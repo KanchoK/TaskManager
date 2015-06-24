@@ -87,11 +87,16 @@ public class TaskManager {
 		}
 		Task task = taskDAO.getTaskByID(taskId);
 		User oldExecutor = task.getExecutor();
-		if (oldExecutor != null) {
-			oldExecutor.getUserTasks().remove(task);
-			userDAO.updateUser(oldExecutor);
-		}
 		User newExecutor = userDAO.findUserById(userId);
+		if (oldExecutor != null) {
+			if (!oldExecutor.equals(newExecutor)) {
+				oldExecutor.getUserTasks().remove(task);
+				userDAO.updateUser(oldExecutor);
+			} else {
+				return Response.status(Response.Status.BAD_REQUEST).entity("The executor of this task is already " 
+											+ oldExecutor.getFullName() + ".").build();
+			}
+		}
 		newExecutor.addUserTask(task);
 		userDAO.updateUser(newExecutor);
 		return Response.status(Response.Status.OK).entity("Task executor changed successfuly.").build();
