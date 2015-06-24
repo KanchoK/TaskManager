@@ -62,6 +62,7 @@
 		var username = $("#username")[0].value;
 		var fullName = $("#fullName")[0].value;
 		var email = $("#email")[0].value;
+		var isAdmin = document.getElementById('isAdmin').checked;
 		
 		if (username == "" || fullName == "" || email == "") {
 			alert("Username, Full name and Email fields should not be empty.");
@@ -70,7 +71,8 @@
 			var data = { user : {
 				username : username,
 				fullName : fullName,
-				email : email
+				email : email,
+				admin : isAdmin
 				}
 			}
 
@@ -140,6 +142,10 @@
 			<input type="text" id="username" placeholder="Username" required autofocus/>
 			<input type="text" id="fullName" placeholder="Full name" />
 			<input type="text" id="email" placeholder="Email" />
+			<span id="checkboxContainer">
+				Set the new user as admin:
+				<input type="checkbox" id="isAdmin" />
+			</span>
 			<button type="button" onClick="createUser()"> Create User </button> 
 		</form>
 

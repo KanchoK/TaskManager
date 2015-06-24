@@ -70,6 +70,22 @@ input[type="text"],input[type="password"], #description {
 	resize: none;
 }
 
+#checkboxContainer {
+	font-family:'Open Sans',sans-serif;
+	padding: 0 4% 4% 4%;
+	display : block;
+}
+
+input[type=checkbox] {
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(1.5); /* IE */
+  -moz-transform: scale(1.5); /* FF */
+  -webkit-transform: scale(1.5); /* Safari and Chrome */
+  -o-transform: scale(1.5); /* Opera */
+  padding: 4%;
+  margin-left: 5px;
+}
+
 button, input[type="submit"] {
     width:100%;
     background:#0082ba;
