@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @XmlRootElement
@@ -49,10 +51,10 @@ public class Task {
 	@Enumerated(EnumType.STRING) 
 	private Status status;
 	
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name="task")
 	private Collection<Comment> comments = new ArrayList<Comment>();
-	
+
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name="ImportanceTable", 
     joinColumns={@JoinColumn(name="impTasks")}, 
@@ -120,6 +122,26 @@ public class Task {
 
 	public void setStatus(Status status) {
 		this.status = status;
+	}	
+	
+	@XmlTransient
+	public Collection<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Collection<Comment> comments) {
+		for (Comment taskComments : comments) {
+			addComment(taskComments);
+		}
+			this.comments = comments;
+	}
+	
+	public void addComment(Comment comment) {
+		comment.setTask(this);
+		if (comments == null) {
+			comments = new ArrayList<>();
+		}
+		this.comments.add(comment);
 	}	
 	
 	@Override

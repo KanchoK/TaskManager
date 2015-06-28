@@ -17,13 +17,14 @@ public class CommentDAO {
 	   @PersistenceContext
 	    private EntityManager em;
 	  
-	   public Collection<Comment> getAllComments(Task task){
+	   public Collection<Comment> getAllTaskComments(Task task) {
 		   String txtQuery = "SELECT c FROM Comment c WHERE c.task=:task";
-			TypedQuery<Comment> query = em.createQuery(txtQuery, Comment.class);
-			query.setParameter("task",task);
-	        return query.getResultList();
+		   TypedQuery<Comment> query = em.createQuery(txtQuery, Comment.class);
+		   query.setParameter("task",task);
+		   return query.getResultList();
 	   }
-	   public void createComment(Comment comment){
+	   
+	   public void createComment(Comment comment) {
 		   em.persist(comment);
 	   }
 

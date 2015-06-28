@@ -21,6 +21,10 @@ public class TaskDAO {
         em.persist(task);
     }
 	
+	public void updateTask(Task task) {
+		em.merge(task);
+	}
+	
 	public Collection<Task> getAllTasks() {
 		String txtQuery = "SELECT t FROM Task t";
 		TypedQuery<Task> query = em.createQuery(txtQuery, Task.class);
@@ -40,9 +44,7 @@ public class TaskDAO {
 		}
 		
 		task.setStatus(Status.valueOf(newStatus));
-		em.merge(task);
+		updateTask(task);
 	}
-	
-	
-	
+
 }

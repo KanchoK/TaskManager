@@ -35,8 +35,34 @@
 			error : function(textStatus) {
 				alert("Task does not exist.");
 			}
-		})
+		});
+		
+		$.ajax({
+			url : 'rest/comment/allTaskComments',
+			type : 'GET',
+			data : data,
+			dataType : "json",
+			contentType : "application/json",
+			success : function(data) {
+				if (data.comment[0] != null) {
+					renderComments(data);
+				}
+			},
+			error : function(textStatus) {
+				alert("Error with loading the task comments.");
+			}
+		});
 	});
+	
+	function renderComments(data) {
+		var comments = data.comment;
+		for (i = 0; i < comments.length; i++) {
+			$("#commentsContainer").append("<div class='commentContainer'><hr>"
+										+ "<span class='author'>Author: " + comments[i].author.fullName + "</span>"
+										+ "<span class='commentDate'>Creation date: " + dateParserWithTime(comments[i].date) + "</span>"
+										+ "<div class='commentContent'>Content: " + comments[i].content + "</div></div>")
+		}
+	}
 	
 	function renderTask(data) {
 		var task = data.task;
@@ -166,6 +192,36 @@
 	 	      }
 	 	});
 	}
+	
+	function addComment() {
+		
+		var content = $("#newCommentContent")[0].value;
+	
+		if (content == "") {
+			alert("You can't add comment with no content.");
+		} else {
+			var data = {taskID : currentTask.task.taskID,
+					content : content}
+			
+			$.ajax({
+				url: 'rest/comment/create',
+ 				type: 'POST',
+ 				data : JSON.stringify(data),
+ 				dataType : "json",
+ 				contentType : "application/json",
+ 				statusCode : {
+ 					200: function(jqXHR) {
+						alert(jqXHR.responseText);
+						location.reload();
+					},
+					404: function(jqXHR) {
+						alert(jqXHR.responseText);
+					}
+ 				}
+			});
+		}	
+		
+	}
 
 </script>
 
@@ -223,7 +279,14 @@
 				</div>
 			</div>
 			
+			<h1>Comments</h1>
+			
 			<div id="commentsContainer">
+				
+				<div id="newComment">
+					<textarea id="newCommentContent" placeholder="Add comment"></textarea>
+					<button type="button" id="addCommentButton" onClick="addComment()">Add comment</button>
+				</div>
 				
 			</div>
 			

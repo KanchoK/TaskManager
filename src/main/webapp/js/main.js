@@ -43,3 +43,10 @@ function dateParser(date) {
 	var parsedDate = tempDate.getDate() + " " + month[tempDate.getMonth()] + " " + tempDate.getFullYear();
 	return parsedDate
 }
+
+function dateParserWithTime(date) {
+	var parsedDate = dateParser(date);
+	var tempDate = new Date(date);
+	var parsedDateAndTime = parsedDate + " " + tempDate.getHours() + ":" + tempDate.getMinutes() + ":" + tempDate.getSeconds();
+	return parsedDateAndTime
+}
