@@ -47,7 +47,7 @@ public class User implements Serializable{
 	@JoinColumn(name = "executor")
 	private Collection<Task> userTasks;
 	
-	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	@JoinColumn(name = "author")
 	private Collection<Comment> comments = new ArrayList<>();
 	
@@ -141,15 +141,23 @@ public class User implements Serializable{
 		this.userTasks.add(task);
 	}
 
+	@XmlTransient
 	public Collection<Comment> getComments() {
 		return comments;
 	}
 
 	public void setComments(Collection<Comment> comments) {
-		this.comments = comments;
+		for (Comment userComments : comments) {
+			addComment(userComments);
+		}
+			this.comments = comments;
 	}
 	
 	public void addComment(Comment comment) {
+		comment.setAuthor(this);
+		if (comments == null) {
+			comments = new ArrayList<>();
+		}
 		this.comments.add(comment);
 	}	
 	
