@@ -51,11 +51,11 @@ public class User implements Serializable{
 	@JoinColumn(name = "author")
 	private Collection<Comment> comments = new ArrayList<>();
 	
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name="ImportanceTable", 
-    joinColumns={@JoinColumn(name="impTo")}, 
-    inverseJoinColumns={@JoinColumn(name="impTasks")})
-	private Collection<Task> importantTasks = new ArrayList<>();
+//	@ManyToMany(cascade = CascadeType.ALL)
+//	@JoinTable(name="ImportanceTable", 
+//    joinColumns={@JoinColumn(name="impTo")}, 
+//    inverseJoinColumns={@JoinColumn(name="impTasks")})
+//	private Collection<Task> importantTasks = new ArrayList<>();
 	
 	public User() {
 		
@@ -186,14 +186,14 @@ public class User implements Serializable{
 		return true;
 	}
 
-	public Collection<Task> getImportantTasks() {
-		return importantTasks;
-	}
-
-	public void setImportantTasks(Collection<Task> importantTasks) {
-		this.importantTasks = importantTasks;
-	}
-	public void addImportantTask(Task task){
-		this.importantTasks.add(task);
-	}
+//	public Collection<Task> getImportantTasks() {
+//		return importantTasks;
+//	}
+//
+//	public void setImportantTasks(Collection<Task> importantTasks) {
+//		this.importantTasks = importantTasks;
+//	}
+//	public void addImportantTask(Task task){
+//		this.importantTasks.add(task);
+//	}
 }
