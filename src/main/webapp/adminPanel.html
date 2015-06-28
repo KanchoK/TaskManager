@@ -11,7 +11,23 @@
 	<script type="text/javascript" src="jquery-ui-theme/jquery-ui.min.js"></script>
 	
 	<script type="text/javascript">
+	var users;
+	$(document).ready(function() {
+		$.ajax({
+			url: 'rest/user/all',
+			type: 'GET',
+			success: function(data) {
+				users = data.user;
+				fillUsersDropdown(data);
+				$("#executor").selectmenu();
+			},
+			error: function() {
+				alert("Can't get users.");
+			}
+		})
 		
+	})	
+	
 	$(function() {
 		$("#endDate").datepicker({
 			dateFormat: "yy-mm-dd"
@@ -23,17 +39,22 @@
 		var taskName = $("#taskName")[0].value;
 		var description = $("#description")[0].value;
 		var endDate = $("#endDate")[0].value;
+		var executorID = $("#executor")[0].value;
 		
 		if (taskName == "" || description == "" || endDate == "") {
 			alert("Task name, Description and End date fields should not be empty.");
 		} else if (description.length > 255) {
 			alert("Task description should not be longer than 255 characters.");
 		} else {
+			var executor = users[executorID];
 			
 			var data = { task : {
 				taskName : taskName,
 				description : description,
-				endDate : endDate
+				endDate : endDate,
+				// This should be fixed
+				// does not set the executor
+				executor : executorID	
 				}
 			}
 
@@ -96,6 +117,15 @@
 		}
 	}
 	
+	function fillUsersDropdown(data) {
+		var users = data.user;
+		var dropdown = $('#executor');
+		dropdown.append($("<option/>").text("Executor").val(-1));
+		$.each(users, function() {
+			dropdown.append($("<option/>").text(this.username).val(this.userID));
+		});
+	}
+	
 	</script>
 </head>
 <body>
@@ -128,6 +158,7 @@
 			<input type="text" id="taskName" placeholder="Task name" required autofocus/>
 			<textarea id="description" placeholder="Decription"></textarea>
 			<input type="text" id="endDate" placeholder="End date" />
+			<select id="executor" class="executorsDropdown"></select>
 			<button type="button" onClick="createTask()">Create Task</button>
 		</form>
 		

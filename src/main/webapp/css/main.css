@@ -258,8 +258,12 @@ td {
 	float: right;
 }
 
-#executors {
+.executorsDropdown {
 	width: 25%;
+}
+
+#executor {
+	width: 100%;
 }
 
 #status {
