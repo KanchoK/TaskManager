@@ -18,7 +18,7 @@ public class CommentDAO {
 	    private EntityManager em;
 	  
 	   public Collection<Comment> getAllTaskComments(Task task) {
-		   String txtQuery = "SELECT c FROM Comment c WHERE c.task=:task";
+		   String txtQuery = "SELECT c FROM Comment c WHERE c.task=:task ORDER BY c.date DESC";
 		   TypedQuery<Comment> query = em.createQuery(txtQuery, Comment.class);
 		   query.setParameter("task",task);
 		   return query.getResultList();
