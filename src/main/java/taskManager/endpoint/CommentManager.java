@@ -3,6 +3,7 @@ package taskManager.endpoint;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -18,11 +19,13 @@ import javax.ws.rs.core.Response;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import taskManager.dao.ChangeDAO;
 import taskManager.dao.CommentDAO;
 import taskManager.dao.TaskDAO;
+import taskManager.model.Change;
 import taskManager.model.Comment;
 import taskManager.model.Task;
-import taskManager.model.User;
+import taskManager.model.Change.ChangeType;
 import taskManager.services.UserContext;
 
 @Stateless
@@ -34,6 +37,9 @@ public class CommentManager {
 		
 		@Inject
 		private TaskDAO taskDAO;
+		
+		@Inject
+		private ChangeDAO changeDAO;
 		
 		@Inject
 		private UserContext context;
@@ -66,12 +72,12 @@ public class CommentManager {
 			Comment comment = new Comment();
 			comment.setContent(content);
 			comment.setDate(Calendar.getInstance().getTime());
+			comment.setAuthor(context.getCurrentUser());
 			Task task = taskDAO.getTaskByID(taskId);
-			User user = context.getCurrentUser();
 			task.addComment(comment);
-			user.addComment(comment);
 			taskDAO.updateTask(task);
-//			userDAO.updateUser(user);
+			Change change = new Change(task, context.getCurrentUser(), new Date(), "New comment was added", null, null, ChangeType.COMMENT);
+			changeDAO.addChange(change);
 			return Response.status(Response.Status.OK).entity("Comment added successfully.").build();
 		}
 

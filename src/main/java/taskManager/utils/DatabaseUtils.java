@@ -26,7 +26,7 @@ public class DatabaseUtils {
     private TaskDAO taskDAO;
 	   
     private static User[] USERS = {
-    	new User("kancho", "123456", "Kancho Kanev", "kk.user@mymail.com", true),
+    	new User("kancho", "123456", "Kancho Kanev", "pldboy@abv.bg", true),
     	new User("a", "a", "Petar Ivanov", "plamen1994@abv.bg"),
     };
     

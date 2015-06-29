@@ -40,7 +40,7 @@ public class Comment {
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "newComment")
-	private Changes change;
+	private Change change;
 	
 	public Comment() {
 		

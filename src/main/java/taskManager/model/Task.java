@@ -19,6 +19,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -42,6 +44,7 @@ public class Task {
 	@Column(length = 255)
 	private String description;
 	
+	@Temporal(TemporalType.DATE)
 	private Date endDate;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
@@ -61,9 +64,9 @@ public class Task {
     inverseJoinColumns={@JoinColumn(name="userID")})
 	private Collection<User> interestedUsers = new ArrayList<User>();
 	
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name="changedTask")
-	private Collection<Changes> changes = new ArrayList<Changes>();
+//	@OneToMany(cascade = CascadeType.ALL)
+//	@JoinColumn(name="changedTask")
+//	private Collection<Change> changes = new ArrayList<Change>();
 	
 	public Task() {
 		

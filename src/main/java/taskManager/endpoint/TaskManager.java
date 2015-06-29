@@ -3,6 +3,7 @@ package taskManager.endpoint;
 import java.net.HttpURLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -19,8 +20,11 @@ import javax.ws.rs.core.Response;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import taskManager.dao.ChangeDAO;
 import taskManager.dao.TaskDAO;
 import taskManager.dao.UserDAO;
+import taskManager.model.Change;
+import taskManager.model.Change.ChangeType;
 import taskManager.model.Task;
 import taskManager.model.Task.Status;
 import taskManager.model.User;
@@ -35,6 +39,9 @@ public class TaskManager {
 	
 	@Inject
 	private UserDAO userDAO;
+	
+	@Inject
+	private ChangeDAO changeDAO;
 	
 	@Inject
 	UserContext context; 
@@ -92,6 +99,8 @@ public class TaskManager {
 			if (!oldExecutor.equals(newExecutor)) {
 				oldExecutor.getUserTasks().remove(task);
 				userDAO.updateUser(oldExecutor);
+				Change change = new Change(task, context.getCurrentUser(), new Date(), "Executor change", oldExecutor.getUsername(), newExecutor.getUsername(), ChangeType.EXECUTOR);
+				changeDAO.addChange(change);
 			} else {
 				return Response.status(Response.Status.BAD_REQUEST).entity("The executor of this task is already " 
 											+ oldExecutor.getFullName() + ".").build();
@@ -141,6 +150,9 @@ public class TaskManager {
 		} else if(executor.equals(user)) {
 			if(!task.getStatus().toString().equals(newStatus)) {
 				try {
+					Status oldStatus = task.getStatus();
+					Change change = new Change(task, user, new Date(), "Status change", oldStatus.toString(), newStatus.toString(), ChangeType.STATUS);
+					changeDAO.addChange(change);
 					taskDAO.changeStatus(task, newStatus);
 					return Response.status(Response.Status.OK).entity("Task status changed successfuly.").build();
 				} catch (ApplicationServerInternalException exc) {
