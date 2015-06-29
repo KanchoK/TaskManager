@@ -306,3 +306,7 @@ td {
 .commentDate {
 	float: right;
 }
+
+.commentContent {
+	padding-top: 10px;
+}
