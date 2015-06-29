@@ -262,6 +262,10 @@ td {
 	width: 25%;
 }
 
+#executor {
+	width: 100%;
+}
+
 #status {
 	width: 15%;
 }

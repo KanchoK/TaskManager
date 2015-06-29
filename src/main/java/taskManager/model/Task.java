@@ -56,10 +56,10 @@ public class Task {
 	private Collection<Comment> comments = new ArrayList<Comment>();
 
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name="ImportanceTable", 
-    joinColumns={@JoinColumn(name="impTasks")}, 
-    inverseJoinColumns={@JoinColumn(name="impTo")})
-	private Collection<User> importantTo = new ArrayList<User>();
+	@JoinTable(name="ImportantTasks", 
+    joinColumns={@JoinColumn(name="taskID")}, 
+    inverseJoinColumns={@JoinColumn(name="userID")})
+	private Collection<User> interestedUsers = new ArrayList<User>();
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="changedTask")
@@ -144,6 +144,18 @@ public class Task {
 		this.comments.add(comment);
 	}	
 	
+	public Collection<User> getInterestedUsers() {
+		return interestedUsers;
+	}
+
+	public void setInterestedUsers(Collection<User> interestedUsers) {
+		this.interestedUsers = interestedUsers;
+	}
+	
+	public void addInterestedUser(User user) {
+		interestedUsers.add(user);
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -169,7 +181,4 @@ public class Task {
 		return true;
 	}
 	
-	public Collection<User> getimportantTo(){
-		return this.importantTo;
-	}
 }
