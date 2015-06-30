@@ -69,6 +69,9 @@ public class TaskManager {
 			return Response.status(HttpURLConnection.HTTP_CONFLICT).entity("Tasks with past date can not be created.").build();
 		}
 		newTask.setStatus(Status.NEW);
+		User user = userDAO.getUserById(newTask.getExecutor().getUserID());
+		user.getUserTasks().add(newTask);
+		userDAO.updateUser(user);
 		taskDAO.addTask(newTask);
 		return Response.status(HttpURLConnection.HTTP_OK).entity("Task created.").build();
     }
@@ -97,7 +100,7 @@ public class TaskManager {
 		}
 		Task task = taskDAO.getTaskByID(taskId);
 		User oldExecutor = task.getExecutor();
-		User newExecutor = userDAO.findUserById(userId);
+		User newExecutor = userDAO.getUserById(userId);
 		if (oldExecutor != null) {
 			if (!oldExecutor.equals(newExecutor)) {
 				oldExecutor.getUserTasks().remove(task);

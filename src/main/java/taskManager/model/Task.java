@@ -45,7 +45,7 @@ public class Task {
 	@Temporal(TemporalType.DATE)
 	private Date endDate;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "userID")
 	private User executor;
 	

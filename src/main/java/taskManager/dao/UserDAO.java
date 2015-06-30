@@ -99,7 +99,7 @@ public class UserDAO {
 		return queryUser(query);
 	}
 
-	public User findUserById(Integer userID) {
+	public User getUserById(Integer userID) {
 		String txtQuery = "SELECT u FROM User u WHERE u.userID = :userID";
 		TypedQuery<User> query = em.createQuery(txtQuery, User.class);
 		query.setParameter("userID", userID);

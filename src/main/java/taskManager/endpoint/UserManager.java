@@ -203,7 +203,7 @@ public class UserManager {
 			// TODO log the exc
 			e.printStackTrace();
 		}
-		User user = userDAO.findUserById(userId);
+		User user = userDAO.getUserById(userId);
 		try {
 			userDAO.resetUserPassword(user, newPassword);
 			context.setCurrentUser(user);
