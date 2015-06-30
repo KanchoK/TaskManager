@@ -198,7 +198,9 @@
 			<input type="text" id="taskName" placeholder="Task name" required autofocus/>
 			<textarea id="description" placeholder="Decription"></textarea>
 			<input type="text" id="endDate" placeholder="End date" />
+			<div class='dropdownContainer'>
 			<select id="executor" class="executorsDropdown"></select>
+			</div>
 			<button type="button" onClick="createTask()">Create Task</button>
 		</form>
 		
@@ -212,8 +214,10 @@
 			<input type="text" id="username" placeholder="Username" required autofocus/>
 			<input type="text" id="fullName" placeholder="Full name" />
 			<input type="text" id="email" placeholder="Email" />
+			<div class='checkboxContainer'>
 			<label for="isAdmin">Set the new user as admin:</label>
 			<input type="checkbox" id="isAdmin" />
+			</div>
 			<button type="button" onClick="createUser()"> Create User </button> 
 		</form>
 

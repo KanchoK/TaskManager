@@ -76,6 +76,10 @@ input[type="text"],input[type="password"], #description {
 	display : block;
 }
 
+.checkboxContainer, .dropdownContainer {
+	margin-bottom: 5%;
+}
+
 input[type=checkbox] {
   /* Double-sized Checkboxes */
   -ms-transform: scale(1.5); /* IE */
