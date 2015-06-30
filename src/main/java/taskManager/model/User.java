@@ -51,7 +51,7 @@ public class User implements Serializable{
 //	@JoinColumn(name = "author")
 //	private Collection<Comment> comments = new ArrayList<>();
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name="ImportantTasks", 
     joinColumns={@JoinColumn(name="userID")}, 
     inverseJoinColumns={@JoinColumn(name="taskID")})
@@ -141,6 +141,7 @@ public class User implements Serializable{
 		this.userTasks.add(task);
 	}
 	
+	@XmlTransient
 	public Collection<Task> getImportantTasks() {
 		return importantTasks;
 	}

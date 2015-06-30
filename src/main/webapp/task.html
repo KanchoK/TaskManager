@@ -31,6 +31,7 @@
 			success : function(data) {
 				currentTask = data;
 				renderTask(data);
+				setIsImportantChecboxValue(data.task.taskID);
 			},
 			error : function(textStatus) {
 				alert("Task does not exist.");
@@ -267,6 +268,62 @@
 		}
 	}
 	
+	function setIsImportantChecboxValue(taskID) {
+		var data = {taskID : taskID};
+		$.ajax({
+			url: 'rest/user/isCurrentTaskImportant',
+			type: 'GET',
+			data : data,
+			dataType : "json",
+			contentType: "application/json",
+			success : function(data) {
+				document.getElementById("isImportant").checked = data;
+			},
+			error : function(textStatus) {
+				alert(textStatus);
+			}
+		});
+	}
+	
+	function isImportant() {
+		var data = {task : currentTask.task};
+		if (document.getElementById("isImportant").checked) {
+			$.ajax({
+				url: 'rest/user/addImportantTask',
+				type: 'POST',
+				data : JSON.stringify(data),
+				dataType : "json",
+				contentType: "application/json",
+				statusCode : {
+				// TODO: Alerts should be replaced with dialog windows
+					200: function(jqXHR) {
+						alert(jqXHR.responseText);
+					},
+					400: function(jqXHR) {
+						alert(jqXHR.responseText);
+					}
+				}
+			});
+		} else {
+			$.ajax({
+				url: 'rest/user/removeImportantTask',
+				type: 'POST',
+				data : JSON.stringify(data),
+				dataType : "json",
+				contentType: "application/json",
+				statusCode : {
+				// TODO: Alerts should be replaced with dialog windows
+					200: function(jqXHR) {
+						alert(jqXHR.responseText);
+					},
+					400: function(jqXHR) {
+						alert(jqXHR.responseText);
+					}
+				}
+			});
+		}
+	}
+	
 	function addComment() {
 		
 		var content = $("#newCommentContent")[0].value;
@@ -364,6 +421,11 @@
 					<button type="button" id="changeDescriptionButton" class="changeButton" onClick="showPopup('changeDescriptionPopup')">
 					Change description
 					</button>
+					</span>
+					
+					<span id="isImportantSpan">
+					<label for="isImportant">Set the current task as important:</label>
+					<input type="checkbox" id="isImportant" onChange="isImportant()" />
 					</span>
 				</div>
 			</div>

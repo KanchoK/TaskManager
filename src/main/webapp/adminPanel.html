@@ -47,9 +47,13 @@
 			alert("Task description should not be longer than 255 characters.");
 		} else {
 			var executor;
-			for (i = 0; i < users.length; i++) {
-				if (executorID == users[i].userID) {
-					executor = users[i];
+			if (executorID == -1) {
+				executor = null;
+			} else {
+				for (i = 0; i < users.length; i++) {
+					if (executorID == users[i].userID) {
+						executor = users[i];
+					}
 				}
 			}
 			
@@ -60,25 +64,58 @@
 				executor : executor
 				}
 			}
-
-			$.ajax({
-				url: 'rest/task/create',
-				type: 'POST',
-				data : JSON.stringify(data),
+			
+			if (executor == null) {
+				createTaskRequest(data)
+			} else {
+				var userID = {userID : executorID}
+				getUserActiveTasksCount(userID, data)
+			}
+		}
+	}
+	
+	function getUserActiveTasksCount(executorID, taskData) {
+		$.ajax({
+	        	url: 'rest/user/activeTasksCount',
+				type: 'GET',
+				data : executorID,
 				dataType : "json",
-				contentType: "application/json",
+				contentType : "application/json",
 				statusCode : {
-				// TODO: Alerts should be replaced with dialog windows
 					200: function(jqXHR) {
-						alert(jqXHR.responseText);
-						window.location.replace("home.html");
+						createTaskRequest(taskData);
 					},
 					409: function(jqXHR) {
+						var confirmWindow = confirm(jqXHR.responseText);
+						if (confirmWindow == true) {
+							createTaskRequest(taskData);
+						}
+					},
+					404: function(jqXHR) {
 						alert(jqXHR.responseText);
 					}
 				}
-			});
-		}
+	        });
+	}
+	
+	function createTaskRequest(taskData) {
+		$.ajax({
+			url: 'rest/task/create',
+			type: 'POST',
+			data : JSON.stringify(taskData),
+			dataType : "json",
+			contentType: "application/json",
+			statusCode : {
+			// TODO: Alerts should be replaced with dialog windows
+				200: function(jqXHR) {
+					alert(jqXHR.responseText);
+					window.location.replace("home.html");
+				},
+				409: function(jqXHR) {
+					alert(jqXHR.responseText);
+				}
+			}
+		});
 	}
 	
 	function createUser() {
@@ -161,7 +198,9 @@
 			<input type="text" id="taskName" placeholder="Task name" required autofocus/>
 			<textarea id="description" placeholder="Decription"></textarea>
 			<input type="text" id="endDate" placeholder="End date" />
+			<div class='dropdownContainer'>
 			<select id="executor" class="executorsDropdown"></select>
+			</div>
 			<button type="button" onClick="createTask()">Create Task</button>
 		</form>
 		
@@ -175,8 +214,10 @@
 			<input type="text" id="username" placeholder="Username" required autofocus/>
 			<input type="text" id="fullName" placeholder="Full name" />
 			<input type="text" id="email" placeholder="Email" />
+			<div class='checkboxContainer'>
 			<label for="isAdmin">Set the new user as admin:</label>
 			<input type="checkbox" id="isAdmin" />
+			</div>
 			<button type="button" onClick="createUser()"> Create User </button> 
 		</form>
 
