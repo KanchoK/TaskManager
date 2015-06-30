@@ -1,9 +1,12 @@
 package taskManager.endpoint;
 
 import java.net.HttpURLConnection;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -99,7 +102,10 @@ public class TaskManager {
 			if (!oldExecutor.equals(newExecutor)) {
 				oldExecutor.getUserTasks().remove(task);
 				userDAO.updateUser(oldExecutor);
-				Change change = new Change(task, context.getCurrentUser(), new Date(), "Executor change", oldExecutor.getUsername(), newExecutor.getUsername(), ChangeType.EXECUTOR);
+				Change change = new Change(task, context.getCurrentUser(),
+						new Date(), "Executor change",
+						oldExecutor.getUsername(), newExecutor.getUsername(),
+						ChangeType.EXECUTOR);
 				changeDAO.addChange(change);
 			} else {
 				return Response.status(Response.Status.BAD_REQUEST).entity("The executor of this task is already " 
@@ -151,7 +157,9 @@ public class TaskManager {
 			if(!task.getStatus().toString().equals(newStatus)) {
 				try {
 					Status oldStatus = task.getStatus();
-					Change change = new Change(task, user, new Date(), "Status change", oldStatus.toString(), newStatus.toString(), ChangeType.STATUS);
+					Change change = new Change(task, user, new Date(),
+							"Status change", oldStatus.toString(),
+							newStatus.toString(), ChangeType.STATUS);
 					changeDAO.addChange(change);
 					taskDAO.changeStatus(task, newStatus);
 					return Response.status(Response.Status.OK).entity("Task status changed successfuly.").build();
@@ -168,5 +176,69 @@ public class TaskManager {
 		}
 	}
 	
+	@POST
+	@Path("changeDescription")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response changeTaskDescription(String inputData) {
+		JSONObject jsonObject;
+		Integer taskId = -1;
+		String newDescription = "";
+		try {
+			jsonObject = new JSONObject(inputData);
+			taskId = jsonObject.getInt("taskID");
+			newDescription = jsonObject.getString("description");
+		} catch (JSONException e) {
+			// TODO log the exc
+			e.printStackTrace();
+			return Response.status(Response.Status.NOT_FOUND).entity("Error with the input data.").build();
+		}
+		Task task = taskDAO.getTaskByID(taskId);
+		String oldDescription = task.getDescription();
+		if (oldDescription.equals(newDescription)) {
+			return Response.status(Response.Status.BAD_REQUEST).entity("The task description is already the same.").build();
+		}
+		task.setDescription(newDescription);
+		taskDAO.updateTask(task);
+		Change change = new Change(task, context.getCurrentUser(), new Date(),
+				"Description change", oldDescription, newDescription,
+				ChangeType.DESCRIPTION);
+		changeDAO.addChange(change);
+		return Response.status(Response.Status.OK).entity("Task description was updated successfully").build();
+	}
+	
+	@POST
+	@Path("changeEndDate")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response changeTaskEndDate(String inputData) throws ParseException {
+		JSONObject jsonObject;
+		Integer taskId = -1;
+		String newEndDateString = null;
+		try {
+			jsonObject = new JSONObject(inputData);
+			taskId = jsonObject.getInt("taskID");
+			newEndDateString = jsonObject.getString("endDate");
+		} catch (JSONException e) {
+			// TODO log the exc
+			e.printStackTrace();
+			return Response.status(Response.Status.NOT_FOUND).entity("Error with the input data.").build();
+		}
+		DateFormat format = new SimpleDateFormat("yy-MM-dd", Locale.ENGLISH);
+		Date newEndDate = format.parse(newEndDateString);
+		Task task = taskDAO.getTaskByID(taskId);
+		Date oldEndDate = task.getEndDate();
+		if (oldEndDate.equals(newEndDate)) {
+			return Response.status(Response.Status.BAD_REQUEST).entity("The task end date is already the same.").build();
+		}
+		if (format.format(new Date()).compareTo(format.format(newEndDate)) > 0) {
+			return Response.status(Response.Status.BAD_REQUEST).entity("Task end date can't be set to a past date.").build();
+		}
+		task.setEndDate(newEndDate);
+		taskDAO.updateTask(task);
+		Change change = new Change(task, context.getCurrentUser(), new Date(),
+				"Description change", oldEndDate.toString(),
+				newEndDate.toString(), ChangeType.END_DATE);
+		changeDAO.addChange(change);
+		return Response.status(Response.Status.OK).entity("Task end date was updated successfully").build();
+	}
 	
 }

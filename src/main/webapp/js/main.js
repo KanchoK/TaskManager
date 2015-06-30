@@ -23,16 +23,17 @@ function hideButtons(isAdmin) {
 	
 	if(isAdmin) {
 		$('#logoutButton').show();
-        $('#createTaskButton').show();
+        $('#adminPanelButton').show();
         $('#createUserButton').show();
         $('#editProfileButton').show();
         $('#homeButton').show();
+        $('#changeButtonsDiv').show();
 	} else {
 		$('#logoutButton').show();
-        $('#createTaskButton').hide();
-        $('#createUserButton').hide();
+        $('#adminPanelButton').hide();
         $('#editProfileButton').show();
         $('#homeButton').show();
+        $('#changeButtonsDiv').hide();
 	}
 }
 
@@ -49,4 +50,12 @@ function dateParserWithTime(date) {
 	var tempDate = new Date(date);
 	var parsedDateAndTime = parsedDate + " " + tempDate.getHours() + ":" + tempDate.getMinutes() + ":" + tempDate.getSeconds();
 	return parsedDateAndTime
+}
+
+function showPopup(elementId) {
+	document.getElementById(elementId).style.display = 'block';
+}
+
+function hidePopup(elementId) {
+	document.getElementById(elementId).style.display = 'none';
 }

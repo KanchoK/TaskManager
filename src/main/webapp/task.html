@@ -54,6 +54,12 @@
 		});
 	});
 	
+	$(function() {
+		$("#endDate").datepicker({
+			dateFormat: "yy-mm-dd"
+		});
+	});
+	
 	function renderComments(data) {
 		var comments = data.comment;
 		for (i = 0; i < comments.length; i++) {
@@ -69,7 +75,7 @@
 		var taskContainer = $('#taskContainer');
 		taskContainer.find('#taskName').text(task.taskName);
 		renderExecutorsSelectmenu(task);
-		taskContainer.find('#taskEndDate').append("<h3>End date: " + dateParser(task.endDate) + "</h3>");
+		taskContainer.find('#taskEndDate').prepend("<h3>End date: " + dateParser(task.endDate) + "</h3>");
 		renderStatusSelectmenu(task);
 		taskContainer.find('#taskDescription p').text(task.description);
 	}
@@ -193,6 +199,74 @@
 	 	});
 	}
 	
+	function changeDescription() {
+		
+		var description = $('#description')[0].value;
+		
+		if (description == "") {
+			alert("Description field should not be empty.");
+		} else if (description.length > 255) {
+			alert("Task description should not be longer than 255 characters.");
+		} else {
+			var data = {taskID : currentTask.task.taskID,
+						description : description};
+			
+			$.ajax({
+				url: 'rest/task/changeDescription',
+				type: 'POST',
+				data : JSON.stringify(data),
+				dataType : "json",
+				contentType: "application/json",
+				statusCode : {
+				// TODO: Alerts should be replaced with dialog windows
+					200: function(jqXHR) {
+						alert(jqXHR.responseText);
+						location.reload();
+					},
+					404: function(jqXHR) {
+						alert(jqXHR.responseText);
+					},
+					400: function(jqXHR) {
+						alert(jqXHR.responseText);
+					}
+				}
+			});
+		}
+	}
+	
+	function changeEndDate() {
+		
+		var endDate = $('#endDate')[0].value;
+		
+		if (endDate == "") {
+			alert("End date field should not be empty.");
+		} else {
+			var data = {taskID : currentTask.task.taskID,
+						endDate : endDate};
+			
+			$.ajax({
+				url: 'rest/task/changeEndDate',
+				type: 'POST',
+				data : JSON.stringify(data),
+				dataType : "json",
+				contentType: "application/json",
+				statusCode : {
+				// TODO: Alerts should be replaced with dialog windows
+					200: function(jqXHR) {
+						alert(jqXHR.responseText);
+						location.reload();
+					},
+					404: function(jqXHR) {
+						alert(jqXHR.responseText);
+					},
+					400: function(jqXHR) {
+						alert(jqXHR.responseText);
+					}
+				}
+			});
+		}
+	}
+	
 	function addComment() {
 		
 		var content = $("#newCommentContent")[0].value;
@@ -237,7 +311,7 @@
             	<input value="Log out" type="button" class="menuButton" onClick="logout()" />
         	</span>
 	
-	 		<span class="menuSpan" id="createTaskButton">
+	 		<span class="menuSpan" id="adminPanelButton">
             	<a href="adminPanel.html" class="menuButton"> Admin Panel </a>
         	</span>
         
@@ -257,25 +331,40 @@
 			
 			<div id="taskInfo">
 				
-				<span id="taskExecutor">
+				<div id="taskExecutor">
 					<p>Change the executor:</p>
 					<select id="executors" class="executorsDropdown">
 					</select>
-				</span>
-				<span id="taskEndDate">
-				</span>
-				<br>
-				<span id="taskStatus">
+				</div>
+				
+				<div id="taskStatus">
 					<p>Change task status:</p>
 					<select id="status">
 						<option id="NEW">NEW</option>
 						<option id="OPENED">OPENED</option>
 						<option id="DONE">DONE</option>
 					</select>
-				</span>
+				</div>
+				
+				<div id="taskEndDate"></div>
+				
 				<div id="taskDescription">
 					<h3>Description:</h3>
 					<p></p>
+				</div>
+				
+				<div id="changeButtonsDiv">
+					<span class="changeButtonSpan">
+					<button type="button" id="changeEndDateButton" class="changeButton" onClick="showPopup('changeEndDatePopup')">
+					Change end date
+					</button>
+					</span>
+					
+					<span class="changeButtonSpan">
+					<button type="button" id="changeDescriptionButton" class="changeButton" onClick="showPopup('changeDescriptionPopup')">
+					Change description
+					</button>
+					</span>
 				</div>
 			</div>
 			
@@ -290,6 +379,28 @@
 				
 			</div>
 			
+		</div>
+		
+		<div id="changeEndDatePopup" class="popup" hidden>
+			<div class="popupContent">
+				<p> You can change the end date of the current task. </p>
+			<form>
+				<input type="text" id="endDate" placeholder="New end date" />
+				<button type="button" onClick="changeEndDate()"> Change the end date </button>
+				<button type="button" onClick="hidePopup('changeEndDatePopup')"> Cancel </button>
+			</form>
+			</div>
+		</div>
+		
+		<div id="changeDescriptionPopup" class="popup" hidden>
+			<div class="popupContent">
+				<p> You can change the description of the current task. </p>
+			<form>
+				<textarea id="description" placeholder="Decription"></textarea>
+				<button type="button" onClick="changeDescription()"> Change the description </button>
+				<button type="button" onClick="hidePopup('changeDescriptionPopup')"> Cancel </button>
+			</form>
+			</div>
 		</div>
 		
 	</div>

@@ -113,7 +113,7 @@ button:hover, input[type="submit"]:hover{
     box-sizing: border-box;
 }
 
-#popup {
+.popup {
 	width:100%;
 	height:100%;
 	opacity:.95;
@@ -126,9 +126,9 @@ button:hover, input[type="submit"]:hover{
 	overflow:auto
 }
 
-#popupContent {
+.popupContent {
 	width:30%;
-	height:50%;
+	height:60%;
 	display:block;
 	margin-top: 10%;
 	margin-left: auto;
@@ -141,11 +141,11 @@ button:hover, input[type="submit"]:hover{
   	overflow:auto
 }
 
-#popupContent p {
+.popupContent p {
 	margin-bottom: 4%;
 }
 
-#popupContent button {
+.popupContent button {
 	margin-top: 4%;
 }
 
@@ -155,7 +155,7 @@ button:hover, input[type="submit"]:hover{
     background-color: #004080;
 }
 
-.menuSpan{
+.menuSpan, .changeButtonSpan {
     width:130px;
     height: 50px;
     margin-right: 5px;
@@ -167,7 +167,11 @@ button:hover, input[type="submit"]:hover{
     float: right;
 }
 
-.menuButton, .tableButton {
+.changeButtonSpan {
+	float: left !important;
+}
+
+.menuButton, .tableButton, .changeButton {
 	display:block;
     width:130px;
     height: 50px;
@@ -254,10 +258,6 @@ td {
 	padding: 20px;
 }
 
-#taskEndDate{
-	float: right;
-}
-
 #executors {
 	width: 25%;
 }
@@ -268,6 +268,10 @@ td {
 
 #status {
 	width: 15%;
+}
+
+#changeButtonsDiv {
+	height: 60px;
 }
 
 #commentsContainer {

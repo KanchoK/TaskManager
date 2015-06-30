@@ -6,12 +6,13 @@
 	
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 	<script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
-
+	<script type="text/javascript" src="js/main.js"></script>
+	
 	<script type="text/javascript">
 	
 	$(document).ready(function(){
 		$('#forgottenPassword').click(function(){
-			document.getElementById('popup').style.display = 'block';
+			showPopup('forgottenPasswordPopup');
 	    });
 	});
 	
@@ -68,16 +69,12 @@
 				200: function() {
 					alert("Email was sent successfully!");
 					document.getElementById('email').value = "";
-					document.getElementById('popup').style.display = 'none';
+					document.getElementById('forgottenPasswordPopup').style.display = 'none';
 				}
 			}
 		});
 	}
 	
-	function cancel() {
-		document.getElementById('popup').style.display = 'none';
-	}
-
 	</script>
 	
 </head>
@@ -95,14 +92,14 @@
     <div id="forgottenPassword">Forgot your password?</div>
 </div>
 
-<div id="popup" hidden>
-	<div id="popupContent">
+<div id="forgottenPasswordPopup" class="popup" hidden>
+	<div class="popupContent">
 	<p> You can enter your email to receive a link from which you can change your password. 
 		The link will be active only for 24 hour or until it's used. </p>
 	<form>
 		<input type="text" id="email" placeholder="Email" />
 		<button type="button" onClick="sendEmail()"> Send email </button>
-		<button type="button" onClick="cancel()"> Cancel </button>
+		<button type="button" onClick="hidePopup('forgottenPasswordPopup')"> Cancel </button>
 	</form>
 	</div>
 </div>

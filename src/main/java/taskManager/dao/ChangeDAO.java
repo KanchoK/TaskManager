@@ -23,7 +23,7 @@ public class ChangeDAO {
 		em.merge(change);
 	}
 
-	public List<Change> getChanges(Integer taskID, Integer userID) {
+	public List<Change> getChangesMadeByOterUsers(Integer taskID, Integer userID) {
 		String txtQuery = "SELECT ch FROM Change ch JOIN ch.task t JOIN ch.author a "
 						+ "WHERE t.taskID = :taskID AND a.userID <> :userID AND ch.isSent = false";
 		TypedQuery<Change> query = em.createQuery(txtQuery, Change.class);
@@ -38,6 +38,5 @@ public class ChangeDAO {
 		query.setParameter("userID", userID);
 		return query.getResultList();
 	}
-	// public Change
 
 }
