@@ -1,5 +1,6 @@
 package taskManager.dao;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.ejb.Singleton;
@@ -8,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import taskManager.model.Change;
+import taskManager.model.User;
 
 @Singleton
 public class ChangeDAO {
@@ -36,6 +38,12 @@ public class ChangeDAO {
 		String txtQuery = "SELECT ch FROM Change ch JOIN ch.author a WHERE a.userID = :userID";
 		TypedQuery<Change> query = em.createQuery(txtQuery, Change.class);
 		query.setParameter("userID", userID);
+		return query.getResultList();
+	}
+	public Collection<Change> importantchng(User user){
+		String txtQuery = "SELECT ch FROM Change ch WHERE ch.task = :tasks";
+		TypedQuery<Change> query = em.createQuery(txtQuery,Change.class);
+		query.setParameter("tasks", user.getImportantTasks());
 		return query.getResultList();
 	}
 

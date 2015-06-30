@@ -62,9 +62,9 @@ public class Task {
 //    inverseJoinColumns={@JoinColumn(name="userID")})
 //	private Collection<User> interestedUsers = new ArrayList<User>();
 	
-//	@OneToMany(cascade = CascadeType.ALL)
-//	@JoinColumn(name="changedTask")
-//	private Collection<Change> changes = new ArrayList<Change>();
+	@OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+	@JoinColumn(name="changedTask")
+	private Collection<Change> changes = new ArrayList<Change>();
 	
 	public Task() {
 		
