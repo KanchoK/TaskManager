@@ -21,6 +21,7 @@ import javax.ws.rs.core.Response;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import taskManager.dao.TaskDAO;
 import taskManager.dao.UserDAO;
 import taskManager.model.Task;
 import taskManager.model.User;
@@ -34,6 +35,9 @@ public class UserManager {
 
 	@Inject
 	private UserDAO userDAO;
+	
+	@Inject
+	private TaskDAO taskDAO;
 	
 	@Inject
 	private UserContext context;
@@ -102,6 +106,46 @@ public class UserManager {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void addTask(Task task,User user){
 		user.addUserTask(task);
+	}
+	
+	@GET
+	@Path("isCurrentTaskImportant")
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean isCurrentTaskImportant(@QueryParam("taskID") int taskID) {
+		Task task = taskDAO.getTaskByID(taskID);
+		if (context.getCurrentUser().getImportantTasks().contains(task)) {
+			return true;
+		}
+		return false;
+	}
+	
+	@POST
+	@Path("addImportantTask")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response addImportantTask(Task task) {
+		User user = context.getCurrentUser();
+		if (user.getImportantTasks() == null) {
+			user.setImportantTasks(new ArrayList<Task>());
+		} else if (user.getImportantTasks().contains(task)) {
+			return Response.status(Response.Status.BAD_REQUEST).entity("This task is already set as important to you.").build();
+		}
+		user.getImportantTasks().add(task);
+		userDAO.updateUser(user);
+		return Response.status(Response.Status.OK).entity("This task was set successfully as important to you.").build();
+	}
+	
+	@POST
+	@Path("removeImportantTask")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response removeImportantTask(Task task) {
+		User user = context.getCurrentUser();
+		if (user.getImportantTasks().contains(task)) {
+			user.getImportantTasks().remove(task);
+			userDAO.updateUser(user);
+			return Response.status(Response.Status.OK).entity("This task was set successfully as NOT important to you.").build();
+		} else {
+			return Response.status(Response.Status.BAD_REQUEST).entity("This task is already set as NOT important to you.").build();
+		}
 	}
 	
 	@GET

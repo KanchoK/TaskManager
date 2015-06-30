@@ -274,6 +274,10 @@ td {
 	height: 60px;
 }
 
+#isImportantSpan {
+	float: right;
+}
+
 #commentsContainer {
 	background: #f0f0f0;
 	width: 100%;
