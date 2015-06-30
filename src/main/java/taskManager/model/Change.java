@@ -156,11 +156,11 @@ public class Change {
 		String result = String.format("Task %s has been changed from %s (%s):",
 				task.getTaskName(), author.getUsername(), date.toString());
 		if (changeType.equals(ChangeType.COMMENT)) {
-			return result + description;
+			return result + description + "\n";
 		}
 		return result
 				+ description
-				+ String.format("\nOld value:%s, New value:%s", oldValue,
+				+ String.format("\nOld value:%s, New value:%s\n", oldValue,
 						newValue);
 	}
 	

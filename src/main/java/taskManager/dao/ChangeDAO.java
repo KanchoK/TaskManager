@@ -11,27 +11,33 @@ import taskManager.model.Change;
 
 @Singleton
 public class ChangeDAO {
-	
+
 	@PersistenceContext
 	private EntityManager em;
 
-	public void addChange(Change change){
+	public void addChange(Change change) {
 		em.persist(change);
 	}
 	
-	public List<Change> getChangesByTaskID(Integer taskID) {
-		String txtQuery = "SELECT ch FROM Change ch JOIN ch.task t WHERE t.taskID = :taskID";
+	public void updateChange(Change change) {
+		em.merge(change);
+	}
+
+	public List<Change> getChanges(Integer taskID, Integer userID) {
+		String txtQuery = "SELECT ch FROM Change ch JOIN ch.task t JOIN ch.author a "
+						+ "WHERE t.taskID = :taskID AND a.userID <> :userID AND ch.isSent = false";
 		TypedQuery<Change> query = em.createQuery(txtQuery, Change.class);
 		query.setParameter("taskID", taskID);
+		query.setParameter("userID", userID);
 		return query.getResultList();
 	}
-	
+
 	public List<Change> getChangesByUserID(Integer userID) {
 		String txtQuery = "SELECT ch FROM Change ch JOIN ch.author a WHERE a.userID = :userID";
 		TypedQuery<Change> query = em.createQuery(txtQuery, Change.class);
 		query.setParameter("userID", userID);
 		return query.getResultList();
 	}
-//	public Change
+	// public Change
 
 }
