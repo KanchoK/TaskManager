@@ -14,8 +14,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -58,11 +56,11 @@ public class Task {
 	@JoinColumn(name="task")
 	private Collection<Comment> comments = new ArrayList<Comment>();
 
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name="ImportantTasks", 
-    joinColumns={@JoinColumn(name="taskID")}, 
-    inverseJoinColumns={@JoinColumn(name="userID")})
-	private Collection<User> interestedUsers = new ArrayList<User>();
+//	@ManyToMany(cascade = CascadeType.ALL)
+//	@JoinTable(name="ImportantTasks", 
+//    joinColumns={@JoinColumn(name="taskID")}, 
+//    inverseJoinColumns={@JoinColumn(name="userID")})
+//	private Collection<User> interestedUsers = new ArrayList<User>();
 	
 //	@OneToMany(cascade = CascadeType.ALL)
 //	@JoinColumn(name="changedTask")
@@ -147,17 +145,17 @@ public class Task {
 		this.comments.add(comment);
 	}	
 	
-	public Collection<User> getInterestedUsers() {
-		return interestedUsers;
-	}
-
-	public void setInterestedUsers(Collection<User> interestedUsers) {
-		this.interestedUsers = interestedUsers;
-	}
-	
-	public void addInterestedUser(User user) {
-		interestedUsers.add(user);
-	}
+//	public Collection<User> getInterestedUsers() {
+//		return interestedUsers;
+//	}
+//
+//	public void setInterestedUsers(Collection<User> interestedUsers) {
+//		this.interestedUsers = interestedUsers;
+//	}
+//	
+//	public void addInterestedUser(User user) {
+//		interestedUsers.add(user);
+//	}
 
 	@Override
 	public int hashCode() {

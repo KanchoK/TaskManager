@@ -53,8 +53,8 @@ public class DatabaseUtils {
 
     	userList.add(USERS[0]);
     	userList.add(USERS[1]);
-    	TASKS[0].addInterestedUser(USERS[1]);
     	userList.get(0).addUserTask(TASKS[0]);
+    	userList.get(0).addImportantTask(TASKS[1]);
     	userList.get(1).addUserTask(TASKS[1]);
         for (User user : userList) {
             userDAO.addUser(user);

@@ -1,6 +1,5 @@
 package taskManager.utils;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Timer;
@@ -14,7 +13,6 @@ import javax.inject.Inject;
 import taskManager.dao.ChangeDAO;
 import taskManager.dao.UserDAO;
 import taskManager.model.Change;
-import taskManager.model.Task;
 import taskManager.model.User;
 import taskManager.services.EmailSender;
 
@@ -58,7 +56,9 @@ public class NotificationScheduler {
 
 		// schedule the task to run starting after 24 hours and then again every
 		// 24 hours...
-		timer.schedule(dailyTask, 15000, 15000);
+		timer.schedule(dailyTask, 86400000, 86400000);
+		
+//		timer.schedule(dailyTask, 15000, 15000);
 	}
 
 }
