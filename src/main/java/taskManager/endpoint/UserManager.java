@@ -45,6 +45,9 @@ public class UserManager {
 		if (userDAO.isExistingUser(newUser)) {
 			return Response.status(Response.Status.CONFLICT).entity("This username already exist.").build();
 		}
+		if (userDAO.isEmailTaken(newUser)) {
+			return Response.status(Response.Status.CONFLICT).entity("This email is already taken.").build();
+		}
 		try {
 			InternetAddress address = new InternetAddress(newUser.getEmail());
 			address.validate();

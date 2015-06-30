@@ -235,7 +235,7 @@ public class TaskManager {
 		task.setEndDate(newEndDate);
 		taskDAO.updateTask(task);
 		Change change = new Change(task, context.getCurrentUser(), new Date(),
-				"Description change", oldEndDate.toString(),
+				"End date change", oldEndDate.toString(),
 				newEndDate.toString(), ChangeType.END_DATE);
 		changeDAO.addChange(change);
 		return Response.status(Response.Status.OK).entity("Task end date was updated successfully").build();

@@ -84,6 +84,13 @@ public class UserDAO {
 		query.setParameter("username", user.getUsername());
 		return queryUser(query) != null;
 	}
+	
+	public boolean isEmailTaken(User user) {
+		String txtQuery = "SELECT u FROM User u WHERE u.email=:email";
+		TypedQuery<User> query = em.createQuery(txtQuery, User.class);
+		query.setParameter("email", user.getEmail());
+		return queryUser(query) != null;
+	}
 
 	public User findUserByUsername(String username) {
 		String txtQuery = "SELECT u FROM User u WHERE u.username = :username";
