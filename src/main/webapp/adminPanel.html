@@ -46,15 +46,18 @@
 		} else if (description.length > 255) {
 			alert("Task description should not be longer than 255 characters.");
 		} else {
-			var executor = users[executorID];
+			var executor;
+			for (i = 0; i < users.length; i++) {
+				if (executorID == users[i].userID) {
+					executor = users[i];
+				}
+			}
 			
 			var data = { task : {
 				taskName : taskName,
 				description : description,
 				endDate : endDate,
-				// This should be fixed
-				// does not set the executor
-				executor : executorID	
+				executor : executor
 				}
 			}
 
