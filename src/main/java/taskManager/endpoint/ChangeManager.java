@@ -26,7 +26,7 @@ public class ChangeManager {
 	@Path("getimportantchanges")
 	@Produces("application/json")
 	public Collection<Change> getimportantchanges(){
-		if(userContext.getCurrentUser().isAdmin())return changesDAO.importantchng(userContext.getCurrentUser());
+		if(userContext.getCurrentUser().isAdmin())return changesDAO.importantChange(userContext.getCurrentUser());
 		else return null;
 	}
 	

@@ -1,5 +1,6 @@
 package taskManager.dao;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import taskManager.model.Change;
+import taskManager.model.Task;
 import taskManager.model.User;
 
 @Singleton
@@ -40,11 +42,15 @@ public class ChangeDAO {
 		query.setParameter("userID", userID);
 		return query.getResultList();
 	}
-	public Collection<Change> importantchng(User user){
-		String txtQuery = "SELECT ch FROM Change ch WHERE ch.task = :tasks";
-		TypedQuery<Change> query = em.createQuery(txtQuery,Change.class);
-		query.setParameter("tasks", user.getImportantTasks());
-		return query.getResultList();
+	public Collection<Change> importantChange(User user){
+		Collection<Change> changes = new ArrayList<>();
+		for(Task task:user.getImportantTasks()){
+			String txtQuery = "SELECT c FROM Change c JOIN c.task t WHERE t.taskID=:currenttaskID";
+			TypedQuery<Change> query = em.createQuery(txtQuery,Change.class);
+			query.setParameter("currenttaskID",task.getTaskID());
+			changes.addAll(query.getResultList());
+		}
+		return changes;
 	}
 
 }
