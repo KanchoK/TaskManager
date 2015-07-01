@@ -33,12 +33,18 @@
 	
 		function renderChanges(data) {
 			var changes = data.change;
-			var table = $("changesTable");
+			var table = $("#changesTable").find('tbody');
 			for(var i = 0; i < changes.length; i++) {
-				var change = changes[i];
-				if (change.changeType == "COMMENT") {
-					
-				}
+				change = changes[i];
+				
+				table.append("<tr>" 
+						+ '<td>' + change.task.taskName + '</td>'
+						+ '<td>' + change.description + '</td>'
+						+ '<td class="overflowing">' + change.oldValue + '</td>'
+						+ '<td class="overflowing">' + change.newValue + '</td>'
+						+ '<td>' + change.author.fullName + '</td>'
+						+ '<td>' + dateParserWithTime(change.date) + '</td>' 
+						+ "</tr>");
 			}
 		}
 	});
@@ -75,10 +81,6 @@
 
 		</div>
 
-		<div id="changesContainer">
-
-			<h1 id="changesHeader">Changes to important tasks</h1>
-			
 			<div class="tableContainer">
 				<div id="changesTableDiv">
 				<table id="changesTable" class="dbInfoTable">
@@ -89,6 +91,7 @@
 					   		<th>Before</th>
 					    	<th>After</th>
 					    	<th>Author</th>
+					    	<th>Date</th>
 				    	</tr>
 			    	</thead>
 			    	<tbody>
@@ -97,8 +100,6 @@
 				</table>
 				</div>
 			</div>
-
-		</div>
 	</div>
 </body>
 </html>

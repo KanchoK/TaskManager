@@ -326,3 +326,10 @@ td {
 .commentContent {
 	padding-top: 10px;
 }
+
+td.overflowing {
+	max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
