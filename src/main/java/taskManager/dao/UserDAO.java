@@ -58,6 +58,13 @@ public class UserDAO {
 		return queryUser(query) != null;
 	}
 	
+	public boolean isUserAdminById(Integer userID) {
+		String txtQuery = "SELECT u FROM User u WHERE u.userID = :userID AND u.isAdmin = true";
+		TypedQuery<User> query = em.createQuery(txtQuery, User.class);
+		query.setParameter("userID", userID);
+		return queryUser(query) != null;
+	}
+	
 	public boolean isEmailTaken(User user) {
 		String txtQuery = "SELECT u FROM User u WHERE u.email=:email";
 		TypedQuery<User> query = em.createQuery(txtQuery, User.class);

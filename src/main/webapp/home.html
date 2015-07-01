@@ -10,8 +10,8 @@
 	<script type="text/javascript" src="js/main.js"></script>
 		
 	<script type="text/javascript">
-		
-	$(document).ready(function (){
+	
+	$(document).ready(function () {
 		
 		authorization();
 		
@@ -76,33 +76,91 @@
 		tbody.empty();
 		var users = data.user;
         for (i = 0; i < users.length; i++) {
-        	var isAdmin = 'No';
-        	if(users[i].admin) {
-        		isAdmin = 'Yes';
-        	}
-            tbody.append("<tr>" + 
-            		"<td id='hiddenUserId' style='display: none'>" + users[i].userID + "</td>" +
-                    "<td>" + users[i].username + "</td>" +
-                    "<td>" + users[i].fullName + "</td>" +
-                    "<td>" + users[i].email + "</td>" +
-                    "<td> can't parse the tasks to JSON </td>" +
-                    "<td>" + isAdmin + "</td>" + 
-                    "</tr>");
-        }
+        	
+        	var tdIsAdmin = "";
+        	if (isCurrentUserAdmin) {
+        		var inputID = "isAdmin" + users[i].userID
+				tdIsAdmin = "<td><input type='checkbox' id='" + inputID + "' class='isAdminCheckbox' onChange='setAdmin(this)' /></td>"
+			} else {
+				var isAdmin = 'No';
+				if (users[i].admin) {
+					isAdmin = 'Yes';
+				}
+				tdIsAdmin = "<td>" + isAdmin + "</td>";
+			}
+					
+			tbody.append("<tr>"
+					+ "<td id='hiddenUserId' style='display: none'>"
+					+ users[i].userID + "</td>" + "<td>"
+					+ users[i].username + "</td>" + "<td>"
+					+ users[i].fullName + "</td>" + "<td>" + users[i].email
+					+ "</td>" + tdIsAdmin + "</tr>");
+			
+			setIsAdminChecboxValue(users[i].userID);
+		}
+	}
+
+	function setIsAdminChecboxValue(userID) {
+		var data = {
+			userID : userID
+		};
+		$.ajax({
+			url : 'rest/user/isSelectedUserAdmin',
+			type : 'GET',
+			data : data,
+			dataType : "json",
+			contentType : "application/json",
+			success : function(data) {
+				document.getElementById("isAdmin" + userID).checked = data;
+			},
+			error : function(textStatus) {
+				alert(textStatus);
+			}
+		});
+	}
+
+	function setAdmin(inputElement) {
+		// the input parent is td and it's parent is the table row withe the user
+		// and the first child of the table row is the hidden cell with the userID
+		var userID = inputElement.parentElement.parentElement.firstChild.textContent;
+		var isChecked = inputElement.checked;
+		var data = {userID : userID,
+					isAdmin : isChecked};
+		var confirmWindow = confirm("Are you sure you want to change the ROLE of the selected user!");
+		if (confirmWindow == true) {
+			$.ajax({
+				url: 'rest/user/setAdmin',
+				type: 'POST',
+				data : JSON.stringify(data),
+				dataType : "json",
+				contentType: "application/json",
+				statusCode : {
+				// TODO: Alerts should be replaced with dialog windows
+					200: function(jqXHR) {
+						alert(jqXHR.responseText);
+					},
+					400: function(jqXHR) {
+						alert(jqXHR.responseText);
+					},
+					404: function(jqXHR) {
+						alert(jqXHR.responseText);
+					}
+				}
+			});
+		}
 	}
 	
-	function changeToTaskTable() {
-		document.getElementById('userTableDiv').style.display = 'none';
-		document.getElementById('taskTableDiv').style.display = 'block';
-		getAllTasks();
-	}
-	
-	function changeToUserTable() {
-		document.getElementById('taskTableDiv').style.display = 'none';
-		document.getElementById('userTableDiv').style.display = 'block';
-		getAllUsers();
-	}
-	
+		function changeToTaskTable() {
+			document.getElementById('userTableDiv').style.display = 'none';
+			document.getElementById('taskTableDiv').style.display = 'block';
+			getAllTasks();
+		}
+
+		function changeToUserTable() {
+			document.getElementById('taskTableDiv').style.display = 'none';
+			document.getElementById('userTableDiv').style.display = 'block';
+			getAllUsers();
+		}
 	</script>
 	
 </head>
@@ -167,7 +225,6 @@
     	<th>Username</th>
    		<th>Full name</th>
    		<th>Email</th>
-   		<th>Current tasks</th>
     	<th>Is Admin?</th>
     	</tr>
     	</thead>

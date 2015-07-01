@@ -1,8 +1,12 @@
+//Global variable
+var isCurrentUserAdmin = null;
+
 function logout() {
 	$.ajax({
 		url: 'rest/user/logout',
 		type: 'POST',
 		success: function() {
+			isCurrentUserAdmin = null;
 			window.location.replace("/TaskManager/");
 		}
 				
@@ -10,13 +14,18 @@ function logout() {
 }
 
 function authorization() {
-	$.ajax({
-		url: 'rest/user/authorization',
-		type: 'GET',
-		success: function(data) {
-			hideButtons(data);
-		}			
-	});
+	if (isCurrentUserAdmin == null) {
+		$.ajax({
+			url: 'rest/user/authorization',
+			type: 'GET',
+			success: function(data) {
+				isCurrentUserAdmin = data;
+				hideButtons(isCurrentUserAdmin);
+			}			
+		});
+	} else {
+		hideButtons(isCurrentUserAdmin);
+	}
 }
 
 function hideButtons(isAdmin) {

@@ -136,6 +136,38 @@ public class UserManager {
 	}
 	
 	@GET
+	@Path("isSelectedUserAdmin")
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean isSelectedUserAdmin(@QueryParam("userID") int userID) {
+		return userDAO.isUserAdminById(userID);
+	}
+	
+	@POST
+	@Path("setAdmin")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response setAdmin(String inputData) {
+		JSONObject jsonObject;
+		Integer userID = -1;
+		boolean isAdmin = false;
+		try {
+			jsonObject = new JSONObject(inputData);
+			userID = jsonObject.getInt("userID");
+			isAdmin = jsonObject.getBoolean("isAdmin");
+		} catch (JSONException e) {
+			// TODO log the exc
+			e.printStackTrace();
+			return Response.status(Response.Status.NOT_FOUND).entity("Error with the input data.").build();
+		}
+		User user = userDAO.getUserById(userID);
+		if (user.isAdmin() == isAdmin) {
+			return Response.status(Response.Status.BAD_REQUEST).entity("This user is already with the role you set.").build();
+		}
+		user.setAdmin(isAdmin);
+		userDAO.updateUser(user);
+		return Response.status(Response.Status.OK).entity("The user role was changed successfully.").build();
+	}
+	
+	@GET
 	@Path("isCurrentTaskImportant")
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean isCurrentTaskImportant(@QueryParam("taskID") int taskID) {
