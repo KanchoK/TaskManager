@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,6 +35,7 @@ public class User implements Serializable{
 	private String username;
 	
 	// TODO password validation
+	@Basic(fetch = FetchType.LAZY)
 	private String password;
 	
 	private String fullName;
