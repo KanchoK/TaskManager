@@ -15,7 +15,7 @@ import taskManager.model.Change;
 import taskManager.services.UserContext;
 
 @Stateless
-@Path("changes")
+@Path("change")
 public class ChangeManager {
 
 	@Inject

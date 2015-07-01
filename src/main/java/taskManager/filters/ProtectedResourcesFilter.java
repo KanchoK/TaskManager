@@ -96,7 +96,9 @@ public class ProtectedResourcesFilter implements Filter {
 						|| uri.endsWith("rest/task/create") 
 						|| uri.endsWith("rest/user/register")
 						|| uri.endsWith("rest/task/changeEndDate")
-						|| uri.endsWith("rest/task/changeDescription"))) {
+						|| uri.endsWith("rest/task/changeDescription")
+						|| uri.endsWith("changes.html")
+						|| uri.endsWith("rest/change/getImportantChanges"))) {
 			httpServletResponse.sendRedirect(loginUrl + "home.html");
 			return;
 		}
