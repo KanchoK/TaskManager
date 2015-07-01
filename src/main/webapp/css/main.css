@@ -243,13 +243,13 @@ td {
     filter: alpha(opacity=40); /* for IE8 */
 }
 
-#taskContainer {
+#taskContainer, #changesContainer {
 	width: 95%;
 	margin-left: auto;
   	margin-right: auto;
 }
 
-#taskContainer h1 {
+#taskContainer h1, #changesContainer h1 {
     background:#0082ba;
     padding:10px 0 10px 10px;
     font-size:200%;

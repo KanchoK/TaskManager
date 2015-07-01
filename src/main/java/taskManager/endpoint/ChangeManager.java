@@ -23,18 +23,12 @@ public class ChangeManager {
 	private ChangeDAO changesDAO;
 	
 	@GET
-	@Path("getimportantchanges")
+	@Path("getImportantChanges")
 	@Produces("application/json")
 	public Collection<Change> getimportantchanges(){
-		if(userContext.getCurrentUser().isAdmin())return changesDAO.importantChange(userContext.getCurrentUser());
-		else return null;
+		if(userContext.getCurrentUser().isAdmin())
+			return changesDAO.importantChange(userContext.getCurrentUser());
+		else 
+			return null;
 	}
-	
-	
-//	@GET
-//	@Path("getchanges")
-//	@Produces("application/json")
-//	public Collection<Change> getChanges(){
-//		return changesDAO.getImportantChanges(userContext.getCurrentUser());
-//	}
 }

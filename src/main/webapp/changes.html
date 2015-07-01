@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>Task Manager</title>
+
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+<link rel="stylesheet" href="jquery-ui-theme/jquery-ui.min.css" />
+<script type="text/javascript" src="jquery-ui-theme/jquery-ui.min.js"></script>
+
+<script type="text/javascript">
+
+	var currentTask = null;
+
+	$(document).ready(function() {
+
+		authorization();
+		
+		$.ajax({
+			url : 'rest/changes/getImportantChanges',
+			type : 'GET',
+			dataType: "json",
+			success : function(data) {
+				renderChanges(data)
+			},
+			error : function(textStatus) {
+				alert("Error. Cannot display changes.");
+			}
+		});	
+	
+		function renderChanges(data) {
+			var changes = data.change;
+			var table = $("changesTable");
+			for(var i = 0; i < changes.length; i++) {
+				var change = changes[i];
+				if (change.changeType == "COMMENT") {
+					
+				}
+			}
+		}
+	});
+	
+</script>
+
+</head>
+
+
+<body>
+	<div id="container">
+
+		<div id="header">
+
+			<span class="menuSpan" id="logoutButton"> <input
+				value="Log out" type="button" class="menuButton" onClick="logout()" />
+			</span> 
+			
+			<span class="menuSpan" id="changesButton"> 
+				<a href="changes.html" class="menuButton"> Changes </a>
+			</span> 
+			
+			<span class="menuSpan" id="adminPanelButton"> 
+				<a href="adminPanel.html" class="menuButton"> Admin Panel </a>
+			</span> 
+			
+			<span class="menuSpan" id="editProfileButton"> 
+				<a href="editProfile.html" class="menuButton"> Edit Your Profile </a>
+			</span> 
+			
+			<span class="menuSpan" id="homeButton"> 
+				<a href="home.html" class="menuButton"> Home </a>
+			</span>
+
+		</div>
+
+		<div id="changesContainer">
+
+			<h1 id="changesHeader">Changes to important tasks</h1>
+			
+			<div class="tableContainer">
+				<div id="changesTableDiv">
+				<table id="changesTable" class="dbInfoTable">
+			    	<thead>
+				    	<tr>
+					    	<th>Task name</th>
+					   		<th>Change type</th>
+					   		<th>Before</th>
+					    	<th>After</th>
+					    	<th>Author</th>
+				    	</tr>
+			    	</thead>
+			    	<tbody>
+			    	
+			    	</tbody>
+				</table>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>

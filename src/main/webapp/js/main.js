@@ -27,12 +27,14 @@ function hideButtons(isAdmin) {
         $('#createUserButton').show();
         $('#editProfileButton').show();
         $('#homeButton').show();
+        $('#changesButton').show();
         $('#changeButtonsDiv').show();
 	} else {
 		$('#logoutButton').show();
         $('#adminPanelButton').hide();
         $('#editProfileButton').show();
         $('#homeButton').show();
+        $('#changesButton').hide();
         $('#changeButtonsDiv').hide();
 	}
 }
