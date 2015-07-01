@@ -47,6 +47,9 @@ public class DatabaseUtils {
     private void deleteData() {
         em.createQuery("DELETE FROM User").executeUpdate();
         em.createQuery("DELETE FROM Task").executeUpdate();
+        em.createQuery("DELETE FROM Change").executeUpdate();
+        em.createQuery("DELETE FROM Comment").executeUpdate();
+        em.createQuery("DELETE FROM ChangePasswordRequest").executeUpdate();
     }
 
     private void addTestUsers() {

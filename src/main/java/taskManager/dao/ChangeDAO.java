@@ -41,7 +41,7 @@ public class ChangeDAO {
 	}
 	
 	public Collection<Change> getAllChanges(){
-		String txtQuery = "SELECT ch FROM Change ch ORDER BY ch.date";
+		String txtQuery = "SELECT ch FROM Change ch ORDER BY ch.date DESC";
 		TypedQuery<Change> query = em.createQuery(txtQuery, Change.class);
 		return query.getResultList();
 	}

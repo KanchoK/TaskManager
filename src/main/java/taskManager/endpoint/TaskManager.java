@@ -225,7 +225,7 @@ public class TaskManager {
 			e.printStackTrace();
 			return Response.status(Response.Status.NOT_FOUND).entity("Error with the input data.").build();
 		}
-		DateFormat format = new SimpleDateFormat("yy-MM-dd", Locale.ENGLISH);
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 		Date newEndDate = format.parse(newEndDateString);
 		Task task = taskDAO.getTaskByID(taskId);
 		Date oldEndDate = task.getEndDate();
@@ -238,8 +238,8 @@ public class TaskManager {
 		task.setEndDate(newEndDate);
 		taskDAO.updateTask(task);
 		Change change = new Change(task, context.getCurrentUser(), new Date(),
-				"End date change", oldEndDate.toString(),
-				newEndDate.toString(), ChangeType.END_DATE);
+				"End date change", format.format(oldEndDate),
+				format.format(newEndDate), ChangeType.END_DATE);
 		changeDAO.addChange(change);
 		return Response.status(Response.Status.OK).entity("Task end date was updated successfully").build();
 	}

@@ -36,12 +36,24 @@
 			var table = $("#changesTable").find('tbody');
 			for(var i = 0; i < changes.length; i++) {
 				change = changes[i];
+				var oldValue = "";
+				var newValue = "";
+				if (change.changeType == "COMMENT") {
+					oldValue = "-";
+					newValue = "-";
+				} else if (change.changeType == "END_DATE") {
+					oldValue = dateParser(change.oldValue);
+					newValue = dateParser(change.newValue);
+				} else {
+					oldValue = change.oldValue;
+					newValue = change.newValue;
+				}
 				
 				table.append("<tr>" 
 						+ '<td>' + change.task.taskName + '</td>'
 						+ '<td>' + change.description + '</td>'
-						+ '<td class="overflowing">' + change.oldValue + '</td>'
-						+ '<td class="overflowing">' + change.newValue + '</td>'
+						+ '<td class="overflowing">' + oldValue + '</td>'
+						+ '<td class="overflowing">' + newValue + '</td>'
 						+ '<td>' + change.author.fullName + '</td>'
 						+ '<td>' + dateParserWithTime(change.date) + '</td>' 
 						+ "</tr>");

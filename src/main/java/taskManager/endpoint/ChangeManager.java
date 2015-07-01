@@ -1,12 +1,14 @@
 package taskManager.endpoint;
 
 import java.util.Collection;
+import java.util.LinkedList;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import taskManager.dao.ChangeDAO;
 import taskManager.model.Change;
@@ -24,14 +26,15 @@ public class ChangeManager {
 	
 	@GET
 	@Path("getImportantChanges")
-	@Produces("application/json")
-	public Collection<Change> getimportantchanges(){
-		if(userContext.getCurrentUser().isAdmin()){
-		Collection<Change> changes=changeDAO.getAllChanges();
-		for(Change change:changes){
-			if(!(userContext.getCurrentUser().getImportantTasks().contains(change.getTask())))changes.remove(change);
-		}return changes;
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<Change> getImportantChanges() {
+		Collection<Change> allChanges = changeDAO.getAllChanges();
+		Collection<Change> changes = new LinkedList<Change>();
+		for(Change change:allChanges) {
+			if (userContext.getCurrentUser().getImportantTasks().contains(change.getTask())) {
+				changes.add(change);
+			}
 		}
-		else return null;
+		return changes;
 	}
 }
