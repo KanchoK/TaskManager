@@ -20,15 +20,18 @@ public class ChangeManager {
 	private UserContext userContext;
 	
 	@Inject
-	private ChangeDAO changesDAO;
+	private ChangeDAO changeDAO;
 	
 	@GET
 	@Path("getImportantChanges")
 	@Produces("application/json")
 	public Collection<Change> getimportantchanges(){
-		if(userContext.getCurrentUser().isAdmin())
-			return changesDAO.importantChange(userContext.getCurrentUser());
-		else 
-			return null;
+		if(userContext.getCurrentUser().isAdmin()){
+		Collection<Change> changes=changeDAO.getAllChanges();
+		for(Change change:changes){
+			if(!(userContext.getCurrentUser().getImportantTasks().contains(change.getTask())))changes.remove(change);
+		}return changes;
+		}
+		else return null;
 	}
 }

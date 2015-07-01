@@ -9,7 +9,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import taskManager.model.Change;
-import taskManager.model.User;
 
 @Singleton
 public class ChangeDAO {
@@ -41,14 +40,10 @@ public class ChangeDAO {
 		return query.getResultList();
 	}
 	
-	public Collection<Change> importantChange(User user){
-		String txtQuery = "SELECT ch FROM Change ch";
+	public Collection<Change> getAllChanges(){
+		String txtQuery = "SELECT ch FROM Change ch ORDER BY ch.date";
 		TypedQuery<Change> query = em.createQuery(txtQuery, Change.class);
-		Collection<Change> changes=query.getResultList();
-		for(Change change:changes){
-			if(!(user.getImportantTasks().contains(change.getTask())))changes.remove(change);
-		}
-		return changes;
+		return query.getResultList();
 	}
 	
 //	public Collection<Change> importantChange(User user){
