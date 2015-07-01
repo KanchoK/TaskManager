@@ -237,7 +237,7 @@ td {
 	display:none;
 }
 
-.dbInfoTable tbody tr:hover {
+#taskTable tbody tr:hover {
 	cursor: pointer;
 	opacity: 0.4;
     filter: alpha(opacity=40); /* for IE8 */
