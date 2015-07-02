@@ -28,6 +28,8 @@ public class ChangePasswordRequest implements Serializable{
 
 	private String code;
 	
+	private boolean isUsed;
+	
 	public ChangePasswordRequest() {
 		
 	}
@@ -68,6 +70,14 @@ public class ChangePasswordRequest implements Serializable{
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public boolean isUsed() {
+		return isUsed;
+	}
+
+	public void setUsed(boolean isUsed) {
+		this.isUsed = isUsed;
 	}
 
 	@Override

@@ -61,13 +61,14 @@ public class ProtectedResourcesFilter implements Filter {
 			String code = httpServletRequest.getParameter("code");
 			ChangePasswordRequest changePasswordRequest = changePasswordRequestDAO.getRequestByUserIdAndCode(userId, code);
 			
-			if(changePasswordRequest != null) {
+			if(changePasswordRequest != null && !changePasswordRequest.isUsed()) {
 				Date expiryDate = changePasswordRequest.getExpiryDate();				
 				Date now = new Date();
 				
 				if(!now.after(expiryDate)) {
 					String resetPasswordUrl = loginUrl + "resetPassword.html?userId=" + userId;
 					httpServletResponse.sendRedirect(resetPasswordUrl);
+					changePasswordRequest.setUsed(true);
 					return;
 				} else {
 					redirect(httpServletResponse, loginUrl);
