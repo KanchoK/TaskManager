@@ -32,7 +32,7 @@ public class ChangesEmailBuilder {
 		for (User user : users) {
 			ArrayList<Task> userTasks = new ArrayList<Task>(user.getUserTasks());
 			for (Task task : userTasks) {
-				List<Change> changes = changeDAO.getChangesMadeByOterUsers(
+				List<Change> changes = changeDAO.getChangesMadeByOtherUsers(
 						task.getTaskID(), user.getUserID());
 				if (changes == null || changes.isEmpty()) {
 					return;
