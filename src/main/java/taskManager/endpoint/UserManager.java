@@ -254,6 +254,7 @@ public class UserManager {
 					.getRequestByUserId(user.getUserID());
 
 			if (request != null) {
+				request.setUsed(false);
 				request.setExpiryDate(expiryDate);
 				request.setCode(code);
 				changePasswordRequestDAO.update(request);
@@ -285,11 +286,13 @@ public class UserManager {
 	public Response resetUserPassword(String inputData) {
 		JSONObject jsonObject;
 		String newPassword = "";
+		String code = "";
 		Integer userId = -1;
 		try {
 			jsonObject = new JSONObject(inputData);
 			
 			newPassword = jsonObject.getString("newPassword");
+			code = jsonObject.getString("code");
 			userId = jsonObject.getInt("userId");
 		} catch (JSONException e) {
 			// TODO log the exc
@@ -298,6 +301,9 @@ public class UserManager {
 		User user = userDAO.getUserById(userId);
 		try {
 			userDAO.resetUserPassword(user, newPassword);
+			ChangePasswordRequest changePasswordRequest = changePasswordRequestDAO.getRequestByUserIdAndCode(userId, code);
+			changePasswordRequest.setUsed(true);
+			changePasswordRequestDAO.update(changePasswordRequest);
 			context.setCurrentUser(user);
 			return Response.status(Response.Status.OK).entity("Password changed successfuly.").build();
 		} catch (ApplicationServerInternalException exc) {

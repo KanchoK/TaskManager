@@ -66,9 +66,8 @@ public class ProtectedResourcesFilter implements Filter {
 				Date now = new Date();
 				
 				if(!now.after(expiryDate)) {
-					String resetPasswordUrl = loginUrl + "resetPassword.html?userId=" + userId;
+					String resetPasswordUrl = loginUrl + "resetPassword.html?userId=" + userId + "&code=" + code;
 					httpServletResponse.sendRedirect(resetPasswordUrl);
-					changePasswordRequest.setUsed(true);
 					return;
 				} else {
 					redirect(httpServletResponse, loginUrl);
