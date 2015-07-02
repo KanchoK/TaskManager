@@ -3,6 +3,7 @@ package taskManager.endpoint;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -13,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import taskManager.dao.ChangeDAO;
 import taskManager.model.Change;
 import taskManager.services.UserContext;
+import taskManager.utils.ChangesEmailBuilder;
 
 @Stateless
 @Path("change")
@@ -23,6 +25,9 @@ public class ChangeManager {
 	
 	@Inject
 	private ChangeDAO changeDAO;
+	
+	@Inject
+	private ChangesEmailBuilder emailBuilder;
 	
 	@GET
 	@Path("getImportantChanges")
@@ -36,5 +41,11 @@ public class ChangeManager {
 			}
 		}
 		return changes;
+	}
+	
+//	@Schedule(hour="8")
+	@Schedule(hour="*", minute="*")
+	public void sendEmailWithChanges() {
+		emailBuilder.buildAndSendEmail();
 	}
 }

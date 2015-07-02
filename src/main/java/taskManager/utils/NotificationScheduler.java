@@ -29,7 +29,7 @@ public class NotificationScheduler {
 //		24 hours...
 //		timer.schedule(dailyTask, 86400000, 86400000);
 		
-		timer.schedule(dailyTask, 15000, 15000);
+//		timer.schedule(dailyTask, 15000, 15000);
 	}
 
 }
