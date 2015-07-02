@@ -6,7 +6,6 @@ import javax.ejb.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.resource.spi.ApplicationServerInternalException;
 
 import taskManager.model.Task;
 import taskManager.model.User;
@@ -71,6 +70,13 @@ public class UserDAO {
 		query.setParameter("email", user.getEmail());
 		return queryUser(query) != null;
 	}
+	
+	public boolean isEmailTaken(String email) {
+		String txtQuery = "SELECT u FROM User u WHERE u.email=:email";
+		TypedQuery<User> query = em.createQuery(txtQuery, User.class);
+		query.setParameter("email", email);
+		return queryUser(query) != null;
+	}
 
 	public User findUserByUsername(String username) {
 		String txtQuery = "SELECT u FROM User u WHERE u.username = :username";
@@ -94,41 +100,6 @@ public class UserDAO {
 		return queryUser(query);
 	}
 
-	public void resetUserPassword(User user, String newPassword) throws ApplicationServerInternalException {
-		if (user == null) {
-			throw new ApplicationServerInternalException("User not found!");
-		}
-		
-		user.setPassword(newPassword);
-		updateUserAndHashPassword(user);
-	}
-	
-	public void changeUserPassword(User user, String oldPassword, String newPassword) throws ApplicationServerInternalException {
-		if (user == null) {
-			throw new ApplicationServerInternalException("User not found!");
-		}
-		
-		if (!user.getPassword().equals(SecurityUtils.getHashedPassword(oldPassword))) {
-			throw new ApplicationServerInternalException("Old password is invalid!");
-		}
-		
-		user.setPassword(newPassword);
-		updateUserAndHashPassword(user);
-	}
-	
-	public void changeUserEmail(User user, String password, String email) throws ApplicationServerInternalException {
-		if (user == null) {
-			throw new ApplicationServerInternalException("User not found!");
-		}		
-		
-		if (!user.getPassword().equals(SecurityUtils.getHashedPassword(password))) {
-			throw new ApplicationServerInternalException("Password is invalid!");
-		}
-		
-		user.setEmail(email);
-		updateUserAndHashPassword(user);
-	}
-	
 	public int getActiveTasksCount(Integer userID) {
 		String txtQuery = "SELECT COUNT(t) FROM User u JOIN u.userTasks t WHERE u.userID = :userID "
 							+ "AND (t.status = :statusNew OR t.status = :statusOpened)";

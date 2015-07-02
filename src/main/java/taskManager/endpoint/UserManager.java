@@ -299,8 +299,14 @@ public class UserManager {
 			e.printStackTrace();
 		}
 		User user = userDAO.getUserById(userId);
-		try {
-			userDAO.resetUserPassword(user, newPassword);
+		try {			
+			if (user == null) {
+				throw new ApplicationServerInternalException("User not found!");
+			}
+			
+			user.setPassword(newPassword);
+			userDAO.updateUserAndHashPassword(user);
+			
 			ChangePasswordRequest changePasswordRequest = changePasswordRequestDAO.getRequestByUserIdAndCode(userId, code);
 			changePasswordRequest.setUsed(true);
 			changePasswordRequestDAO.update(changePasswordRequest);
@@ -318,18 +324,29 @@ public class UserManager {
 	public Response changeUserPassword(String inputData) {
 		JSONObject jsonObject;
 		String newPassword = "";
-		String oldPassowrd = "";
+		String oldPassword = "";
 		try {
 			jsonObject = new JSONObject(inputData);
 			
 			newPassword = jsonObject.getString("newPassword");
-			oldPassowrd = jsonObject.getString("oldPassword");
+			oldPassword = jsonObject.getString("oldPassword");
 		} catch (JSONException e) {
 			// TODO log the exc
 			e.printStackTrace();
 		}
 		try {
-			userDAO.changeUserPassword(context.getCurrentUser(), oldPassowrd, newPassword);
+			User currentUser = context.getCurrentUser();
+			if (currentUser == null) {
+				throw new ApplicationServerInternalException("User not found!");
+			}
+			
+			if (!currentUser.getPassword().equals(SecurityUtils.getHashedPassword(oldPassword))) {
+				throw new ApplicationServerInternalException("Old password is invalid!");
+			}
+			
+			currentUser.setPassword(newPassword);
+			userDAO.updateUserAndHashPassword(currentUser);
+			
 			return Response.status(Response.Status.OK).entity("Password changed successfuly.").build();
 		} catch (ApplicationServerInternalException exc) {
 			// TODO log the exc
@@ -361,8 +378,23 @@ public class UserManager {
 			return Response.status(Response.Status.CONFLICT).entity("Invalid email.").build();
 		}		
 		
+		if (userDAO.isEmailTaken(email)) {
+			return Response.status(Response.Status.CONFLICT).entity("This email is already taken.").build();
+		}
+		
 		try {
-			userDAO.changeUserEmail(context.getCurrentUser(), password, email);
+			User currentUser = context.getCurrentUser();
+			if (currentUser == null) {
+				throw new ApplicationServerInternalException("User not found!");
+			}		
+			
+			if (!currentUser.getPassword().equals(SecurityUtils.getHashedPassword(password))) {
+				throw new ApplicationServerInternalException("Password is invalid!");
+			}
+			
+			currentUser.setEmail(email);
+			userDAO.updateUserAndHashPassword(currentUser);
+			
 			return Response.status(HttpsURLConnection.HTTP_OK).entity("Email changed successfuly.").build();
 		} catch (ApplicationServerInternalException exc) {
 			// TODO log the exc
