@@ -35,7 +35,7 @@ public class ChangesEmailBuilder {
 				List<Change> changes = changeDAO.getChangesMadeByOtherUsers(
 						task.getTaskID(), user.getUserID());
 				if (changes == null || changes.isEmpty()) {
-					return;
+					continue;
 				}
 				String messageBody = "";
 				for (Change change : changes) {
