@@ -121,20 +121,6 @@ public class TaskManager {
 	}
 	
 	@POST
-	@Path("setcurrenttask")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public void setCurrentTask(int taskID) {
-	context.setCurrentTask(taskDAO.getTaskByID(taskID));	
-	}
-	
-	@GET
-	@Path("getcurrenttask")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Task getCurrentTask(){
-		return context.getCurrentTask();
-	}
-	
-	@POST
 	@Path("changeStatus")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response changeTaskStatus(String inputData) {
