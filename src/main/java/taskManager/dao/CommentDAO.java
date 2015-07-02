@@ -23,9 +23,4 @@ public class CommentDAO {
 		   query.setParameter("task",task);
 		   return query.getResultList();
 	   }
-	   
-	   public void createComment(Comment comment) {
-		   em.persist(comment);
-	   }
-
 }
