@@ -49,18 +49,6 @@ public class Change {
 	@Enumerated(EnumType.STRING) 
 	private ChangeType changeType;
 
-	// @OneToOne(cascade = CascadeType.ALL)
-	// @JoinColumn(name="change")
-	// private Comment newComment;
-	//
-	// private Date newEndDate;
-	//
-	// private Date oldEndDate;
-	//
-	// private User newExecutor;
-	//
-	// private User oldExecutor;
-
 	private boolean isSent;
 
 	public Change() {

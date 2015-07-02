@@ -55,12 +55,6 @@ public class Task {
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name="task")
 	private Collection<Comment> comments = new ArrayList<Comment>();
-
-//	@ManyToMany(cascade = CascadeType.ALL)
-//	@JoinTable(name="ImportantTasks", 
-//    joinColumns={@JoinColumn(name="taskID")}, 
-//    inverseJoinColumns={@JoinColumn(name="userID")})
-//	private Collection<User> interestedUsers = new ArrayList<User>();
 	
 	@OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
 	@JoinColumn(name="changedTask")
@@ -144,18 +138,6 @@ public class Task {
 		}
 		this.comments.add(comment);
 	}	
-	
-//	public Collection<User> getInterestedUsers() {
-//		return interestedUsers;
-//	}
-//
-//	public void setInterestedUsers(Collection<User> interestedUsers) {
-//		this.interestedUsers = interestedUsers;
-//	}
-//	
-//	public void addInterestedUser(User user) {
-//		interestedUsers.add(user);
-//	}
 
 	@Override
 	public int hashCode() {
