@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
 import javax.mail.Authenticator;
 import javax.mail.Message;
@@ -33,6 +34,7 @@ public class EmailSender {
 	 *            - The actual content of the mail message to send
 	 * @throws MessagingException
 	 */
+	@Asynchronous
 	public void sendEmail(String senderEmail, String receiverEmail,
 			String subject, String registrationDetails) {
 

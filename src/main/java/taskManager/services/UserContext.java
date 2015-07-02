@@ -19,7 +19,10 @@ public class UserContext implements Serializable {
 	private UserDAO userDAO;
 	
 	public User getCurrentUser() {
-		return currentUser;
+		if (currentUser != null) {
+			return userDAO.getUserById(currentUser.getUserID());
+		}
+		return null;
 	}
 	
 	public void setCurrentUser(User currentUser) {
